@@ -7,7 +7,7 @@
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test",
-    "prettify": "nx lint --fix && nx format"
+    "prettify": "nx lint --fix && nx format && git add ."
   },
   "private": true,
   "dependencies": {
