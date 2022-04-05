@@ -40,3 +40,6 @@ Thumbs.db
 package-lock.json
 .gitignore
 yarn.lock
+
+.env.*
+.env*

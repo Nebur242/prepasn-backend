@@ -14,7 +14,13 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@prepa-sn/shared/classes": ["libs/shared/classes/src/index.ts"],
+      "@prepa-sn/shared/enums": ["libs/shared/enums/src/index.ts"],
+      "@prepa-sn/shared/interfaces": ["libs/shared/interfaces/src/index.ts"],
+      "@prepa-sn/shared/types": ["libs/shared/types/src/index.ts"]
+    },
+    "resolveJsonModule": true
   },
   "exclude": ["node_modules", "tmp"]
 }
