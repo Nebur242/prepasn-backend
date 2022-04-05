@@ -6,16 +6,23 @@
     "prepare": "husky install",
     "start": "nx serve",
     "build": "nx build",
-    "test": "nx test"
+    "test": "nx test",
+    "prettify": "nx lint --fix && nx format"
   },
   "private": true,
   "dependencies": {
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
+    "@nestjs/swagger": "^5.2.1",
+    "@nestjs/typeorm": "^8.0.3",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.13.2",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.0.0",
-    "tslib": "^2.0.0"
+    "swagger-ui-express": "^4.3.0",
+    "tslib": "^2.0.0",
+    "typeorm": "0.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^16.2.3",
@@ -39,6 +46,7 @@
     "jest": "27.2.3",
     "nx": "13.9.6",
     "prettier": "^2.5.1",
+    "sqlite3": "^5.0.2",
     "ts-jest": "27.0.5",
     "typescript": "~4.5.2"
   }
