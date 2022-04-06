@@ -9,7 +9,7 @@ import { AppService } from './app.service';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: process.env.DB_TYPE as 'postgres' | 'sqlite',
+      type: process.env.DB_TYPE as 'postgres',
       database: process.env.DB_NAME,
       synchronize: process.env.DB_SYNC?.toLowerCase() === 'true',
       logging: process.env.DB_LOGGING?.toLowerCase() === 'true',
@@ -18,6 +18,7 @@ import { AppService } from './app.service';
       port: parseInt(process.env.DB_PORT),
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
+      ssl: process.env.DB_SSL?.toLowerCase() === 'true',
     }),
     StudentsModule,
     AuthModule,

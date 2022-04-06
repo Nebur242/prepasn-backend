@@ -4,11 +4,16 @@
   "license": "MIT",
   "scripts": {
     "prepare": "husky install",
-    "nx": "npx nx",
-    "start": "yarn nx serve",
-    "build": "yarn nx build",
-    "test": "yarn nx test",
-    "prettify": "yarn nx lint --fix && nx format && git add ."
+    "nx": "nx",
+    "start": "nx serve",
+    "build": "nx build",
+    "test": "nx test",
+    "heroku-prebuild": "export NPM_CONFIG_PRODUCTION=false; export NODE_ENV=development;",
+    "heroku-postbuild": "export NPM_CONFIG_PRODUCTION=true; export NODE_ENV=production;",
+    "prettify": "nx lint --fix && nx format && git add ."
+  },
+  "engines": {
+    "node": "^12.13.0 || ^14.15.0 || >=16.0.0"
   },
   "private": true,
   "dependencies": {
