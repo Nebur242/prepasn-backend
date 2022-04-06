@@ -5,14 +5,25 @@
 
 import { Logger, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-
+import * as morgan from 'morgan';
 import { AppModule } from './app/app.module';
+import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const globalPrefix = 'api';
   const defaultVersion = '1';
   app.setGlobalPrefix(globalPrefix);
+  app.useGlobalInterceptors(new TransformInterceptor());
+  if (process.env.NODE_ENV === 'development') {
+    app.use(
+      morgan('dev', {
+        stream: {
+          write: (message) => Logger.debug(message.replace('\n', '')),
+        },
+      })
+    );
+  }
   app.enableVersioning({
     type: VersioningType.URI,
     defaultVersion,
