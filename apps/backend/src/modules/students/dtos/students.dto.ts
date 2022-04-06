@@ -30,28 +30,8 @@ export class CreateStudentDto {
   phone: string;
 }
 
-export class StudentDto implements Student {
+export class StudentDto extends CreateStudentDto implements Student {
   @ApiProperty()
   @IsNumber()
   id: number;
-
-  @ApiProperty()
-  @IsString()
-  firstName: string;
-
-  @ApiProperty()
-  @IsString()
-  lastName: string;
-
-  @ApiProperty()
-  @IsDateString()
-  birthDate: Date;
-
-  @ApiProperty()
-  @IsEmail()
-  email: string;
-
-  @ApiProperty()
-  @IsPhoneNumber()
-  phone: string;
 }
