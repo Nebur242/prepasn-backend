@@ -4,10 +4,11 @@
   "license": "MIT",
   "scripts": {
     "prepare": "husky install",
-    "start": "nx serve",
-    "build": "nx build",
-    "test": "nx test",
-    "prettify": "nx lint --fix && nx format && git add ."
+    "nx": "npx nx",
+    "start": "yarn nx serve",
+    "build": "yarn nx build",
+    "test": "yarn nx test",
+    "prettify": "yarn nx lint --fix && nx format && git add ."
   },
   "private": true,
   "dependencies": {
