@@ -35,21 +35,15 @@ export class FirebaseAuthStrategy extends PassportStrategy(Strategy) {
       credential: firebase.credential.cert(this.firebaseParams),
     });
   }
+
   async validate(token: string) {
-    // console.log('validate', token);
-    // return {
-    //   uid: 'test',
-    //   email: 'hello@test.test',
-    //   roles: ['admin'],
-    // };
-    const user = await this.firebaseApp
-      .auth()
-      .verifyIdToken(token, true)
-      .catch((err) => {
-        this.logger.error(err);
-        throw new UnauthorizedException('Invalid token');
-      });
-    if (!user) throw new UnauthorizedException("User doesn't exist");
-    return user;
+    try {
+      const user = await this.firebaseApp.auth().verifyIdToken(token, true);
+      if (!user) throw new UnauthorizedException("User doesn't exist");
+      return user;
+    } catch (error) {
+      this.logger.error(error);
+      throw new UnauthorizedException('Invalid token');
+    }
   }
 }

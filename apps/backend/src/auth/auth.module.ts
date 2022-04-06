@@ -6,6 +6,6 @@ import { RolesGuard } from './roles-auth.guard';
 @Module({
   imports: [PassportModule.register({ defaultStrategy: 'firebase-jwt' })],
   providers: [FirebaseAuthStrategy, RolesGuard],
-  exports: [PassportModule],
+  exports: [PassportModule, RolesGuard],
 })
 export class AuthModule {}

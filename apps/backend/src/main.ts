@@ -5,7 +5,6 @@
 
 import { Logger, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import * as morgan from 'morgan';
 import { AppModule } from './app/app.module';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 
@@ -13,6 +12,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const globalPrefix = 'api';
   const defaultVersion = '1';
+  const port = process.env.PORT || 1148;
+
   app
     .setGlobalPrefix(globalPrefix)
     .useGlobalInterceptors(new TransformInterceptor())
@@ -21,6 +22,7 @@ async function bootstrap() {
       defaultVersion,
     });
   if (process.env.NODE_ENV === 'development') {
+    const morgan = await import('morgan');
     app.use(
       morgan('dev', {
         stream: {
@@ -29,7 +31,6 @@ async function bootstrap() {
       })
     );
   }
-  const port = process.env.PORT || 1148;
   await app.listen(port);
   Logger.log(
     `🚀 Application is running on test: http://localhost:${port}/${globalPrefix}/v${defaultVersion}`
