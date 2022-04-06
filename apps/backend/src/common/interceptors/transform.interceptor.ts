@@ -42,24 +42,15 @@ export class TransformInterceptor<T>
         this.message = Message.DELETED;
         break;
       default:
-        this.message = '';
+        this.message = 'Success';
     }
 
     return next.handle().pipe(
-      map((data) => {
-        if (this.message) {
-          return {
-            statusCode,
-            message: this.message,
-            data,
-          };
-        }
-        return {
-          statusCode,
-          data,
-          message: 'Success',
-        };
-      })
+      map((data) => ({
+        statusCode,
+        message: this.message,
+        data,
+      }))
     );
   }
 }

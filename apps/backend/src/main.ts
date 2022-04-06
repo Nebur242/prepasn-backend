@@ -13,8 +13,13 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const globalPrefix = 'api';
   const defaultVersion = '1';
-  app.setGlobalPrefix(globalPrefix);
-  app.useGlobalInterceptors(new TransformInterceptor());
+  app
+    .setGlobalPrefix(globalPrefix)
+    .useGlobalInterceptors(new TransformInterceptor())
+    .enableVersioning({
+      type: VersioningType.URI,
+      defaultVersion,
+    });
   if (process.env.NODE_ENV === 'development') {
     app.use(
       morgan('dev', {
@@ -24,10 +29,6 @@ async function bootstrap() {
       })
     );
   }
-  app.enableVersioning({
-    type: VersioningType.URI,
-    defaultVersion,
-  });
   const port = process.env.PORT || 1148;
   await app.listen(port);
   Logger.log(
