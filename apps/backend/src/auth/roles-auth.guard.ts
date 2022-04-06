@@ -22,7 +22,10 @@ export class RolesGuard extends AuthGuard('firebase-jwt') {
   canActivate(
     context: ExecutionContext
   ): boolean | Promise<boolean> | Observable<boolean> {
-    this.roles = this.reflector.get<Role[]>('roles', context.getClass()) || [];
+    this.roles =
+      this.reflector.get<Role[]>('roles', context.getClass()) ||
+      this.reflector.get<Role[]>('roles', context.getHandler()) ||
+      [];
     if (this.roles.length < 1) return true;
     return super.canActivate(context);
   }
@@ -41,6 +44,5 @@ export class RolesGuard extends AuthGuard('firebase-jwt') {
 }
 
 export function Roles(...roles: Role[]) {
-  console.log('Roles', roles);
   return applyDecorators(SetMetadata('roles', roles), UseGuards(RolesGuard));
 }
