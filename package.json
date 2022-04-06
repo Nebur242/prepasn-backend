@@ -10,7 +10,7 @@
     "test": "nx test",
     "heroku-prebuild": "export NPM_CONFIG_PRODUCTION=false; export NODE_ENV=development;",
     "heroku-postbuild": "export NPM_CONFIG_PRODUCTION=true; export NODE_ENV=production;",
-    "prettify": "nx lint --fix && nx format && git add ."
+    "lint-staged": "nx lint --fix && nx format:write --uncommitted"
   },
   "engines": {
     "node": "^12.13.0 || ^14.15.0 || >=16.0.0"
