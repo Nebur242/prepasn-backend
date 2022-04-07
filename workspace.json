@@ -1,6 +1,8 @@
 {
   "version": 2,
   "projects": {
-    "backend": "apps/backend"
+    "backend": "apps/backend",
+    "shared-enums": "libs/shared/enums",
+    "shared-interfaces": "libs/shared/interfaces"
   }
 }

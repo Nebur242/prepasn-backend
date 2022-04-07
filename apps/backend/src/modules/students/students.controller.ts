@@ -1,6 +1,19 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { CreateStudentDto, StudentDto } from './dtos/students.dto';
+import {
+  CreateStudentDto,
+  StudentDto,
+  UpdateStudentDto,
+} from './dtos/students.dto';
+import { Student } from './entities/student.entity';
 import { StudentsService } from './students.service';
 
 @Controller('students')
@@ -10,13 +23,28 @@ export class StudentsController {
 
   @Get()
   @ApiOkResponse({ type: StudentDto, isArray: true })
-  getAllStudents() {
+  getAllStudents(): Promise<Student[]> {
     return this.studentsService.getAllStudents();
   }
 
   @Post()
   @ApiCreatedResponse({ type: StudentDto })
-  createStudent(@Body() createStudentDto: CreateStudentDto) {
+  createStudent(@Body() createStudentDto: CreateStudentDto): Promise<Student> {
     return this.studentsService.createStudent(createStudentDto);
+  }
+
+  @Patch(':id')
+  @ApiOkResponse({ type: StudentDto })
+  updateStudent(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateStudentDto: UpdateStudentDto
+  ): Promise<Student> {
+    return this.studentsService.update(id, updateStudentDto);
+  }
+
+  @Get(':id')
+  @ApiOkResponse({ type: StudentDto })
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<Student> {
+    return this.studentsService.findOne(id);
   }
 }
