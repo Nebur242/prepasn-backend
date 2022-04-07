@@ -26,7 +26,7 @@ export class RolesGuard extends AuthGuard('firebase-jwt') {
       this.reflector.get<Role[]>('roles', context.getClass()) ||
       this.reflector.get<Role[]>('roles', context.getHandler()) ||
       [];
-    if (this.roles.length < 1) return true;
+    if (this.roles.length === 0) return true;
     return super.canActivate(context);
   }
 

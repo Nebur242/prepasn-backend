@@ -45,7 +45,10 @@ async function bootstrap() {
 
   await app.listen(port);
   Logger.log(
-    `🚀 Application and swagger are running on: http://localhost:${port}/${globalPrefix}/v${defaultVersion}`
+    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}/v${defaultVersion}`
+  );
+  Logger.log(
+    `🏷️ Swagger is running on: http://localhost:${port}/${globalPrefix}`
   );
 }
 

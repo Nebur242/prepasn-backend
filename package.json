@@ -49,6 +49,7 @@
     "@nrwl/node": "13.9.6",
     "@nrwl/workspace": "13.9.6",
     "@types/jest": "27.0.2",
+    "@types/morgan": "^1.9.3",
     "@types/node": "16.11.7",
     "@typescript-eslint/eslint-plugin": "~5.10.0",
     "@typescript-eslint/parser": "~5.10.0",
