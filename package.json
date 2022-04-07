@@ -8,7 +8,6 @@
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test",
-    "heroku-prebuild": "heroku config:set NODE_ENV=development",
     "lint-staged": "nx lint --fix && nx format:write --uncommitted"
   },
   "engines": {
