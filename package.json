@@ -4,10 +4,14 @@
   "license": "MIT",
   "scripts": {
     "prepare": "husky install",
+    "nx": "nx",
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test",
-    "prettify": "nx lint --fix && nx format && git add ."
+    "lint-staged": "nx lint --fix && nx format:write --uncommitted"
+  },
+  "engines": {
+    "node": "^12.13.0 || ^14.15.0 || >=16.0.0"
   },
   "private": true,
   "dependencies": {
@@ -25,6 +29,7 @@
     "morgan": "^1.10.0",
     "passport": "^0.5.2",
     "passport-firebase-jwt": "^1.2.1",
+    "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.0.0",
     "swagger-ui-express": "^4.3.0",
@@ -44,6 +49,7 @@
     "@nrwl/node": "13.9.6",
     "@nrwl/workspace": "13.9.6",
     "@types/jest": "27.0.2",
+    "@types/morgan": "^1.9.3",
     "@types/node": "16.11.7",
     "@typescript-eslint/eslint-plugin": "~5.10.0",
     "@typescript-eslint/parser": "~5.10.0",
