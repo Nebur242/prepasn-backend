@@ -41,4 +41,10 @@ export class StudentsController {
   ): Promise<Student> {
     return this.studentsService.update(id, updateStudentDto);
   }
+
+  @Get(':id')
+  @ApiOkResponse({ type: StudentDto })
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<Student> {
+    return this.studentsService.findOne(id);
+  }
 }
