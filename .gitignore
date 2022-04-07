@@ -41,6 +41,8 @@ package-lock.json
 .gitignore
 yarn.lock
 
+.env.local
+
 .env.*
 .env*
 # Custom
