@@ -5,7 +5,6 @@ import { StudentsModule } from '../modules/students/students.module';
 import { AuthModule } from '../auth/auth.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -17,10 +16,6 @@ import { ConfigModule } from '@nestjs/config';
       entities: [Student],
     }),
     StudentsModule,
-    ConfigModule.forRoot({
-      envFilePath: [`.env.${process.env.NODE_ENV}`],
-      isGlobal: true,
-    }),
     AuthModule,
   ],
   controllers: [AppController],

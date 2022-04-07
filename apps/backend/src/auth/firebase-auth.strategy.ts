@@ -2,7 +2,6 @@ import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import * as firebase from 'firebase-admin';
 import { Strategy, ExtractJwt } from 'passport-firebase-jwt';
-import { ConfigService } from '@nestjs/config';
 import { FirebaseConfig } from '@prepa-sn/shared/interfaces';
 
 @Injectable()
@@ -11,25 +10,21 @@ export class FirebaseAuthStrategy extends PassportStrategy(Strategy) {
   private firebaseParams: FirebaseConfig;
   private firebaseApp = null;
 
-  constructor(private readonly configService: ConfigService) {
+  constructor() {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     });
     this.firebaseParams = {
-      type: this.configService.get('FIREBASE_TYPE'),
-      projectId: this.configService.get('FIREBASE_PROJECT_ID'),
-      privateKeyId: this.configService.get('FIREBASE_PRIVATE_KEY_ID'),
-      privateKey: this.configService.get('FIREBASE_PRIVATE_KEY'),
-      clientEmail: this.configService.get('FIREBASE_CLIENT_EMAIL'),
-      clientId: this.configService.get('FIREBASE_CLIENT_ID'),
-      authUri: this.configService.get('FIREBASE_AUTH_URI'),
-      tokenUri: this.configService.get('FIREBASE_TOKEN_URI'),
-      authProviderX509CertUrl: this.configService.get(
-        'FIREBASE_AUTH_PROVIDER_X509_CERT_URL'
-      ),
-      clientC509CertUrl: this.configService.get(
-        'FIREBASE_CLIENT_X509_CERT_URL'
-      ),
+      type: process.env.FIREBASE_TYPE,
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      privateKeyId: process.env.FIREBASE_PRIVATE_KEY_ID,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      clientId: process.env.FIREBASE_CLIENT_ID,
+      authUri: process.env.FIREBASE_AUTH_URI,
+      tokenUri: process.env.FIREBASE_TOKEN_URI,
+      authProviderX509CertUrl: process.env.FIREBASE_AUTH_PROVIDER_X509_CERT_URL,
+      clientC509CertUrl: process.env.FIREBASE_CLIENT_X509_CERT_URL,
     };
     this.firebaseApp = firebase.initializeApp({
       credential: firebase.credential.cert(this.firebaseParams),
