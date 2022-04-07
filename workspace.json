@@ -2,9 +2,7 @@
   "version": 2,
   "projects": {
     "backend": "apps/backend",
-    "shared-classes": "libs/shared/classes",
     "shared-enums": "libs/shared/enums",
-    "shared-interfaces": "libs/shared/interfaces",
-    "shared-types": "libs/shared/types"
+    "shared-interfaces": "libs/shared/interfaces"
   }
 }
