@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Student } from '../modules/students/entities/student.entity';
 import { StudentsModule } from '../modules/students/students.module';
 import { AuthModule } from '../modules/auth/auth.module';
+import { TestHelpersModule } from '../modules/test-helpers/test-helpers.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { AuthModule } from '../modules/auth/auth.module';
     }),
     StudentsModule,
     AuthModule,
+    TestHelpersModule,
   ],
   controllers: [],
   providers: [],
