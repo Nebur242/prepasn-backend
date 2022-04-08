@@ -3,13 +3,12 @@
  * This is only a minimal backend to get started.
  */
 
-import { NestFactory, Reflector } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app/app.module';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
-import { TestGuard } from '@prepa-sn/shared/guards';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -21,7 +20,6 @@ async function bootstrap() {
     .setGlobalPrefix(globalPrefix)
     .useGlobalPipes(new ValidationPipe())
     .useGlobalInterceptors(new TransformInterceptor())
-    .useGlobalGuards(new TestGuard(new Reflector()))
     .enableVersioning({
       type: VersioningType.URI,
       defaultVersion,
