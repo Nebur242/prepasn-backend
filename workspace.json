@@ -3,6 +3,7 @@
   "projects": {
     "backend": "apps/backend",
     "shared-enums": "libs/shared/enums",
+    "shared-guards": "libs/shared/guards",
     "shared-interfaces": "libs/shared/interfaces"
   }
 }

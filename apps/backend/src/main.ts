@@ -24,6 +24,7 @@ async function bootstrap() {
       type: VersioningType.URI,
       defaultVersion,
     });
+
   if (process.env.NODE_ENV === 'development') {
     const morgan = await import('morgan');
     app.use(

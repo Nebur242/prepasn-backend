@@ -10,6 +10,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { Observable } from 'rxjs';
 import { Role } from '@prepa-sn/shared/enums';
 import { Reflector } from '@nestjs/core';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Injectable()
 export class RolesGuard extends AuthGuard('firebase-jwt') {
@@ -30,7 +31,7 @@ export class RolesGuard extends AuthGuard('firebase-jwt') {
     return super.canActivate(context);
   }
 
-  handleRequest(err, user) {
+  override handleRequest(err, user) {
     // You can throw an exception based on either "info" or "err" arguments
     if (err || !user) {
       throw err || new UnauthorizedException(err || 'Unauthorized');
@@ -44,5 +45,9 @@ export class RolesGuard extends AuthGuard('firebase-jwt') {
 }
 
 export function Roles(...roles: Role[]) {
-  return applyDecorators(SetMetadata('roles', roles), UseGuards(RolesGuard));
+  return applyDecorators(
+    SetMetadata('roles', roles),
+    ApiBearerAuth,
+    UseGuards(RolesGuard)
+  );
 }
