@@ -11,23 +11,30 @@ export class StudentsService {
     return this.studentsRepository.find();
   }
 
-  createStudent(createStudentDto: CreateStudentDto): Promise<Student> {
-    const student = this.studentsRepository.create(createStudentDto);
+  createStudent(
+    createStudentDto: CreateStudentDto,
+    uid: string
+  ): Promise<Student> {
+    const student = this.studentsRepository.create({
+      ...createStudentDto,
+      uid,
+    });
     return this.studentsRepository.save(student);
   }
 
   async update(
-    id: number,
+    uid: string,
     updateStudentDto: UpdateStudentDto
   ): Promise<Student> {
-    const student = await this.findOne(id);
+    const student = await this.findOne(uid);
     await this.studentsRepository.update(student.id, updateStudentDto);
-    return this.findOne(id);
+    return this.findOne(uid);
   }
 
-  async findOne(id: number): Promise<Student> {
-    const student: Student = await this.studentsRepository.findOne(id);
-    if (!student) throw new NotFoundException('Student not found');
+  async findOne(uid: string): Promise<Student> {
+    const student: Student = await this.studentsRepository.findOne({ uid });
+    if (!student)
+      throw new NotFoundException(`Student with uid ${uid} not found`);
     return student;
   }
 }

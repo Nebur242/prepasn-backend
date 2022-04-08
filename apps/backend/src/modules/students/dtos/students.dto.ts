@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { PartialType } from '@nestjs/mapped-types';
 
 import {
+  IsDate,
   IsDateString,
   IsEmail,
   IsNumber,
@@ -36,6 +37,18 @@ export class StudentDto extends CreateStudentDto implements Student {
   @ApiProperty()
   @IsNumber()
   id: number;
+
+  @ApiProperty()
+  @IsString()
+  uid: string;
+
+  @ApiProperty()
+  @IsDate()
+  createdAt: Date;
+
+  @ApiProperty()
+  @IsDate()
+  updatedAt: Date;
 }
 
 export class UpdateStudentDto extends PartialType(CreateStudentDto) {}
