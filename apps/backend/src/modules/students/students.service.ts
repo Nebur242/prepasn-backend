@@ -1,20 +1,26 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { Role } from '@prepa-sn/shared/enums';
+import { FirebaseService } from '../firebase/firebase.service';
 import { CreateStudentDto, UpdateStudentDto } from './dtos/students.dto';
 import { Student } from './entities/student.entity';
 import { StudentsRepository } from './repositories/student.repository';
 
 @Injectable()
 export class StudentsService {
-  constructor(private readonly studentsRepository: StudentsRepository) {}
+  constructor(
+    private readonly studentsRepository: StudentsRepository,
+    private readonly firebaseService: FirebaseService
+  ) {}
 
   getAllStudents(): Promise<Student[]> {
     return this.studentsRepository.find();
   }
 
-  createStudent(
+  async createStudent(
     createStudentDto: CreateStudentDto,
     uid: string
   ): Promise<Student> {
+    await this.firebaseService.setRoles(uid, [Role.STUDENT]);
     const student = this.studentsRepository.create({
       ...createStudentDto,
       uid,
