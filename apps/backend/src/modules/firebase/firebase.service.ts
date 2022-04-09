@@ -5,7 +5,6 @@ import { HttpService } from '@nestjs/axios';
 import { lastValueFrom, map } from 'rxjs';
 import { Role } from '@prepa-sn/shared/enums';
 import { ConfigService } from '@nestjs/config';
-// import { configService } from '../../common/services/config.service';
 
 @Injectable()
 export class FirebaseService {
