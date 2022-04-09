@@ -10,11 +10,12 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 
+const globalPrefix = 'api';
+const defaultVersion = '1';
+const port = process.env.PORT || 1148;
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const globalPrefix = 'api';
-  const defaultVersion = '1';
-  const port = process.env.PORT || 1148;
 
   app
     .setGlobalPrefix(globalPrefix)
@@ -39,7 +40,8 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('PrepaSn')
     .setDescription('The PrepaSN API documentation')
-    .setVersion('0.1')
+    .setVersion('0.0.1')
+    .addBearerAuth({ type: 'http' })
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

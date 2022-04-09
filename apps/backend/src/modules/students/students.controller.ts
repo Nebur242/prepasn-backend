@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { GetUser } from '../../common/decorators/get-user.decorator';
+import { Claims } from '../../common/decorators/get-user.decorator';
 import {
   CreateStudentDto,
   StudentDto,
@@ -10,6 +10,7 @@ import { Student } from './entities/student.entity';
 import { StudentsService } from './students.service';
 import { Role } from '@prepa-sn/shared/enums';
 import { Roles } from '../auth/roles-auth.guard';
+import { JwtClaims } from '../../common/types/claims.type';
 
 @Controller('students')
 @ApiTags('Students')
@@ -28,16 +29,16 @@ export class StudentsController {
   @Roles(Role.STUDENT)
   createStudent(
     @Body() createStudentDto: CreateStudentDto,
-    @GetUser('uid') uid: string
+    @Claims() claims: JwtClaims
   ): Promise<Student> {
-    return this.studentsService.createStudent(createStudentDto, uid);
+    return this.studentsService.createStudent(createStudentDto, claims);
   }
 
   @Patch()
   @ApiOkResponse({ type: StudentDto })
   @Roles(Role.STUDENT)
   updateStudent(
-    @GetUser('uid') uid: string,
+    @Claims('uid') uid: string,
     @Body() updateStudentDto: UpdateStudentDto
   ): Promise<Student> {
     return this.studentsService.update(uid, updateStudentDto);
@@ -46,7 +47,7 @@ export class StudentsController {
   @Get()
   @ApiOkResponse({ type: StudentDto })
   @Roles(Role.STUDENT)
-  findOne(@GetUser('uid') uid: string): Promise<Student> {
+  findOne(@Claims('uid') uid: string): Promise<Student> {
     return this.studentsService.findOne(uid);
   }
 }
