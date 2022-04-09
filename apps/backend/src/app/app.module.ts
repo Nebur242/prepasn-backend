@@ -3,11 +3,21 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { StudentsModule } from '../modules/students/students.module';
 import { AuthModule } from '../modules/auth/auth.module';
 import { TestHelpersModule } from '../modules/test-helpers/test-helpers.module';
-import { configService } from '../common/services/config.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { env, validate } from '../common/config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
+    ConfigModule.forRoot({
+      load: [env],
+      isGlobal: true,
+      validate,
+    }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) =>
+        configService.get('config.typeorm'),
+    }),
     StudentsModule,
     AuthModule,
     TestHelpersModule,

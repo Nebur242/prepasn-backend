@@ -4,13 +4,17 @@ import { getAuth } from 'firebase-admin/auth';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom, map } from 'rxjs';
 import { Role } from '@prepa-sn/shared/enums';
-import { configService } from '../../common/services/config.service';
+import { ConfigService } from '@nestjs/config';
+// import { configService } from '../../common/services/config.service';
 
 @Injectable()
 export class FirebaseService {
-  constructor(private readonly httpService: HttpService) {
+  constructor(
+    private readonly httpService: HttpService,
+    private readonly configService: ConfigService
+  ) {
     initializeApp({
-      credential: cert(configService.getFirebaseConfig()),
+      credential: cert(configService.get('config.firebase')),
     });
   }
 
@@ -33,7 +37,9 @@ export class FirebaseService {
     return lastValueFrom(
       this.httpService
         .post(
-          `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${configService.FIREBASE_REST_API_KEY}`,
+          `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${this.configService.get(
+            'config.firebase.firebaseRestApiKey'
+          )}`,
           {
             email,
             password,
