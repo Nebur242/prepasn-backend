@@ -6,6 +6,7 @@ import {
   IsDateString,
   IsEmail,
   IsNumber,
+  IsOptional,
   IsPhoneNumber,
   IsString,
 } from 'class-validator';
@@ -26,11 +27,13 @@ export class CreateStudentDto {
 
   @ApiProperty()
   @IsEmail()
-  email: string;
+  @IsOptional()
+  email?: string;
 
   @ApiProperty()
   @IsPhoneNumber()
-  phone: string;
+  @IsOptional()
+  phone?: string;
 }
 
 export class StudentDto extends CreateStudentDto implements Student {
@@ -49,6 +52,14 @@ export class StudentDto extends CreateStudentDto implements Student {
   @ApiProperty()
   @IsDate()
   updatedAt: Date;
+
+  @ApiProperty()
+  @IsEmail()
+  email: string;
+
+  @ApiProperty()
+  @IsPhoneNumber()
+  phone: string;
 }
 
 export class UpdateStudentDto extends PartialType(CreateStudentDto) {}

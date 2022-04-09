@@ -10,11 +10,12 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 
+const globalPrefix = 'api';
+const defaultVersion = '1';
+const port = process.env.PORT || 1148;
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const globalPrefix = 'api';
-  const defaultVersion = '1';
-  const port = process.env.PORT || 1148;
 
   app
     .setGlobalPrefix(globalPrefix)

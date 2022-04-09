@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Role } from '@prepa-sn/shared/enums';
+import { JwtClaims } from '../../common/types/claims.type';
 import { FirebaseService } from '../firebase/firebase.service';
 import { CreateStudentDto, UpdateStudentDto } from './dtos/students.dto';
 import { Student } from './entities/student.entity';
@@ -18,12 +19,14 @@ export class StudentsService {
 
   async createStudent(
     createStudentDto: CreateStudentDto,
-    uid: string
+    claims: JwtClaims
   ): Promise<Student> {
-    await this.firebaseService.setRoles(uid, [Role.STUDENT]);
+    await this.firebaseService.setRoles(claims.uid, [Role.STUDENT]);
     const student = this.studentsRepository.create({
       ...createStudentDto,
-      uid,
+      uid: claims.uid,
+      email: createStudentDto.email || claims.email,
+      phone: createStudentDto.phone || claims.phone_number,
     });
     return this.studentsRepository.save(student);
   }
