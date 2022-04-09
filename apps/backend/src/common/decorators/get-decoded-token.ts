@@ -1,4 +1,3 @@
-// decorators.ts
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { DecodeTokenPipe } from '../pipes/decode-token.pipe';
 
