@@ -39,7 +39,8 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('PrepaSn')
     .setDescription('The PrepaSN API documentation')
-    .setVersion('0.1')
+    .setVersion('0.0.1')
+    .addBearerAuth({ type: 'http' })
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

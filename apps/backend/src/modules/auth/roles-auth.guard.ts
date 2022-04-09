@@ -47,7 +47,7 @@ export class RolesGuard extends AuthGuard('firebase-jwt') {
 export function Roles(...roles: Role[]) {
   return applyDecorators(
     SetMetadata('roles', roles),
-    ApiBearerAuth,
+    ApiBearerAuth(),
     UseGuards(RolesGuard)
   );
 }
