@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { initializeApp, cert } from 'firebase-admin/app';
-import { auth } from 'firebase-admin';
+import { getAuth } from 'firebase-admin/auth';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom, map } from 'rxjs';
 import { Role } from '@prepa-sn/shared/enums';
@@ -15,18 +15,18 @@ export class FirebaseService {
   }
 
   verifyToken(token: string, checkRevoked = false) {
-    return auth().verifyIdToken(
+    return getAuth().verifyIdToken(
       token?.replace('Bearer', '')?.trim(),
       checkRevoked
     );
   }
 
   createUser(email: string, password: string) {
-    return auth().createUser({ email, password });
+    return getAuth().createUser({ email, password });
   }
 
   setRoles(uid: string, roles: Role[]) {
-    return auth().setCustomUserClaims(uid, { roles });
+    return getAuth().setCustomUserClaims(uid, { roles });
   }
 
   login(email: string, password: string) {
