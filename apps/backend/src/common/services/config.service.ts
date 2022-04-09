@@ -56,7 +56,7 @@ class ConfigService {
   }
 }
 
-const configService = new ConfigService(process.env).ensureValues([
+export const configService = new ConfigService(process.env).ensureValues([
   'DB_TYPE',
   'DB_NAME',
   'FIREBASE_TYPE',
@@ -71,5 +71,3 @@ const configService = new ConfigService(process.env).ensureValues([
   'FIREBASE_CLIENT_X509_CERT_URL',
   'FIREBASE_REST_API_KEY',
 ]);
-
-export { configService };
