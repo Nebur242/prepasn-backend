@@ -1,6 +1,7 @@
 # PrepaSn
 
 ## Cloud Architecture
+
 <p style="text-align: center;"><img src="./docs/cloud-architecture.png"></p>
 
 This project was generated using [Nx](https://nx.dev).
@@ -19,7 +20,6 @@ Below are our core plugins:
   - `npm install --save-dev @nrwl/nest`
 
 There are also many [community plugins](https://nx.dev/community) you could add.
-
 
 ## Development server
 
