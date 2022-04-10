@@ -1,6 +1,6 @@
-import { UnprocessableEntityException } from '@nestjs/common';
+import { BadGatewayException } from '@nestjs/common';
 
-export function CatchFirebaseException() {
+export function CatchFirebaseException(HttpException = BadGatewayException) {
   return (
     target: unknown,
     propertyKey: string,
@@ -12,7 +12,7 @@ export function CatchFirebaseException() {
       try {
         return await originalMethod.apply(this, args);
       } catch (error) {
-        throw new UnprocessableEntityException(error.message);
+        throw new HttpException(error.message);
       }
     };
   };
