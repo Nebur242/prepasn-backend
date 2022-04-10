@@ -7,7 +7,6 @@ export function CatchFirebaseException(HttpException = BadGatewayException) {
     propertyDescriptor: PropertyDescriptor
   ) => {
     const originalMethod = propertyDescriptor.value;
-    //redefine descriptor value within own function block
     propertyDescriptor.value = async function (...args: unknown[]) {
       try {
         return await originalMethod.apply(this, args);
