@@ -5,6 +5,7 @@ import { HttpService } from '@nestjs/axios';
 import { lastValueFrom, map } from 'rxjs';
 import { Role } from '@prepa-sn/shared/enums';
 import { ConfigService } from '@nestjs/config';
+import { CatchFirebaseException } from './decorators/firebase-exception.decorator';
 
 @Injectable()
 export class FirebaseService {
@@ -17,6 +18,7 @@ export class FirebaseService {
     });
   }
 
+  @CatchFirebaseException()
   verifyToken(token: string, checkRevoked = false) {
     return getAuth().verifyIdToken(
       token?.replace('Bearer', '')?.trim(),
@@ -24,14 +26,17 @@ export class FirebaseService {
     );
   }
 
+  @CatchFirebaseException()
   createUser(email: string, password: string) {
     return getAuth().createUser({ email, password });
   }
 
+  @CatchFirebaseException()
   setRoles(uid: string, roles: Role[]) {
     return getAuth().setCustomUserClaims(uid, { roles });
   }
 
+  @CatchFirebaseException()
   login(email: string, password: string) {
     return lastValueFrom(
       this.httpService
