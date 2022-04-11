@@ -14,6 +14,7 @@ import { env, validate } from '../common/config';
       validate,
     }),
     TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) =>
         configService.get('config.typeorm'),
