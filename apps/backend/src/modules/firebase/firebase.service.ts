@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { initializeApp, cert } from 'firebase-admin/app';
+import { initializeApp, cert, getApps } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom, map } from 'rxjs';
@@ -13,9 +13,11 @@ export class FirebaseService {
     private readonly httpService: HttpService,
     private readonly configService: ConfigService
   ) {
-    initializeApp({
-      credential: cert(configService.get('config.firebase')),
-    });
+    if (getApps().length === 0) {
+      initializeApp({
+        credential: cert(configService.get('config.firebase')),
+      });
+    }
   }
 
   @CatchFirebaseException()
