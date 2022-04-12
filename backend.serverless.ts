@@ -17,9 +17,9 @@ function getDotenvVariables() {
     ...parseEnv(`${__dirname}/.env`),
     ...parseEnv(`${__dirname}/.local.env`),
     ...parseEnv(`${__dirname}/.env.local`),
-    ...parseEnv(`${appWorkspacePath}/.env`),
-    ...parseEnv(`${appWorkspacePath}/.local.env`),
-    ...parseEnv(`${appWorkspacePath}/.env.local`),
+    ...parseEnv(`${__dirname}/${appWorkspacePath}/.env`),
+    ...parseEnv(`${__dirname}/${appWorkspacePath}/.local.env`),
+    ...parseEnv(`${__dirname}/${appWorkspacePath}/.env.local`),
   };
 }
 
