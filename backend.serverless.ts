@@ -1,6 +1,6 @@
 import type { Serverless } from 'serverless/aws';
 import { parse } from 'dotenv';
-import { readFileSync } from 'fs';
+import { readFileSync, readdirSync, lstatSync } from 'fs';
 
 const app = 'backend';
 const appWorkspacePath = require('./workspace.json').projects[app];
@@ -23,11 +23,26 @@ function getDotenvVariables() {
   };
 }
 
+const rootFiles = readdirSync('./');
+
+function excludeFileOrFolder(fileOrFolder: string) {
+  return (
+    `!./${fileOrFolder}` +
+    (lstatSync(`./${fileOrFolder}`).isDirectory() ? '/**' : '')
+  );
+}
+
 const serverlessConfig: Serverless = {
   service: app,
   provider: {
     name: 'aws',
     runtime: 'nodejs14.x',
+  },
+  package: {
+    patterns: [
+      ...rootFiles.map(excludeFileOrFolder),
+      `./dist/${appWorkspacePath}/**`,
+    ],
   },
   functions: {
     backend: {
@@ -49,7 +64,7 @@ const serverlessConfig: Serverless = {
       ],
     },
   },
-  plugins: ['serverless-offline'],
+  plugins: ['serverless-offline', 'serverless-plugin-include-dependencies'],
 };
 
 module.exports = serverlessConfig;

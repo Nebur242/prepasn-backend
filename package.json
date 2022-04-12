@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "postinstall": "patch-package",
     "prepare": "husky install",
     "nx": "nx",
     "backend:sls:start": "sls offline --config=./backend.serverless.ts --allowCache --noPrependStageInUrl --httpPort=1148",
@@ -18,6 +19,7 @@
   },
   "private": true,
   "dependencies": {
+    "@firebase/app-compat": "^0.1.21",
     "@nestjs/axios": "^0.0.7",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^2.0.0",
@@ -39,7 +41,6 @@
     "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.0.0",
-    "serverless-offline": "^8.5.0",
     "swagger-ui-express": "^4.3.0",
     "tslib": "^2.0.0",
     "typeorm": "0.2"
@@ -69,8 +70,11 @@
     "husky": "^7.0.4",
     "jest": "27.2.3",
     "nx": "13.9.6",
+    "patch-package": "^6.4.7",
     "prettier": "^2.5.1",
     "serverless": "^3.12.0",
+    "serverless-offline": "^8.5.0",
+    "serverless-plugin-include-dependencies": "^5.0.0",
     "sqlite3": "^5.0.2",
     "ts-jest": "27.0.5",
     "typescript": "~4.5.2"

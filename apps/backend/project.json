@@ -16,7 +16,9 @@
           "main": "apps/backend/src/lambda.ts",
           "optimization": true,
           "extractLicenses": true,
-          "inspect": false
+          "inspect": false,
+          "generatePackageJson": true,
+          "progress": true
         },
         "production": {
           "optimization": true,
