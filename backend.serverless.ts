@@ -60,6 +60,11 @@ const serverlessConfig: Serverless = {
     },
   },
   plugins: ['serverless-offline', 'serverless-plugin-include-dependencies'],
+  custom: {
+    includeDependencies: {
+      enableCaching: true,
+    },
+  },
 };
 
 module.exports = serverlessConfig;
