@@ -25,7 +25,6 @@ with Diagram("Cloud Architecture", filename=current_file_name, show=False):
     AuthenticationNode = Authentication("Authentication")
     DnsServer = Route53("DNS")
     Backend = LambdaFunction("Backend")
-    LogsServer = Cloudwatch
 
     with Cluster("Clients"):
         Clients = Mobile("User"), Windows("Admin")
