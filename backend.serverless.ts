@@ -1,6 +1,6 @@
 import type { Serverless } from 'serverless/aws';
 import { parse } from 'dotenv';
-import { readFileSync, readdirSync, lstatSync } from 'fs';
+import { readFileSync, readdirSync } from 'fs';
 
 const app = 'backend';
 const appWorkspacePath = require('./workspace.json').projects[app];
@@ -23,13 +23,8 @@ function getDotenvVariables() {
   };
 }
 
-const rootFiles = readdirSync('./');
-
 function excludeFileOrFolder(fileOrFolder: string) {
-  return (
-    `!./${fileOrFolder}` +
-    (lstatSync(`./${fileOrFolder}`).isDirectory() ? '/**' : '')
-  );
+  return `!./${fileOrFolder}`;
 }
 
 const serverlessConfig: Serverless = {
@@ -40,7 +35,7 @@ const serverlessConfig: Serverless = {
   },
   package: {
     patterns: [
-      ...rootFiles.map(excludeFileOrFolder),
+      ...readdirSync('./').map(excludeFileOrFolder),
       `./dist/${appWorkspacePath}/**`,
     ],
   },
