@@ -42,21 +42,9 @@ const serverlessConfig: Serverless = {
   functions: {
     backend: {
       handler: `dist/${appWorkspacePath}/main.handler`,
+      url: true,
       environment: getDotenvVariables(),
-      events: [
-        {
-          http: {
-            method: 'ANY',
-            path: '/',
-          },
-        },
-        {
-          http: {
-            method: 'ANY',
-            path: '{proxy+}',
-          },
-        },
-      ],
+      events: [],
     },
   },
   plugins: ['serverless-offline', 'serverless-plugin-include-dependencies'],

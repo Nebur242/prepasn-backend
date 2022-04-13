@@ -1,0 +1,12 @@
+diff --git a/node_modules/@types/serverless/plugins/aws/provider/awsProvider.d.ts b/node_modules/@types/serverless/plugins/aws/provider/awsProvider.d.ts
+index fa49007..3076971 100644
+--- a/node_modules/@types/serverless/plugins/aws/provider/awsProvider.d.ts
++++ b/node_modules/@types/serverless/plugins/aws/provider/awsProvider.d.ts
+@@ -644,6 +644,7 @@ declare namespace Aws {
+         destinations?: Destinations | undefined;
+         events?: Event[] | undefined;
+         disableLogs?: boolean | undefined;
++        url?: boolean;
+     }
+ 
+     interface AwsFunctionHandler extends AwsFunction {
