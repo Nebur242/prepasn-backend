@@ -12,7 +12,7 @@ from os.path import basename, splitext
 current_file_name, _ = splitext(basename(__file__))
 
 def LambdaFunction(name: str):
-    with Cluster(name):
+    with Cluster(f"{name} service"):
         return Cloudwatch(f"{name} logs") << Lambda(f"{name} lambda")
 
 with Diagram("Cloud Architecture", filename=current_file_name, show=False):
