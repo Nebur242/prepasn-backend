@@ -1,0 +1,30 @@
+diff --git a/node_modules/serverless-plugin-include-dependencies/include-dependencies.js b/node_modules/serverless-plugin-include-dependencies/include-dependencies.js
+index ba8dadb..ac49b77 100644
+--- a/node_modules/serverless-plugin-include-dependencies/include-dependencies.js
++++ b/node_modules/serverless-plugin-include-dependencies/include-dependencies.js
+@@ -83,6 +83,7 @@ module.exports = class IncludeDependencies {
+     const dependencies = this.getDependencies(fileName, service.package.patterns);
+ 
+     const target = this.individually ? functionObject : service;
++
+     target.package.patterns = union(target.package.patterns, dependencies);
+   }
+ 
+@@ -101,10 +102,16 @@ module.exports = class IncludeDependencies {
+     return require.resolve((path.join(this.serverless.config.servicePath, handlerPath)));
+   }
+ 
++  normalize(value) {
++    return path.sep === '\\' 
++      ? value.replace(/\\/g, '/')
++      : value;
++  }
++
+   getDependencies(fileName, patterns) {
+     const servicePath = this.serverless.config.servicePath;
+     const dependencies = this.getDependencyList(fileName);
+-    const relativeDependencies = dependencies.map(p => path.relative(servicePath, p));
++    const relativeDependencies = dependencies.map(p => this.normalize(path.relative(servicePath, p)));
+ 
+     const exclusions = patterns.filter(p => {
+       return !(p.indexOf('!node_modules') !== 0 || p === '!node_modules' || p === '!node_modules/**');

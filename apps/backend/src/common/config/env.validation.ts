@@ -52,7 +52,6 @@ class EnvironmentVariables {
   NODE_ENV: Environment;
 
   @IsEnum(['postgres', 'sqlite'])
-  @IsString()
   DB_TYPE: 'postgres' | 'sqlite';
 
   @ValidateIf((env: EnvironmentVariables) => env.DB_TYPE !== 'sqlite')

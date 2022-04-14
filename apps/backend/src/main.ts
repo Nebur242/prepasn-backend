@@ -1,10 +1,5 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
 import { NestFactory } from '@nestjs/core';
-import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
+import { INestApplication, Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 
@@ -15,10 +10,8 @@ const globalPrefix = 'api';
 const defaultVersion = '1';
 const port = process.env.PORT || 1148;
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-
-  app
+export function setupGlobalMiddlewares(app: INestApplication) {
+  return app
     .setGlobalPrefix(globalPrefix)
     .useGlobalPipes(new ValidationPipe())
     .useGlobalInterceptors(new TransformInterceptor())
@@ -27,18 +20,22 @@ async function bootstrap() {
       type: VersioningType.URI,
       defaultVersion,
     });
+}
 
+export async function setupDevEnvironment(app: INestApplication) {
   if (process.env.NODE_ENV === 'development') {
     const morgan = await import('morgan');
     app.use(
-      morgan('dev', {
+      morgan.default('dev', {
         stream: {
           write: (message) => Logger.debug(message.replace('\n', '')),
         },
       })
     );
   }
+}
 
+export function setupSwagger(app: INestApplication) {
   const config = new DocumentBuilder()
     .setTitle('PrepaSn')
     .setDescription('The PrepaSN API documentation')
@@ -47,14 +44,21 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+}
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+
+  setupGlobalMiddlewares(app);
+  setupDevEnvironment(app);
+  setupSwagger(app);
 
   await app.listen(port);
   Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}/v${defaultVersion}`
-  );
-  Logger.log(
-    `🏷️ Swagger is running on: http://localhost:${port}/${globalPrefix}`
+    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}/v${defaultVersion} and Swagger on: http://localhost:${port}/${globalPrefix}`
   );
 }
 
-bootstrap();
+if (require.main === module) {
+  bootstrap();
+}
