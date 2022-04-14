@@ -3,7 +3,7 @@ from diagrams.firebase.develop import Authentication
 from diagrams.aws.compute import Lambda
 from diagrams.aws.storage import SimpleStorageServiceS3
 from diagrams.aws.database import RDSInstance
-from diagrams.aws.network import Route53
+from diagrams.aws.network import CloudFront
 from diagrams.aws.management import Cloudwatch
 from diagrams.generic.device import Mobile
 from diagrams.generic.os import Windows
@@ -23,7 +23,7 @@ with Diagram("Cloud Architecture", filename=current_file_name, show=False):
     HlsService = LambdaFunction("HLS")
     ImageService = LambdaFunction("Image")
     AuthenticationNode = Authentication("Authentication")
-    DnsServer = Route53("DNS")
+    DnsServer = CloudFront("CloudFront")
     Backend = LambdaFunction("Backend")
 
     with Cluster("Clients"):

@@ -1,0 +1,94 @@
+{
+  "Resources": {
+    "<DISTRIBUTION_NAME>": {
+      "Type": "AWS::CloudFront::Distribution",
+      "DependsOn": ["<LAMBDA_FUNCTION_URL_LOGICAL_NAME>"],
+      "Properties": {
+        "DistributionConfig": {
+          "Aliases": [],
+          "Origins": [
+            {
+              "Id": {
+                "Ref": "<LAMBDA_FUNCTION_URL_LOGICAL_NAME>"
+              },
+              "DomainName": {
+                "Fn::Select": [
+                  0,
+                  {
+                    "Fn::Split": [
+                      "/",
+                      {
+                        "Fn::Select": [
+                          1,
+                          {
+                            "Fn::Split": [
+                              "://",
+                              {
+                                "Fn::GetAtt": [
+                                  "<LAMBDA_FUNCTION_URL_LOGICAL_NAME>",
+                                  "FunctionUrl"
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              "OriginPath": "",
+              "CustomOriginConfig": {
+                "HTTPPort": "80",
+                "HTTPSPort": "443",
+                "OriginProtocolPolicy": "https-only",
+                "OriginSSLProtocols": ["TLSv1", "TLSv1.1", "TLSv1.2"]
+              }
+            }
+          ],
+          "DefaultCacheBehavior": {
+            "TargetOriginId": {
+              "Ref": "<LAMBDA_FUNCTION_URL_LOGICAL_NAME>"
+            },
+            "ViewerProtocolPolicy": "redirect-to-https",
+            "AllowedMethods": [
+              "HEAD",
+              "DELETE",
+              "POST",
+              "GET",
+              "OPTIONS",
+              "PUT",
+              "PATCH"
+            ],
+            "CachedMethods": ["HEAD", "GET", "OPTIONS"],
+            "ForwardedValues": {
+              "QueryString": true,
+              "Headers": [],
+              "Cookies": {
+                "Forward": "all"
+              }
+            }
+          },
+          "CustomErrorResponses": [],
+          "Comment": "",
+          "Logging": {
+            "IncludeCookies": "false",
+            "Bucket": "",
+            "Prefix": ""
+          },
+          "PriceClass": "PriceClass_200",
+          "Enabled": "true",
+          "WebACLId": "",
+          "HttpVersion": "http2"
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "<DISTRIBUTION_NAME>": {
+      "Value": {
+        "Fn::GetAtt": ["<DISTRIBUTION_NAME>", "DomainName"]
+      }
+    }
+  }
+}
