@@ -1,15 +1,45 @@
 {
   "Resources": {
-    "<DISTRIBUTION_NAME>": {
+    "{{STAGING_ALIAS_RESOURCE_NAME}}": {
+      "Type": "AWS::Lambda::Alias",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "{{LAMBDA_FUNCTION_URL_LOGICAL_ID}}"
+        },
+        "FunctionVersion": "$LATEST",
+        "Name": "{{STAGING_ALIAS_NAME}}"
+      }
+    },
+    "{{STAGING_ALIAS_RESOURCE_URL}}": {
+      "Type": "AWS::Lambda::Url",
+      "Properties": {
+        "AuthType": "NONE",
+        "Qualifier": "{{STAGING_ALIAS_NAME}}",
+        "TargetFunctionArn": {
+          "Ref": "{{LAMBDA_FUNCTION_URL_LOGICAL_ID}}"
+        }
+      }
+    },
+    "{{STAGING_ALIAS_FN_PERMISSION_RESOURCE_URL}}": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "{{STAGING_ALIAS_RESOURCE_URL}}"
+        },
+        "Action": "lambda:InvokeFunctionUrl",
+        "Principal": "*",
+        "FunctionUrlAuthType": "NONE"
+      }
+    },
+    "{{CLOUDFRONT_DISTRIBUTION_RESOURCE_NAME}}": {
       "Type": "AWS::CloudFront::Distribution",
-      "DependsOn": ["<LAMBDA_FUNCTION_URL_LOGICAL_NAME>"],
       "Properties": {
         "DistributionConfig": {
           "Aliases": [],
           "Origins": [
             {
               "Id": {
-                "Ref": "<LAMBDA_FUNCTION_URL_LOGICAL_NAME>"
+                "Ref": "{{STAGING_ALIAS_RESOURCE_URL}}"
               },
               "DomainName": {
                 "Fn::Select": [
@@ -25,7 +55,7 @@
                               "://",
                               {
                                 "Fn::GetAtt": [
-                                  "<LAMBDA_FUNCTION_URL_LOGICAL_NAME>",
+                                  "{{STAGING_ALIAS_RESOURCE_URL}}",
                                   "FunctionUrl"
                                 ]
                               }
@@ -48,7 +78,7 @@
           ],
           "DefaultCacheBehavior": {
             "TargetOriginId": {
-              "Ref": "<LAMBDA_FUNCTION_URL_LOGICAL_NAME>"
+              "Ref": "{{STAGING_ALIAS_RESOURCE_URL}}"
             },
             "ViewerProtocolPolicy": "redirect-to-https",
             "AllowedMethods": [
@@ -85,9 +115,19 @@
     }
   },
   "Outputs": {
-    "<DISTRIBUTION_NAME>": {
+    "{{STAGING_ALIAS_RESOURCE_URL}}": {
+      "Description": "Staging Lambda Function URL",
       "Value": {
-        "Fn::GetAtt": ["<DISTRIBUTION_NAME>", "DomainName"]
+        "Fn::GetAtt": ["{{STAGING_ALIAS_RESOURCE_URL}}", "FunctionUrl"]
+      }
+    },
+    "{{CLOUDFRONT_DISTRIBUTION_RESOURCE_NAME}}": {
+      "Description": "CloudFront distribution pointing to Staging",
+      "Value": {
+        "Fn::GetAtt": [
+          "{{CLOUDFRONT_DISTRIBUTION_RESOURCE_NAME}}",
+          "DomainName"
+        ]
       }
     }
   }

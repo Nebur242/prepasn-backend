@@ -3,6 +3,7 @@ import { parse } from 'dotenv';
 import { readFileSync, readdirSync } from 'fs';
 
 const service = 'backend';
+const runtime = 'nodejs14.x';
 const appWorkspacePath = require('./workspace.json').projects[service];
 
 function parseEnv(path: string) {
@@ -31,7 +32,8 @@ const serverlessConfig: Serverless = {
   service,
   provider: {
     name: 'aws',
-    runtime: 'nodejs14.x',
+    runtime,
+    architecture: 'arm64',
   },
   package: {
     patterns: [
@@ -55,7 +57,7 @@ const serverlessConfig: Serverless = {
   plugins: [
     'serverless-offline',
     'serverless-plugin-include-dependencies',
-    './libs/serverless-lambda-function-url-cloudfront',
+    './libs/serverless-custom-plugin',
   ],
   custom: {
     includeDependencies: {
