@@ -28,7 +28,7 @@ jobs:
 
       - run:
           name: Deploy backend application
-          command: yarn backend:sls:deploy
+          command: yarn backend:sls:deploy --verbose
 
 workflows:
   deploy-backend:
