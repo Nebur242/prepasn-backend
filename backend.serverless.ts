@@ -48,7 +48,7 @@ const serverlessConfig: Serverless = {
       // TODO: use ssm or other mechanism to store secrets
       // and sync (for the first execution) the local parameters with remote ones
       // @see https://www.serverless.com/framework/docs/providers/aws/guide/variables#reference-variables-using-the-ssm-parameter-store
-      environment: getDotenvVariables(),
+      environment: Object.assign({}, process.env, getDotenvVariables()),
       events: [],
     },
   },
