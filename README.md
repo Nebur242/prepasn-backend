@@ -1,5 +1,7 @@
 # PrepaSn
 
+[![CircleCI](https://circleci.com/gh/bacarybruno/prepasn/tree/main.svg?style=svg&circle-token=8902b5f2d95cf85bc8ec73e821c19c47dfa07a09)](https://circleci.com/gh/bacarybruno/prepasn/tree/main)
+
 ## Cloud Architecture
 
 <p style="text-align: center;"><img src="./docs/cloud-architecture.png"></p>
