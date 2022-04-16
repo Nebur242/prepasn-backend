@@ -44,8 +44,6 @@ const serverlessConfig: Serverless = {
   functions: {
     [service]: {
       handler: `dist/${appWorkspacePath}/main.handler`,
-      // TODO: associate the created lambda function url to an alias
-      // to control the released version or use weigthed deployment
       url: true,
       // TODO: use ssm or other mechanism to store secrets
       // and sync (for the first execution) the local parameters with remote ones
