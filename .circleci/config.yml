@@ -1,0 +1,36 @@
+version: 2.1
+
+orbs:
+  aws-cli: circleci/aws-cli@3.0.0
+
+jobs:
+  build-backend:
+    executor: aws-cli/default
+    steps:
+      - checkout
+
+      - aws-cli/setup:
+          profile-name: default
+
+      - restore_cache:
+          key: dependencies-cache-{{ checksum "package.json" }}
+      - run:
+          name: Install dependencies
+          command: yarn install
+      - save_cache:
+          key: dependencies-cache-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+
+      - run:
+          name: Build backend application
+          command: yarn backend:sls:build
+
+      - run:
+          name: Deploy backend application
+          command: yarn backend:sls:deploy
+
+workflows:
+  deploy-backend:
+    jobs:
+      - build-backend
