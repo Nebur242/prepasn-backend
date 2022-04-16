@@ -1,7 +1,7 @@
 import type { Serverless } from 'serverless/aws';
 import { parse } from 'dotenv';
 import { readFileSync, readdirSync } from 'fs';
-import pick from 'lodash.pick';
+const pick = require('lodash.pick');
 
 const service = 'backend';
 const runtime = 'nodejs14.x';
