@@ -10,7 +10,7 @@ import helmet from 'helmet';
 
 import { AppModule } from './app/app.module';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
-import { TypeOrmErrorsFilter } from './common/filters/ypeorm-errors.filter';
+import { TypeOrmErrorsFilter } from './common/filters/typeorm-errors.filter';
 
 const globalPrefix = 'api';
 const defaultVersion = '1';

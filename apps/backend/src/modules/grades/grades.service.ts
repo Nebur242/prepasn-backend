@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { FindManyOptions } from 'typeorm';
 import { CreateGradeDto } from './dto/create-grade.dto';
 import { UpdateGradeDto } from './dto/update-grade.dto';
 import { Grade } from './entities/grade.entity';
@@ -9,24 +10,24 @@ export class GradesService {
   constructor(private readonly gradesRepository: GradesRepository) {}
 
   async create(createSectionDto: CreateGradeDto): Promise<Grade> {
-    const section = this.gradesRepository.create({
+    const grade = this.gradesRepository.create({
       ...createSectionDto,
       parent: createSectionDto.parent
-        ? await this.findOne(createSectionDto.parent)
+        ? await this.gradesRepository.findOne(createSectionDto.parent)
         : null,
     });
-    return this.gradesRepository.save(section);
+    return this.gradesRepository.save(grade);
   }
 
-  findAll(): Promise<Grade[]> {
+  findAll(filter: FindManyOptions<Grade> = {}): Promise<Grade[]> {
     return this.gradesRepository.find({
-      relations: ['parent'],
+      ...filter,
     });
   }
 
   async findOne(id: number): Promise<Grade> {
     const grade = await this.gradesRepository.findOne(id, {
-      relations: ['parent'],
+      relations: ['parent', 'courses'],
     });
     if (!grade) throw new NotFoundException(`Section with id ${id} not found`);
     return grade;

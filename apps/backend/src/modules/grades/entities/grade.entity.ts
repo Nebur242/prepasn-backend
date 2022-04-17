@@ -1,5 +1,7 @@
+/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { BaseContent } from 'apps/backend/src/common/entities/base-content.entity';
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, OneToOne } from 'typeorm';
+import { Course } from '../../courses/entities/course.entity';
 
 @Entity()
 export class Grade extends BaseContent {
@@ -7,6 +9,9 @@ export class Grade extends BaseContent {
   override title: string;
 
   @OneToOne(() => Grade, (grade) => grade.id, { onDelete: 'CASCADE' })
-  @JoinColumn()
+  @JoinTable()
   parent: Grade;
+
+  @ManyToMany(() => Course, (course) => course.grades, { cascade: true })
+  courses: Course[];
 }

@@ -1,3 +1,4 @@
+import { Status } from '@prepa-sn/shared/enums';
 import {
   Entity,
   Column,
@@ -22,6 +23,9 @@ export class BaseContent {
 
   @Column({ nullable: true, default: null })
   videoUrl: string;
+
+  @Column({ type: 'enum', enum: Status, default: Status.ACTIVE })
+  status: Status;
 
   @CreateDateColumn()
   createdAt: Date;

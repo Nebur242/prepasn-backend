@@ -6,6 +6,7 @@ import { TestHelpersModule } from '../modules/test-helpers/test-helpers.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { env, validate } from '../common/config';
 import { GradesModule } from '../modules/grades/grades.module';
+import { CoursesModule } from '../modules/courses/courses.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { GradesModule } from '../modules/grades/grades.module';
     AuthModule,
     TestHelpersModule,
     GradesModule,
+    CoursesModule,
   ],
   controllers: [],
   providers: [],
