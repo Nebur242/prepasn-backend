@@ -1,6 +1,5 @@
 import { parse } from 'dotenv';
 import { readFileSync } from 'fs';
-const pick = require('lodash.pick');
 
 function parseEnv(path: string) {
   try {
@@ -9,7 +8,12 @@ function parseEnv(path: string) {
   } catch (e) {}
 }
 
-function getDotenvVariables(appWorkspacePath: string) {
+function getAppWorkspacePath(service: string) {
+  return require(`${__dirname}/../../../workspace.json`).projects[service];
+}
+
+function getDotenvVariables(service: string) {
+  const appWorkspacePath = getAppWorkspacePath(service);
   return {
     ...parseEnv(`${__dirname}/../../../.env`),
     ...parseEnv(`${__dirname}/../../../.local.env`),
@@ -24,21 +28,16 @@ export function excludeFileOrFolder(fileOrFolder: string) {
   return `!./${fileOrFolder}`;
 }
 
+export function getBuildDir(service: string) {
+  const appWorkspacePath = getAppWorkspacePath(service);
+  return `./dist/${appWorkspacePath}`;
+}
+
 export function getServerlessEnvVariables(
-  appWorkspacePath: string,
-  keys: string[]
-) {
+  service: string
+): Record<string, unknown> {
   // TODO: use ssm or other mechanism to store secrets
   // and sync (for the first execution) the local parameters with remote ones
   // @see https://www.serverless.com/framework/docs/providers/aws/guide/variables#reference-variables-using-the-ssm-parameter-store
-  const variables = Object.assign(
-    {},
-    process.env,
-    getDotenvVariables(appWorkspacePath)
-  );
-  const filteredEnvVariables = pick(variables, keys);
-  if (filteredEnvVariables.length === 0) {
-    throw new Error('[getServerlessEnvVariables] no variable found');
-  }
-  return filteredEnvVariables;
+  return Object.assign({}, process.env, getDotenvVariables(service));
 }
