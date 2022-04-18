@@ -35,7 +35,7 @@ if [ $branch_name = "main" ]
 then
   yarn nx affected:apps --base=origin/main~1 --head=origin/main --plain | grep $service &> /dev/null
 else
-  yarn nx affected:apps --base=origin/$branch_name --head=origin/main --plain | grep $service &> /dev/null
+  yarn nx affected:apps --base=origin/main --head=origin/$branch_name --plain | grep $service &> /dev/null
 fi
 
 if [ $? -eq 1 ]; then
