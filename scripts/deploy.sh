@@ -29,7 +29,7 @@ if [ -z $service ] || [ -z $branch_name ]; then
 fi
 
 echo "Dry-run: $dry_run_flag"
-echo "Checking if $service is affected by a change..."
+echo "Checking if $service service is affected by a change on $branch_name branch..."
 
 if [ $branch_name = "main" ]
 then
