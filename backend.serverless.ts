@@ -75,18 +75,19 @@ const serverlessConfig: Serverless = {
               {
                 Id: { Ref: 'BackendStagingLambdaFunctionUrl' },
                 DomainName: {
-                  'Fn:Select': [
+                  'Fn::Select': [
                     0,
                     {
-                      'Fn:Split': [
+                      'Fn::Split': [
                         '/',
                         {
-                          'Fn:Select': [
+                          'Fn::Select': [
                             1,
                             {
-                              'Fn:Split': [
+                              'Fn::Split': [
+                                '://',
                                 {
-                                  'Fn:GetAtt': [
+                                  'Fn::GetAtt': [
                                     'BackendStagingLambdaFunctionUrl',
                                     'FunctionUrl',
                                   ],
@@ -129,12 +130,26 @@ const serverlessConfig: Serverless = {
             },
             CustomErrorResponses: [],
             Comment: '',
-            Logging: { IncludeCookies: 'false', Bucket: ', Prefix: ' },
+            Logging: { IncludeCookies: 'false', Bucket: '', Prefix: '' },
             PriceClass: 'PriceClass_200',
             Enabled: 'true',
             WebACLId: '',
             HttpVersion: 'http2',
           },
+        },
+      },
+    },
+    Outputs: {
+      BackendStagingLambdaFunctionUrl: {
+        Description: 'Staging Lambda Function URL',
+        Value: {
+          'Fn::GetAtt': ['BackendStagingLambdaFunctionUrl', 'FunctionUrl'],
+        },
+      },
+      BackendStagingCloudFrontDistribution: {
+        Description: 'CloudFront distribution pointing to Staging',
+        Value: {
+          'Fn::GetAtt': ['BackendStagingCloudFrontDistribution', 'DomainName'],
         },
       },
     },
