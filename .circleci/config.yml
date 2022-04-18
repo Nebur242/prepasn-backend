@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   aws-cli: circleci/aws-cli@3.0.0
-  node: circleci/node@14.19.1
+  node: circleci/node@5.0.2
 
 main-only: &main-only
   filters:
@@ -29,7 +29,9 @@ requires-prepare: &requires-prepare
 jobs:
   prepare:
     working_directory: ~/prepasn
-    executor: node/default
+    executor:
+      name: node/default
+      tag: '14'
     resource_class: medium
     steps:
       - checkout
