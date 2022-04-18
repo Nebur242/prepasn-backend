@@ -1,7 +1,7 @@
 const template = require('./template.json');
 const merge = require('lodash.merge');
 
-class ServerlessCustomPlugin {
+class ServerlessCloudFrontLambdaUrl {
   constructor(serverless, options) {
     this.serverless = serverless;
     this.options = options;
@@ -53,4 +53,4 @@ class ServerlessCustomPlugin {
   }
 }
 
-module.exports = ServerlessCustomPlugin;
+module.exports = ServerlessCloudFrontLambdaUrl;

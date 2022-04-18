@@ -36,11 +36,11 @@ if [ $? -eq 1 ]; then
   exit 0
 fi
 
-echo "Dry-run $dry_run_flag"
+echo "Dry-run: $dry_run_flag"
 echo "Packaging $service application"
 yarn sls package -c ./$service.serverless.ts --verbose
 
-if [ $dry_run_flag -eq "true" ] then
+if [ $dry_run_flag = "false" ]; then
   echo "Deploying $service application..."
   yarn sls deploy -c ./$service.serverless.ts -p .serverless --verbose
 fi
