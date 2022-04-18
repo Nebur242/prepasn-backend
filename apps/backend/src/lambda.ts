@@ -1,4 +1,3 @@
-import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import serverlessExpress from '@vendia/serverless-express';
 import type { Callback, Context, Handler } from 'aws-lambda';
@@ -25,7 +24,6 @@ export const handler: Handler = async (
   context: Context,
   callback: Callback
 ) => {
-  Logger.debug('Received event:', event);
   server = await bootstrap();
   return server(event, context, callback);
 };
