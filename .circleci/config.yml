@@ -31,7 +31,7 @@ jobs:
     working_directory: ~/prepasn
     executor:
       name: node/default
-      tag: '14'
+      tag: '14.19'
     resource_class: medium
     steps:
       - checkout
