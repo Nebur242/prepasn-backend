@@ -6,12 +6,11 @@
     "postinstall": "patch-package",
     "prepare": "husky install",
     "nx": "nx",
-    "build:affected": "yarn nx affected --target=build --configuration=serverless",
     "backend:sls:start": "yarn sls offline -c ./backend.serverless.ts --allowCache --noPrependStageInUrl --httpPort=1148",
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test",
-    "lint": "nx lint && nx format",
+    "lint": "nx lint:check && nx format:check",
     "lint-staged": "nx lint --fix && nx format:write --uncommitted"
   },
   "engines": {

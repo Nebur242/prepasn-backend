@@ -1,41 +1,48 @@
-
 #!/bin/bash
 
 dry_run_flag="false"
 service=""
+branch_name=""
 package="bash ./deploy.sh"
 
 print_usage() {
-  echo "Usage: $package -s service [options]"
+  echo "Usage: $package -s service -b branch_name [options]"
   echo ""
   echo "Example: $package -s backend -d"
   echo "options:"
   echo "-d                dry-run"
 }
 
-while getopts "ds:" flag; do
+while getopts "db:s:" flag; do
   case "${flag}" in
     d) dry_run_flag="true" ;;
+    b) branch_name="${OPTARG}" ;;
     s) service="${OPTARG}" ;;
     *) print_usage
        exit 1 ;;
   esac
 done
 
-if [ -z $service ]; then
+if [ -z $service ] || [ -z $branch_name ]; then
   print_usage
   exit 1
 fi
 
+echo "Dry-run: $dry_run_flag"
 echo "Checking if $service is affected by a change..."
-yarn nx affected:apps --plain | grep $service &> /dev/null
+
+if [ $branch_name = "main" ]
+then
+  yarn nx affected:apps --base=origin/main~1 --head=origin/main --plain | grep $service &> /dev/null
+else
+  yarn nx affected:apps --base=origin/$branch_name --head=origin/main --plain | grep $service &> /dev/null
+fi
 
 if [ $? -eq 1 ]; then
   echo "$service is not affected by a change."
   exit 0
 fi
 
-echo "Dry-run: $dry_run_flag"
 echo "Packaging $service application"
 yarn sls package -c ./$service.serverless.ts --verbose
 
