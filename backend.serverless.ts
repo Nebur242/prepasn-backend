@@ -6,7 +6,6 @@ import {
   getBuildDir,
 } from './libs/serverless/helpers';
 import {
-  CloudFrontLambdaUrl,
   IncludeDependencies,
   ServerlessOffline,
 } from './libs/serverless/plugins';
@@ -34,10 +33,110 @@ const serverlessConfig: Serverless = {
       events: [],
     },
   },
-  plugins: [ServerlessOffline, IncludeDependencies, CloudFrontLambdaUrl],
+  plugins: [ServerlessOffline, IncludeDependencies],
   custom: {
     includeDependencies: {
       enableCaching: true,
+    },
+  },
+  resources: {
+    Resources: {
+      BackendStagingAlias: {
+        Type: 'AWS::Lambda::Alias',
+        Properties: {
+          FunctionName: { Ref: 'BackendLambdaFunctionUrl' },
+          FunctionVersion: '$LATEST',
+          Name: 'BackendStaging',
+        },
+      },
+      BackendStagingLambdaFunctionUrl: {
+        Type: 'AWS::Lambda::Url',
+        Properties: {
+          AuthType: 'NONE',
+          Qualifier: 'BackendStaging',
+          TargetFunctionArn: { Ref: 'BackendLambdaFunctionUrl' },
+        },
+      },
+      BackendStagingLambdaPermissionFnUrl: {
+        Type: 'AWS::Lambda::Permission',
+        Properties: {
+          FunctionName: { Ref: 'BackendStagingLambdaFunctionUrl' },
+          Action: 'lambda:InvokeFunctionUrl',
+          Principal: '*',
+          FunctionUrlAuthType: 'NONE',
+        },
+      },
+      BackendStagingCloudFrontDistribution: {
+        Type: 'AWS::CloudFront::Distribution',
+        Properties: {
+          DistributionConfig: {
+            Aliases: [],
+            Origins: [
+              {
+                Id: { Ref: 'BackendStagingLambdaFunctionUrl' },
+                DomainName: {
+                  'Fn:Select': [
+                    0,
+                    {
+                      'Fn:Split': [
+                        '/',
+                        {
+                          'Fn:Select': [
+                            1,
+                            {
+                              'Fn:Split': [
+                                {
+                                  'Fn:GetAtt': [
+                                    'BackendStagingLambdaFunctionUrl',
+                                    'FunctionUrl',
+                                  ],
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                },
+                OriginPath: '',
+                CustomOriginConfig: {
+                  HTTPPort: '80',
+                  HTTPSPort: '443',
+                  OriginProtocolPolicy: 'https-only',
+                  OriginSSLProtocols: ['TLSv1', 'TLSv1.1', 'TLSv1.2'],
+                },
+              },
+            ],
+            DefaultCacheBehavior: {
+              TargetOriginId: { Ref: 'BackendStagingLambdaFunctionUrl' },
+              ViewerProtocolPolicy: 'redirect-to-https',
+              AllowedMethods: [
+                'HEAD',
+                'DELETE',
+                'POST',
+                'GET',
+                'OPTIONS',
+                'PUT',
+                'PATCH',
+              ],
+              CachedMethods: ['HEAD', 'GET', 'OPTIONS'],
+              ForwardedValues: {
+                QueryString: true,
+                Headers: [],
+                Cookies: { Forward: 'all' },
+              },
+            },
+            CustomErrorResponses: [],
+            Comment: '',
+            Logging: { IncludeCookies: 'false', Bucket: ', Prefix: ' },
+            PriceClass: 'PriceClass_200',
+            Enabled: 'true',
+            WebACLId: '',
+            HttpVersion: 'http2',
+          },
+        },
+      },
     },
   },
 };
