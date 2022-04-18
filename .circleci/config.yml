@@ -3,14 +3,35 @@ version: 2.1
 orbs:
   aws-cli: circleci/aws-cli@3.0.0
 
+main-only: &main-only
+  filters:
+    branches:
+      only: main
+
+# TODO: deploy on tags-only
+# tags-only: &tags-only
+#   filters:
+#     tags:
+#       only: /^v.*/
+
+branches-only: &branches-only
+  filters:
+    branches:
+      ignore: main
+    tags:
+      ignore: /^v.*/
+
+requires-prepare: &requires-prepare
+  requires:
+    - prepare
+
 jobs:
-  build-backend:
-    executor: aws-cli/default
+  prepare:
+    working_directory: ~/prepasn
+    docker:
+      - image: cimg/node:14.19.0
     steps:
       - checkout
-
-      - aws-cli/setup:
-          profile-name: default
 
       - restore_cache:
           keys:
@@ -23,20 +44,54 @@ jobs:
           key: dependencies-cache-{{ checksum "package.json" }}
           paths:
             - node_modules
+      - run:
+          name: Run linter
+          command: yarn lint
 
       - run:
-          name: Build backend application
-          command: yarn backend:sls:build
+          name: Build affected apps
+          command: yarn build:affected
+
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - .
+
+  deploy-backend:
+    working_directory: ~/prepasn-backend
+    executor: aws-cli/default
+    steps:
+      - attach_workspace:
+          at: ./
+
+      - aws-cli/setup:
+          profile-name: default
 
       - run:
-          name: Package backend application
-          command: yarn backend:sls:package --verbose
+          name: Build and Deploy backend
+          command: bash ./scripts/deploy.sh -s backend
+
+  deploy-backend-dry-run:
+    working_directory: ~/prepasn-backend
+    executor: aws-cli/default
+    steps:
+      - attach_workspace:
+          at: ./
+
+      - aws-cli/setup:
+          profile-name: default
 
       - run:
-          name: Deploy backend application
-          command: yarn backend:sls:deploy -p .serverless --verbose
+          name: Build backend
+          command: bash ./scripts/deploy.sh -s backend -d
 
 workflows:
-  deploy-backend:
+  deploy-affected-apps:
     jobs:
-      - build-backend
+      - prepare
+      - deploy-backend-dry-run:
+          <<: [*requires-prepare, *branches-only]
+      - deploy-backend:
+          <<: [*requires-prepare, *main-only]
+      # - deploy-frontend:
+      #     <<: [*requires-prepare, *main-only]
