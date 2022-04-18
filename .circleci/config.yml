@@ -33,20 +33,18 @@ jobs:
       name: node/default
       tag: '14.19'
     resource_class: medium
+    environment:
+      PR_BRANCH_NAME: << pipeline.git.branch >>
     steps:
       - checkout
-
       - node/install-packages:
           pkg-manager: yarn
-
       - run:
           name: Run linter
           command: yarn lint
-
       - run:
           name: Build affected apps
-          command: yarn build:affected
-
+          command: bash ./scripts/build.sh -b $PR_BRANCH_NAME
       - persist_to_workspace:
           root: ./
           paths:
@@ -56,31 +54,31 @@ jobs:
     working_directory: ~/prepasn-backend
     executor: aws-cli/default
     resource_class: medium
+    environment:
+      PR_BRANCH_NAME: << pipeline.git.branch >>
     steps:
       - attach_workspace:
           at: ./
-
       - aws-cli/setup:
           profile-name: default
-
       - run:
           name: Build and Deploy backend
-          command: bash ./scripts/deploy.sh -s backend
+          command: bash ./scripts/deploy.sh -s backend -b $PR_BRANCH_NAME
 
   deploy-backend-dry-run:
     working_directory: ~/prepasn-backend
     executor: aws-cli/default
     resource_class: medium
+    environment:
+      PR_BRANCH_NAME: << pipeline.git.branch >>
     steps:
       - attach_workspace:
           at: ./
-
       - aws-cli/setup:
           profile-name: default
-
       - run:
           name: Build backend
-          command: bash ./scripts/deploy.sh -s backend -d
+          command: bash ./scripts/deploy.sh -s backend -b $PR_BRANCH_NAME -d
 
 workflows:
   deploy-affected-apps:
