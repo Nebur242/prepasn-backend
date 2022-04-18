@@ -55,6 +55,7 @@ jobs:
   deploy-backend:
     working_directory: ~/prepasn-backend
     executor: aws-cli/default
+    resource_class: medium
     steps:
       - attach_workspace:
           at: ./
@@ -69,6 +70,7 @@ jobs:
   deploy-backend-dry-run:
     working_directory: ~/prepasn-backend
     executor: aws-cli/default
+    resource_class: medium
     steps:
       - attach_workspace:
           at: ./
