@@ -30,20 +30,13 @@ jobs:
     working_directory: ~/prepasn
     docker:
       - image: cimg/node:14.19.0
+    resource_class: medium
     steps:
       - checkout
 
-      - restore_cache:
-          keys:
-            - dependencies-cache-{{ checksum "package.json" }}
-            - dependencies-cache-
-      - run:
-          name: Install dependencies
-          command: yarn install
-      - save_cache:
-          key: dependencies-cache-{{ checksum "package.json" }}
-          paths:
-            - node_modules
+      - node/install-packages:
+          pkg-manager: yarn
+
       - run:
           name: Run linter
           command: yarn lint
