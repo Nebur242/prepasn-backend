@@ -22,8 +22,7 @@ while getopts "ds:" flag; do
   esac
 done
 
-if [ -z $service ]
-then
+if [ -z $service ]; then
   print_usage
   exit 1
 fi
