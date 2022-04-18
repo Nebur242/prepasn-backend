@@ -63,6 +63,10 @@ class EnvironmentVariables {
   @Expose()
   NODE_ENV: Environment;
 
+  @IsString()
+  @Expose()
+  NODE_TLS_REJECT_UNAUTHORIZED: string;
+
   @IsEnum(['postgres', 'sqlite'])
   @Expose()
   DB_TYPE: 'postgres' | 'sqlite';
