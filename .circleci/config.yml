@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   aws-cli: circleci/aws-cli@3.0.0
+  node: circleci/node@5.0.2
 
 main-only: &main-only
   filters:
@@ -28,22 +29,16 @@ requires-prepare: &requires-prepare
 jobs:
   prepare:
     working_directory: ~/prepasn
-    docker:
-      - image: cimg/node:14.19.0
+    executor:
+      name: node/default
+      tag: '14.19'
+    resource_class: medium
     steps:
       - checkout
 
-      - restore_cache:
-          keys:
-            - dependencies-cache-{{ checksum "package.json" }}
-            - dependencies-cache-
-      - run:
-          name: Install dependencies
-          command: yarn install
-      - save_cache:
-          key: dependencies-cache-{{ checksum "package.json" }}
-          paths:
-            - node_modules
+      - node/install-packages:
+          pkg-manager: yarn
+
       - run:
           name: Run linter
           command: yarn lint
