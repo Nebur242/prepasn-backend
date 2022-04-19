@@ -11,4 +11,11 @@ export class CreateGradeDto extends CreateBaseContentDto {
   @IsOptional()
   @IsNumber()
   parent?: Grade['id'];
+
+  @ApiProperty({
+    description: 'The children of the grade',
+    required: false,
+  })
+  @IsOptional()
+  children?: CreateBaseContentDto[];
 }

@@ -1,14 +1,13 @@
 import { BaseContent } from '../../../common/entities/base-content.entity';
-import { Column, Entity, JoinTable, ManyToMany, OneToOne } from 'typeorm';
+import { Entity, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 import { Course } from '../../courses/entities/course.entity';
 
 @Entity()
 export class Grade extends BaseContent {
-  @Column({ unique: true })
-  override title: string;
+  @OneToMany(() => Grade, (grade) => grade.parent, { cascade: true })
+  children: Grade[];
 
-  @OneToOne(() => Grade, (grade) => grade.id, { onDelete: 'CASCADE' })
-  @JoinTable()
+  @ManyToOne(() => Grade, (grade) => grade.children, { onDelete: 'CASCADE' })
   parent: Grade;
 
   @ManyToMany(() => Course, (course) => course.grades, { cascade: true })

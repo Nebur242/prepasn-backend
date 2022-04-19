@@ -31,7 +31,7 @@ export class GradesService {
 
   async findOne(id: number): Promise<Grade> {
     const grade = await this.gradesRepository.findOne(id, {
-      relations: ['parent', 'courses'],
+      relations: ['parent', 'courses', 'children'],
     });
     if (!grade) throw new NotFoundException(`Grade with id ${id} not found`);
     return grade;
