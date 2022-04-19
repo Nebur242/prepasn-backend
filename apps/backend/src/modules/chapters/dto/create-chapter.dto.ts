@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CreateBaseContentDto } from '../../../common/dtos/create-base-content.dto';
-import { ArrayNotEmpty, IsArray, IsDefined, IsNumber } from 'class-validator';
+import { IsNumber } from 'class-validator';
+import { Course } from '../../courses/entities/course.entity';
 
 export class CreateChapterDto extends CreateBaseContentDto {
   @ApiProperty({
@@ -8,9 +9,6 @@ export class CreateChapterDto extends CreateBaseContentDto {
     required: true,
     type: Number,
   })
-  @IsDefined()
-  @IsArray()
-  @ArrayNotEmpty()
   @IsNumber()
-  course!: number;
+  course: Course['id'];
 }

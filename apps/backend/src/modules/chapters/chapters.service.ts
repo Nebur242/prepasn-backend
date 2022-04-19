@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { FindManyOptions } from 'typeorm';
-import { CoursesService } from '../courses/courses.service';
 import { CreateChapterDto } from './dto/create-chapter.dto';
 import { UpdateChapterDto } from './dto/update-chapter.dto';
 import { Chapter } from './entities/chapter.entity';
@@ -8,16 +7,14 @@ import { ChaptersRepository } from './repositories/chapter.repository';
 
 @Injectable()
 export class ChaptersService {
-  constructor(
-    private readonly coursesService: CoursesService,
-    private readonly chaptersRepository: ChaptersRepository
-  ) {}
+  constructor(private readonly chaptersRepository: ChaptersRepository) {}
 
   async create(createChapterDto: CreateChapterDto): Promise<Chapter> {
-    const course = await this.coursesService.findOne(createChapterDto.course);
     const chapter = this.chaptersRepository.create({
       ...createChapterDto,
-      course,
+      course: {
+        id: createChapterDto.course,
+      },
     });
     return this.chaptersRepository.save(chapter);
   }
@@ -36,9 +33,7 @@ export class ChaptersService {
     id: number,
     updateChapterDto: UpdateChapterDto
   ): Promise<Chapter> {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { course, ...updated } = updateChapterDto;
-    await this.chaptersRepository.update(id, updated);
+    await this.chaptersRepository.update(id, updateChapterDto);
     return this.findOne(id);
   }
 

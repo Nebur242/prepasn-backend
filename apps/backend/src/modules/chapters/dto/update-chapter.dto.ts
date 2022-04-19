@@ -1,8 +1,6 @@
-import { PartialType } from '@nestjs/swagger';
-import { Exclude } from 'class-transformer';
+import { OmitType, PartialType } from '@nestjs/swagger';
 import { CreateChapterDto } from './create-chapter.dto';
 
-export class UpdateChapterDto extends PartialType(CreateChapterDto) {
-  @Exclude()
-  course?: number;
-}
+export class UpdateChapterDto extends OmitType(PartialType(CreateChapterDto), [
+  'course',
+]) {}
