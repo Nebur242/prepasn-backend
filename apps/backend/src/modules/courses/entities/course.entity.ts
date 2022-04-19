@@ -1,6 +1,7 @@
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { BaseContent } from 'apps/backend/src/common/entities/base-content.entity';
-import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
+import { Chapter } from '../../chapters/entities/chapter.entity';
 import { Grade } from '../../grades/entities/grade.entity';
 
 @Entity()
@@ -12,4 +13,8 @@ export class Course extends BaseContent {
   @ManyToMany(() => Grade, (grade) => grade.courses)
   @JoinTable()
   grades: Grade[];
+
+  @OneToMany(() => Chapter, (chapter) => chapter.course)
+  @JoinTable()
+  chapters: Chapter[];
 }

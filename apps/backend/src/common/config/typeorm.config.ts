@@ -1,3 +1,4 @@
+import { Chapter } from '../../modules/chapters/entities/chapter.entity';
 import { Course } from '../../modules/courses/entities/course.entity';
 import { Grade } from '../../modules/grades/entities/grade.entity';
 import { Student } from '../../modules/students/entities/student.entity';
@@ -12,5 +13,5 @@ export default {
   ssl: process.env.DB_SSL?.toLowerCase() === 'true',
   logging: process.env.DB_LOGGING?.toLowerCase() === 'true',
   synchronize: process.env.DB_SYNC?.toLowerCase() === 'true',
-  entities: [Student, Grade, Course],
+  entities: [Student, Grade, Course, Chapter],
 };
