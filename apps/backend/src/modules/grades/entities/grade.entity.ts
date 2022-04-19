@@ -1,6 +1,6 @@
-import { BaseContent } from '../../../common/entities/base-content.entity';
+import { BaseContent } from '@prepa-sn/backend/common/entities/base-content.entity';
 import { Entity, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
-import { Course } from '../../courses/entities/course.entity';
+import { Course } from '@prepa-sn/backend/modules/courses/entities/course.entity';
 
 @Entity()
 export class Grade extends BaseContent {

@@ -1,7 +1,7 @@
-import { Chapter } from '../../modules/chapters/entities/chapter.entity';
-import { Course } from '../../modules/courses/entities/course.entity';
-import { Grade } from '../../modules/grades/entities/grade.entity';
-import { Student } from '../../modules/students/entities/student.entity';
+import { Chapter } from '@prepa-sn/backend/modules/chapters/entities/chapter.entity';
+import { Course } from '@prepa-sn/backend/modules/courses/entities/course.entity';
+import { Grade } from '@prepa-sn/backend/modules/grades/entities/grade.entity';
+import { Student } from '@prepa-sn/backend/modules/students/entities/student.entity';
 
 export default {
   type: process.env.DB_TYPE,
