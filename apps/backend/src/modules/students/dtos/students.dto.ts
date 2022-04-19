@@ -26,11 +26,13 @@ export class CreateStudentDto {
   birthDate: Date;
 
   @ApiProperty()
+  @IsOptional()
   @IsEmail()
   @IsOptional()
   email?: string;
 
   @ApiProperty()
+  @IsOptional()
   @IsPhoneNumber()
   @IsOptional()
   phone?: string;

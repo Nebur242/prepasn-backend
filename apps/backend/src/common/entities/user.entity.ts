@@ -1,13 +1,11 @@
 import {
-  Entity,
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity()
-export class User {
+export abstract class User {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -17,10 +15,10 @@ export class User {
   @Column()
   lastName: string;
 
-  @Column()
+  @Column({ nullable: true, default: null })
   birthDate: Date;
 
-  @Column()
+  @Column({ nullable: true, default: null })
   email: string;
 
   @Column()

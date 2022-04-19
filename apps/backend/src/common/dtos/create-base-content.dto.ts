@@ -15,7 +15,7 @@ export class CreateBaseContentDto {
   @IsDefined()
   @IsString()
   @IsNotEmpty()
-  title: string;
+  title!: string;
 
   @ApiProperty({
     description: 'The content description',
@@ -24,7 +24,7 @@ export class CreateBaseContentDto {
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  description: string;
+  description?: string;
 
   @ApiProperty({
     description: 'The featued image link',
@@ -34,7 +34,7 @@ export class CreateBaseContentDto {
   @IsString()
   @IsNotEmpty()
   @IsUrl()
-  featuredImage: string;
+  featuredImage?: string;
 
   @ApiProperty({
     description: 'The content video link',
@@ -44,5 +44,5 @@ export class CreateBaseContentDto {
   @IsString()
   @IsNotEmpty()
   @IsUrl()
-  videoUrl: string;
+  videoUrl?: string;
 }

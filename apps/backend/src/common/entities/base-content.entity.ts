@@ -1,14 +1,12 @@
 import { Status } from '@prepa-sn/shared/enums';
 import {
-  Entity,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity()
-export class BaseContent {
+export abstract class BaseContent {
   @PrimaryGeneratedColumn()
   id: number;
 
