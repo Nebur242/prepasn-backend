@@ -29,7 +29,7 @@ export class TypeOrmErrorsFilter implements ExceptionFilter {
   catch(exception: QueryFailedError, host: ArgumentsHost) {
     const response = host.switchToHttp().getResponse();
     const message: string = exception.message || 'Something Went Wrong';
-    const { detail: error, code } = exception.driverError.detail;
+    const { detail: error, code } = exception.driverError;
     const statusCode: number = this.errors.get(code) || 500;
 
     this.logger.error(`${message} - ${error} - ${code}`, exception.stack);
