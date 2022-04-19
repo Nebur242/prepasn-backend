@@ -46,7 +46,15 @@ fi
 echo "Packaging $service application"
 yarn sls package -c ./$service.serverless.ts --verbose
 
+if [ $? -eq 1 ]; then
+  exit 1
+fi
+
 if [ $dry_run_flag = "false" ]; then
   echo "Deploying $service application..."
   yarn sls deploy -c ./$service.serverless.ts -p .serverless --verbose
+fi
+
+if [ $? -eq 1 ]; then
+  exit 1
 fi
