@@ -6,7 +6,7 @@ import { Grade } from '../../grades/entities/grade.entity';
 
 @Entity()
 export class Course extends BaseContent {
-  @Column({ nullable: false, unique: true })
+  @Column({ unique: true })
   override title: string;
 
   //has many grades

@@ -29,7 +29,7 @@ export class CoursesController {
   }
 
   @Get()
-  @Authenticated()
+  @Roles()
   @ApiOkResponse({ type: Course, isArray: true })
   findAll(): Promise<Course[]> {
     return this.coursesService.findAll();
@@ -53,6 +53,7 @@ export class CoursesController {
   }
 
   @Delete(':id')
+  @Roles(Role.ADMIN)
   @ApiOkResponse({ type: Course, isArray: false })
   remove(@Param('id', ParseIntPipe) id: number): Promise<Course> {
     return this.coursesService.remove(id);

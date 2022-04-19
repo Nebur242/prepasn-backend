@@ -1,21 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsDefined,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  IsUrl,
-} from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsUrl } from 'class-validator';
 
 export class CreateBaseContentDto {
   @ApiProperty({
     description: 'The title of the content',
     required: true,
   })
-  @IsDefined()
   @IsString()
   @IsNotEmpty()
-  title!: string;
+  title: string;
 
   @ApiProperty({
     description: 'The content description',
@@ -27,12 +20,10 @@ export class CreateBaseContentDto {
   description?: string;
 
   @ApiProperty({
-    description: 'The featued image link',
+    description: 'The featured image link',
     required: false,
   })
   @IsOptional()
-  @IsString()
-  @IsNotEmpty()
   @IsUrl()
   featuredImage?: string;
 
@@ -41,8 +32,6 @@ export class CreateBaseContentDto {
     required: false,
   })
   @IsOptional()
-  @IsString()
-  @IsNotEmpty()
   @IsUrl()
   videoUrl?: string;
 }

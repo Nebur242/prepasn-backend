@@ -5,7 +5,7 @@ import { Course } from '../../courses/entities/course.entity';
 
 @Entity()
 export class Grade extends BaseContent {
-  @Column({ nullable: false, unique: true })
+  @Column({ unique: true })
   override title: string;
 
   @OneToOne(() => Grade, (grade) => grade.id, { onDelete: 'CASCADE' })
