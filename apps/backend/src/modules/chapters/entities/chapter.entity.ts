@@ -1,6 +1,6 @@
-import { BaseContent } from '../../../common/entities/base-content.entity';
+import { BaseContent } from '@prepa-sn/backend/common/entities/base-content.entity';
 import { Entity, JoinTable, OneToOne } from 'typeorm';
-import { Course } from '../../courses/entities/course.entity';
+import { Course } from '@prepa-sn/backend/modules/courses/entities/course.entity';
 
 @Entity()
 export class Chapter extends BaseContent {

@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { CreateBaseContentDto } from '../../../common/dtos/create-base-content.dto';
+import { CreateBaseContentDto } from '@prepa-sn/backend/common/dtos/create-base-content.dto';
 import { IsNumber } from 'class-validator';
-import { Course } from '../../courses/entities/course.entity';
+import { Course } from '@prepa-sn/backend/modules/courses/entities/course.entity';
 
 export class CreateChapterDto extends CreateBaseContentDto {
   @ApiProperty({

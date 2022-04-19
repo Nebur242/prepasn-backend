@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { CreateBaseContentDto } from '../../../common/dtos/create-base-content.dto';
+import { CreateBaseContentDto } from '@prepa-sn/backend/common/dtos/create-base-content.dto';
 import { ArrayNotEmpty, IsNumber } from 'class-validator';
-import { Grade } from '../../grades/entities/grade.entity';
+import { Grade } from '@prepa-sn/backend/modules/grades/entities/grade.entity';
 
 export class CreateCourseDto extends CreateBaseContentDto {
   @ApiProperty({

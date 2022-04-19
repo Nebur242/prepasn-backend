@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Role } from '@prepa-sn/shared/enums';
-import { JwtClaims } from '../../common/types/claims.type';
+import { JwtClaims } from '@prepa-sn/backend/common/types/claims.type';
 import { FirebaseService } from '../firebase/firebase.service';
 import { CreateStudentDto, UpdateStudentDto } from './dtos/students.dto';
 import { Student } from './entities/student.entity';
