@@ -17,3 +17,10 @@ export enum Message {
   INVALID_REQUEST = 'Invalid request !',
   INVALID_PARAMETERS = 'Invalid parameters !',
 }
+
+export enum Status {
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
+  DRAFT = 'draft',
+  PENDING = 'pending',
+}

@@ -1,10 +1,16 @@
 import { NestFactory } from '@nestjs/core';
-import { INestApplication, Logger, ValidationPipe, VersioningType } from '@nestjs/common';
+import {
+  INestApplication,
+  Logger,
+  ValidationPipe,
+  VersioningType,
+} from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 
 import { AppModule } from './app/app.module';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
+import { TypeOrmErrorsFilter } from './common/filters/typeorm-errors.filter';
 
 const globalPrefix = 'api';
 const defaultVersion = '1';
@@ -15,6 +21,7 @@ export function setupGlobalMiddlewares(app: INestApplication) {
     .setGlobalPrefix(globalPrefix)
     .useGlobalPipes(new ValidationPipe())
     .useGlobalInterceptors(new TransformInterceptor())
+    .useGlobalFilters(new TypeOrmErrorsFilter())
     .use(helmet())
     .enableVersioning({
       type: VersioningType.URI,
