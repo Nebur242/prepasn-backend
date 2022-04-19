@@ -1,5 +1,4 @@
-// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
-import { BaseContent } from 'apps/backend/src/common/entities/base-content.entity';
+import { BaseContent } from '../../../common/entities/base-content.entity';
 import { Column, Entity, JoinTable, OneToOne } from 'typeorm';
 import { Course } from '../../courses/entities/course.entity';
 
