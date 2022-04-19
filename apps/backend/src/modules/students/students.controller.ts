@@ -9,7 +9,7 @@ import {
 import { Student } from './entities/student.entity';
 import { StudentsService } from './students.service';
 import { Role } from '@prepa-sn/shared/enums';
-import { Roles } from '../auth/roles-auth.guard';
+import { Authenticated, Roles } from '../auth/roles-auth.guard';
 import { JwtClaims } from '../../common/types/claims.type';
 
 @Controller('students')
@@ -26,7 +26,7 @@ export class StudentsController {
 
   @Post()
   @ApiCreatedResponse({ type: StudentDto })
-  @Roles(Role.STUDENT)
+  @Authenticated()
   createStudent(
     @Body() createStudentDto: CreateStudentDto,
     @Claims() claims: JwtClaims
