@@ -1,5 +1,5 @@
 import { Injectable, PipeTransform } from '@nestjs/common';
-import { FirebaseService } from '../../modules/firebase/firebase.service';
+import { FirebaseService } from '@prepa-sn/backend/modules/firebase/firebase.service';
 
 @Injectable()
 export class DecodeTokenPipe implements PipeTransform {

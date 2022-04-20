@@ -32,10 +32,8 @@ export class CreateStudentDto {
   email?: string;
 
   @ApiProperty()
-  @IsOptional()
   @IsPhoneNumber()
-  @IsOptional()
-  phone?: string;
+  phone: string;
 }
 
 export class StudentDto extends CreateStudentDto implements Student {
