@@ -8,7 +8,7 @@ export class Chapter extends BaseContent {
   @Column({ nullable: false, unique: true })
   override title: string;
 
-  //has one and only course
+  //assume that it has one and only course
   @OneToOne(() => Course, (course) => course.chapters)
   @JoinTable()
   course: Course;

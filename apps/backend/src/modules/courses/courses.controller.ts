@@ -8,10 +8,11 @@ import {
   Delete,
   ParseIntPipe,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Role } from '@prepa-sn/shared/enums';
 import { Authenticated, Roles } from '../auth/roles-auth.guard';
 import { CoursesService } from './courses.service';
+import { CourseDto } from './dto/course.dto';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { Course } from './entities/course.entity';
@@ -23,28 +24,30 @@ export class CoursesController {
 
   @Post()
   @Roles(Role.ADMIN)
-  @ApiOkResponse({ type: Course, isArray: false })
+  @ApiOkResponse({ type: CourseDto, isArray: false })
+  @ApiBody({ type: CreateCourseDto })
   create(@Body() createCourseDto: CreateCourseDto): Promise<Course> {
     return this.coursesService.create(createCourseDto);
   }
 
   @Get()
   @Authenticated()
-  @ApiOkResponse({ type: Course, isArray: true })
+  @ApiOkResponse({ type: CourseDto, isArray: true })
   findAll(): Promise<Course[]> {
     return this.coursesService.findAll();
   }
 
   @Get(':id')
   @Authenticated()
-  @ApiOkResponse({ type: Course, isArray: false })
+  @ApiOkResponse({ type: CourseDto, isArray: false })
   findOne(@Param('id', ParseIntPipe) id: number): Promise<Course> {
     return this.coursesService.findOne(id);
   }
 
   @Patch(':id')
   @Roles(Role.ADMIN)
-  @ApiOkResponse({ type: Course, isArray: false })
+  @ApiOkResponse({ type: CourseDto, isArray: false })
+  @ApiBody({ type: CreateCourseDto })
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateCourseDto: UpdateCourseDto
