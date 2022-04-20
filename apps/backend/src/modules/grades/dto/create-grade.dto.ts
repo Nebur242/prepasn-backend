@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CreateBaseContentDto } from '@prepa-sn/backend/common/dtos/create-base-content.dto';
-import { IsNumber, IsOptional } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsNumber, IsOptional, ValidateNested } from 'class-validator';
 import { Grade } from '../entities/grade.entity';
 
 export class CreateGradeDto extends CreateBaseContentDto {
@@ -17,5 +18,7 @@ export class CreateGradeDto extends CreateBaseContentDto {
     required: false,
   })
   @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => CreateBaseContentDto)
   children?: CreateBaseContentDto[];
 }
