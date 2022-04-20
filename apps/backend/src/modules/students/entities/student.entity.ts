@@ -1,4 +1,4 @@
-import { User } from 'apps/backend/src/common/entities/user.entity';
+import { User } from '@prepa-sn/backend/common/entities/user.entity';
 import { Entity } from 'typeorm';
 
 @Entity()

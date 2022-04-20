@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 branch_name=""
 configuration="serverless"
 package="bash ./build.sh"

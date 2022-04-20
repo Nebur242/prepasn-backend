@@ -16,15 +16,15 @@ export abstract class User {
   lastName: string;
 
   @Column({ nullable: true, default: null })
-  birthDate: Date;
+  birthDate?: Date;
 
-  @Column({ nullable: true, default: null })
+  @Column({ unique: true })
   email: string;
 
   @Column()
   phone: string;
 
-  @Column()
+  @Column({ unique: true })
   uid: string;
 
   @CreateDateColumn()

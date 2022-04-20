@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { Claims } from '../../common/decorators/get-user.decorator';
+import { Claims } from '@prepa-sn/backend/common/decorators/get-user.decorator';
 import {
   CreateStudentDto,
   StudentDto,
@@ -9,8 +9,8 @@ import {
 import { Student } from './entities/student.entity';
 import { StudentsService } from './students.service';
 import { Role } from '@prepa-sn/shared/enums';
-import { Roles } from '../auth/roles-auth.guard';
-import { JwtClaims } from '../../common/types/claims.type';
+import { Authenticated, Roles } from '../auth/roles-auth.guard';
+import { JwtClaims } from '@prepa-sn/backend/common/types/claims.type';
 
 @Controller('students')
 @ApiTags('Students')
@@ -26,7 +26,7 @@ export class StudentsController {
 
   @Post()
   @ApiCreatedResponse({ type: StudentDto })
-  @Roles(Role.STUDENT)
+  @Authenticated()
   createStudent(
     @Body() createStudentDto: CreateStudentDto,
     @Claims() claims: JwtClaims

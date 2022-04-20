@@ -14,12 +14,11 @@ export class CoursesService {
   ) {}
 
   async create(createCourseDto: CreateCourseDto): Promise<Course> {
-    const grades = await this.gradesService.findAll({
-      where: createCourseDto.grades.map((id) => ({ id })),
-    });
     const course = this.coursesRepository.create({
       ...createCourseDto,
-      grades: grades,
+      grades: createCourseDto.grades.map((id) =>
+        this.gradesService.createEntity({ id })
+      ),
     });
     return this.coursesRepository.save(course);
   }
@@ -48,25 +47,19 @@ export class CoursesService {
     };
 
     if (updateCourseDto.grades) {
-      const grades =
-        updateCourseDto.grades.length > 0
-          ? await this.gradesService.findAll({
-              where: updateCourseDto.grades.map((id) => ({ id })),
-            })
-          : [];
       updatedCourse = {
         ...updatedCourse,
-        grades,
+        grades: updateCourseDto.grades.map((id) =>
+          this.gradesService.createEntity({ id })
+        ),
       };
     }
 
-    await this.coursesRepository.save(updatedCourse);
-    return this.findOne(id);
+    return this.coursesRepository.save(updatedCourse);
   }
 
   async remove(id: number): Promise<Course> {
     const course = await this.findOne(id);
-    await this.coursesRepository.remove(course);
-    return course;
+    return this.coursesRepository.remove(course);
   }
 }

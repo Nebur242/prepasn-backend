@@ -53,5 +53,5 @@ export function Roles(...roles: Role[]) {
 }
 
 export function Authenticated() {
-  return applyDecorators(ApiBearerAuth(), UseGuards(AuthGuard('firebase-jwt')));
+  return Roles(...Object.values(Role));
 }

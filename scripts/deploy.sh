@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 dry_run_flag="false"
 service=""
 branch_name=""

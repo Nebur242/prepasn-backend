@@ -10,17 +10,17 @@ export abstract class BaseContent {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: false })
+  @Column()
   title: string;
 
   @Column({ nullable: true, default: null })
-  description: string;
+  description?: string;
 
   @Column({ nullable: true, default: null })
-  featuredImage: string;
+  featuredImage?: string;
 
   @Column({ nullable: true, default: null })
-  videoUrl: string;
+  videoUrl?: string;
 
   @Column({ type: 'enum', enum: Status, default: Status.ACTIVE })
   status: Status;
