@@ -10,7 +10,7 @@ export class Course extends BaseContent {
   @JoinTable()
   grades: Grade[];
 
-  @OneToMany(() => Chapter, (chapter) => chapter.course)
+  @OneToMany(() => Chapter, (chapter: Chapter) => chapter.course)
   @JoinTable()
   chapters: Chapter[];
 }

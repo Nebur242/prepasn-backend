@@ -10,6 +10,8 @@ export class Grade extends BaseContent {
   @ManyToOne(() => Grade, (grade) => grade.children, { onDelete: 'CASCADE' })
   parent: Grade;
 
-  @ManyToMany(() => Course, (course) => course.grades, { cascade: true })
+  @ManyToMany(() => Course, (course: Course) => course.grades, {
+    cascade: true,
+  })
   courses: Course[];
 }
