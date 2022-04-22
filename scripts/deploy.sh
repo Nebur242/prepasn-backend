@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euo pipefail
+set -uo pipefail
 
 dry_run_flag="false"
 service=""
@@ -35,9 +35,9 @@ echo "Checking if $service service is affected by a change on $branch_name branc
 
 if [ $branch_name = "main" ]
 then
-  yarn nx affected:apps --base=origin/main~1 --head=origin/main --plain | grep $service &> /dev/null
+  yarn nx affected:apps --base=main~1 --head=main --plain | grep $service &> /dev/null
 else
-  yarn nx affected:apps --base=origin/main --head=origin/$branch_name --plain | grep $service &> /dev/null
+  yarn nx affected:apps --base=main --head=$branch_name --plain | grep $service &> /dev/null
 fi
 
 if [ $? -eq 1 ]; then
