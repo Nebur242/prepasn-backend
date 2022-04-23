@@ -37,14 +37,14 @@ export class CoursesService {
 
   async findOne(id: number): Promise<Course> {
     const course = await this.coursesRepository.findOne(id, {
-      relations: ['grades'],
+      relations: ['grades', 'documents'],
     });
     if (!course) throw new NotFoundException(`Course with id ${id} not found`);
     return course;
   }
 
   async update(id: number, updateCourseDto: UpdateCourseDto): Promise<Course> {
-    const course = await this.findOne(id);
+    const course: Course = await this.findOne(id);
 
     let updatedCourse: Course = {
       ...course,
