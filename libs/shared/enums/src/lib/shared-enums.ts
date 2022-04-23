@@ -24,3 +24,9 @@ export enum Status {
   DRAFT = 'draft',
   PENDING = 'pending',
 }
+
+export enum documentType {
+  DOCUMENT = 'document',
+  IMAGE = 'image',
+  VIDEO = 'video',
+}

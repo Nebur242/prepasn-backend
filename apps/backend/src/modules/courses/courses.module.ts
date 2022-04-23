@@ -4,9 +4,14 @@ import { CoursesController } from './courses.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CoursesRepository } from './repositories/course.repository';
 import { GradesModule } from '../grades/grades.module';
+import { DocumentsModule } from '../documents/documents.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CoursesRepository]), GradesModule],
+  imports: [
+    TypeOrmModule.forFeature([CoursesRepository]),
+    GradesModule,
+    DocumentsModule,
+  ],
   controllers: [CoursesController],
   providers: [CoursesService],
   exports: [CoursesService],
