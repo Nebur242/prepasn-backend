@@ -8,6 +8,7 @@ import { env, validate } from '../common/config';
 import { GradesModule } from '../modules/grades/grades.module';
 import { CoursesModule } from '../modules/courses/courses.module';
 import { DocumentsModule } from '../modules/documents/documents.module';
+import { ChaptersModule } from '../modules/chapters/chapters.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { DocumentsModule } from '../modules/documents/documents.module';
     GradesModule,
     CoursesModule,
     DocumentsModule,
+    ChaptersModule,
   ],
   controllers: [],
   providers: [],

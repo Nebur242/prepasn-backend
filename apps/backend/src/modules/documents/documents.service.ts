@@ -13,29 +13,34 @@ export class DocumentsService {
     return this.documentsRepository.create(entityLike);
   }
 
-  create(createDocumentDto: CreateDocumentDto) {
+  create(createDocumentDto: CreateDocumentDto): Promise<Document> {
     const document = this.documentsRepository.create(createDocumentDto);
     return this.documentsRepository.save(document);
   }
 
-  findAll() {
+  findAll(): Promise<Document[]> {
     return this.documentsRepository.find();
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<Document> {
     const document = await this.documentsRepository.findOne(id);
     if (!document)
       throw new NotFoundException(`Document with id ${id} not found`);
     return document;
   }
 
-  async update(id: number, updateDocumentDto: UpdateDocumentDto) {
+  async update(
+    id: number,
+    updateDocumentDto: UpdateDocumentDto
+  ): Promise<Document> {
     const document = await this.findOne(id);
     await this.documentsRepository.update(document.id, updateDocumentDto);
     return this.findOne(id);
   }
 
-  remove(id: number) {
-    return this.documentsRepository.delete(id);
+  async remove(id: number): Promise<Document> {
+    const document = await this.findOne(id);
+    await this.documentsRepository.delete(document.id);
+    return document;
   }
 }
