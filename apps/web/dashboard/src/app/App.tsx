@@ -1,53 +1,24 @@
+import { Suspense , FC } from 'react';
 import styled from 'styled-components';
-import NxWelcome from './nx-welcome';
-
-import { Route, Routes, Link } from 'react-router-dom';
+import { ConfigProvider } from "antd"
+import Routes from '../routes';
+import 'moment/locale/fr';
+import locale from 'antd/lib/locale/fr_FR';
+import '../translations';
+import "../config/firebase.config"
 
 const StyledApp = styled.div`
-  // Your style here
+  background-color: rgb(246, 246, 249);
 `;
 
-export function App() {
+export const App: FC = () => {
   return (
     <StyledApp>
-      <NxWelcome title="web-dashboard" />
-
-      {/* START: routes */}
-      {/* These routes and navigation have been generated for you */}
-      {/* Feel free to move and update them to fit your needs */}
-      <br />
-      <hr />
-      <br />
-      <div role="navigation">
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/page-2">Page 2</Link>
-          </li>
-        </ul>
-      </div>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <div>
-              This is the generated root route.{' '}
-              <Link to="/page-2">Click here for page 2.</Link>
-            </div>
-          }
-        />
-        <Route
-          path="/page-2"
-          element={
-            <div>
-              <Link to="/">Click here to go back to root page.</Link>
-            </div>
-          }
-        />
-      </Routes>
-      {/* END: routes */}
+      <Suspense fallback={<p>Loading...</p>}>
+        <ConfigProvider locale={locale}>
+          <Routes />
+        </ConfigProvider>
+      </Suspense>
     </StyledApp>
   );
 }
