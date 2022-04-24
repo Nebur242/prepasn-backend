@@ -4,6 +4,8 @@
     "backend": "apps/backend",
     "shared-enums": "libs/shared/enums",
     "shared-guards": "libs/shared/guards",
-    "shared-interfaces": "libs/shared/interfaces"
+    "shared-interfaces": "libs/shared/interfaces",
+    "web-dashboard": "apps/web/dashboard",
+    "web-dashboard-e2e": "apps/web/dashboard-e2e"
   }
 }

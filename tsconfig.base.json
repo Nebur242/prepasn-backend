@@ -10,18 +10,32 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2017", "dom"],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@prepa-sn/backend/*": ["apps/backend/src/*"],
-      "@prepa-sn/shared/enums": ["libs/shared/enums/src/index.ts"],
-      "@prepa-sn/shared/guards": ["libs/shared/guards/src/index.ts"],
-      "@prepa-sn/shared/interfaces": ["libs/shared/interfaces/src/index.ts"]
+      "@prepa-sn/backend/*": [
+        "apps/backend/src/*"
+      ],
+      "@prepa-sn/shared/enums": [
+        "libs/shared/enums/src/index.ts"
+      ],
+      "@prepa-sn/shared/guards": [
+        "libs/shared/guards/src/index.ts"
+      ],
+      "@prepa-sn/shared/interfaces": [
+        "libs/shared/interfaces/src/index.ts"
+      ]
     },
     "resolveJsonModule": true,
     "esModuleInterop": true
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }
