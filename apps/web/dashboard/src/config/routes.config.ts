@@ -1,6 +1,7 @@
 import { lazy } from 'react';
 const Login = lazy(() => import('../pages/auth/login.page'));
-const Dashboard = lazy(() => import('../pages/app/dashboard.page'));
+const Dashboard = lazy(() => import('../pages/dashboard/dashboard.page'));
+// const Home = lazy(() => import('../pages/app/home.page'));
 
 export interface Route {
   path: string;
@@ -10,6 +11,15 @@ export interface Route {
   access: string[];
   routes: Route[];
 }
+
+export const HOME: Route = {
+  path: '/',
+  name: 'home',
+  isPublic: false,
+  access: [],
+  element: Dashboard,
+  routes: [],
+};
 
 export const LOGIN: Route = {
   path: '/login',

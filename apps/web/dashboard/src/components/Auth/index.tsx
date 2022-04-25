@@ -5,7 +5,7 @@ import { authenticateUser } from '../../store/features/auth/authSlice';
 import Loader from '../loader';
 
 type Props = {
-    children?: ReactNode;
+    children: ReactNode;
 };
 
 const Auth: FC<Props> = ({ children }) => {
@@ -17,7 +17,6 @@ const Auth: FC<Props> = ({ children }) => {
     }, [dispatch])
 
     if (auth.loading) return <Loader />;
-
     return <>{children} </>;
 }
 

@@ -15,15 +15,15 @@ const StyledApp = styled.div`
 
 export const App: FC = () => {
   return (
-    <Auth>
-      <StyledApp>
-        <Suspense fallback={<Loader />}>
-          <ConfigProvider locale={locale}>
+    <Suspense fallback={<Loader />}>
+      <ConfigProvider locale={locale}>
+        <Auth>
+          <StyledApp>
             <Routes />
-          </ConfigProvider>
-        </Suspense>
-      </StyledApp>
-    </Auth>
+          </StyledApp>
+        </Auth>
+      </ConfigProvider>
+    </Suspense>
   );
 }
 

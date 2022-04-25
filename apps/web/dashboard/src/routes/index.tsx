@@ -16,7 +16,6 @@ const AppRoutes = () => {
                     />;
                 })
             }
-            <Route path='/' element={<AppRoute route={routes.LOGIN} />} />
         </Routes>
     )
 }

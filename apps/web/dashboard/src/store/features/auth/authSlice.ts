@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Status } from '@prepa-sn/shared/enums';
 import { LoginDto } from '../../../pages/auth/login.page';
 import {
@@ -6,7 +7,6 @@ import {
 } from '../../../services/auth/auth.service';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { setUser } from '../user/userSlice';
-// import { AuthError } from 'firebase/auth';
 
 export interface AuthInitialState {
   isLoggedIn: boolean;
@@ -22,7 +22,7 @@ export interface AuthInitialState {
 
 const initialState: AuthInitialState = {
   isLoggedIn: false,
-  loading: false,
+  loading: true,
   error: '',
   status: Status.PENDING,
   login: {
@@ -57,7 +57,7 @@ export const authenticateUser = createAsyncThunk(
       const response = await authUser();
       const [result, error] = response;
       if (!result || error) {
-        return rejectWithValue(error?.message || 'User not found');
+        throw new Error('User not connected');
       }
       const user: object = result.toJSON();
       dispatch(setUser(user));
