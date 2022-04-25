@@ -1,19 +1,22 @@
 import { Route, Routes } from 'react-router-dom';
-import { LOGIN, HOME } from '../config/routes.config';
-import Login from '../pages/auth/login.page';
+import AppRoute from '../components/route';
+import * as routes from '../config/routes.config';
 
 const AppRoutes = () => {
     return (
         <Routes>
-            <Route path={HOME.path} element={<Login />} />
-            <Route
-                path={LOGIN.path}
-                element={
-                    // eslint-disable-next-line react/jsx-pascal-case
-                    <LOGIN.element />
-                }
-            />
-
+            {
+                Object.values(routes).map((key) => {
+                    return <Route
+                        key={key.path}
+                        path={key.path}
+                        element={
+                            <AppRoute route={key} />
+                        }
+                    />;
+                })
+            }
+            <Route path='/' element={<AppRoute route={routes.LOGIN} />} />
         </Routes>
     )
 }

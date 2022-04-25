@@ -6,6 +6,7 @@ import {
 } from '../../../services/auth/auth.service';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { setUser } from '../user/userSlice';
+// import { AuthError } from 'firebase/auth';
 
 export interface AuthInitialState {
   isLoggedIn: boolean;
@@ -38,12 +39,13 @@ export const loginUser = createAsyncThunk(
       const response = await logInFirebaseWithEmailAndPassword(loginDto);
       const [result, error] = response;
       console.log('response', response, result, error);
-      if (!result?.user || error) throw new Error('User not found');
+      if (!result?.user || error) throw error;
       const user: object = result.user.toJSON();
       dispatch(setUser(user));
       return user;
-    } catch (error) {
-      return rejectWithValue(error);
+    } catch (error: any) {
+      console.log('error', error);
+      return rejectWithValue(error?.message || 'Error');
     }
   }
 );
@@ -54,13 +56,14 @@ export const authenticateUser = createAsyncThunk(
     try {
       const response = await authUser();
       const [result, error] = response;
-      if (!result || error)
-        throw new Error(error?.message || 'User not connected');
+      if (!result || error) {
+        return rejectWithValue(error?.message || 'User not found');
+      }
       const user: object = result.toJSON();
       dispatch(setUser(user));
       return user;
-    } catch (error) {
-      return rejectWithValue(error);
+    } catch (error: any) {
+      return rejectWithValue(error?.message || 'User not found');
     }
   }
 );
@@ -85,7 +88,7 @@ const authSlice = createSlice({
     [`${loginUser.rejected}`]: (state: AuthInitialState, action) => {
       state.login.loading = false;
       state.login.status = Status.ERROR;
-      state.login.error = action.payload;
+      state.login.error = action.payload || 'Error';
     },
 
     //authenticate actions
@@ -102,7 +105,7 @@ const authSlice = createSlice({
     [`${authenticateUser.rejected}`]: (state: AuthInitialState, action) => {
       state.loading = false;
       state.status = Status.ERROR;
-      state.error = action.payload;
+      state.error = action.payload || 'Error';
       state.isLoggedIn = false;
     },
   },

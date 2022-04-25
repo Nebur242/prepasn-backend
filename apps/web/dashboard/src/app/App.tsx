@@ -6,8 +6,8 @@ import 'moment/locale/fr';
 import locale from 'antd/lib/locale/fr_FR';
 import '../translations';
 import "../config/firebase.config"
-import Auth from '../components/Auth';
-import Loader from '../components/Loader';
+import Auth from '../components/auth';
+import Loader from '../components/loader';
 
 const StyledApp = styled.div`
   background-color: rgb(246, 246, 249);

@@ -1,23 +1,18 @@
 {
   "auth": {
     "logout": "Deconnexion",
-    "alreadyAccount": "Tu as déjà un compte ?",
-    "netYetAccount": "Tu n'as pas de compte ?",
-    "firstname": "Prénom",
-    "lastname": "Nom",
     "email": "Adresse email",
     "password": "Mot de passe",
-    "phoneNotVerified": "Votre numéro de téléphone n'est pas vérifié",
-    "confirmPassword": "Confirmer votre mot de passe",
+    "rememberMe": "Se souvenir de moi",
     "login": {
-      "loginTitle": "Connecte-toi",
-      "loginWithEmailAndPassword": "Connexion",
-      "loginWithGoogle": "Se connecter avec Google",
-      "loginWithFacebook": "Se connecter avec Facebook"
+      "title": "Bienvenu",
+      "subtitle": "Connectez-vous à votre compte administrateur",
+      "submit": "Connexion"
     },
     "error": {
       "required": "*Ce champ est obligatoire !",
-      "emailInvalid": "email non valide !"
+      "emailInvalid": "email non valide !",
+      "passwordInvalid": "mot de passe non valide !"
     }
   }
 }

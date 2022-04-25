@@ -18,4 +18,4 @@ const Container: FC<Props> = ({ children }) => {
     )
 }
 
-export default Container
+export default Container;
