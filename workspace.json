@@ -2,6 +2,7 @@
   "version": 2,
   "projects": {
     "backend": "apps/backend",
+    "hls": "apps/hls",
     "shared-enums": "libs/shared/enums",
     "shared-guards": "libs/shared/guards",
     "shared-interfaces": "libs/shared/interfaces"

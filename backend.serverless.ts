@@ -30,7 +30,6 @@ const serverlessConfig: Serverless = {
       handler: `${buildDir}/main.handler`,
       url: true,
       environment: environmentVariables,
-      events: [],
     },
   },
   plugins: [ServerlessOffline, IncludeDependencies],
