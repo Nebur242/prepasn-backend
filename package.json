@@ -11,7 +11,7 @@
     "build": "nx build",
     "test": "nx test",
     "lint": "nx run-many --all --target=lint --configuration=check && nx run-many --all --target=format",
-    "lint-staged": "nx lint --fix && nx format:write --uncommitted"
+    "lint-staged": "nx run-many --all --target=lint --fix && nx run-many --all --target=format:write --uncommitted"
   },
   "engines": {
     "node": "^12.13.0 || ^14.15.0 || >=16.0.0"
