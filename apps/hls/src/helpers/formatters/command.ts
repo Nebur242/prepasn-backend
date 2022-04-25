@@ -12,6 +12,11 @@ import { OutputStreamProperties, Resolution } from '../../app/types';
 export class FfmpegCommand {
   #cmd = '';
   #masterPlaylist = `#EXTM3U\n#EXT-X-VERSION:3\n`;
+  #inputStringProperties: {
+    keyFramesInterval: number;
+    sourceAudioBitRateFormatted: number;
+    sourceWidth: number;
+  };
 
   constructor(
     private readonly source: string,
@@ -58,8 +63,11 @@ export class FfmpegCommand {
     audioRate: string,
     outputStreamProperties: OutputStreamProperties
   ) {
+    if (!this.#inputStringProperties) {
+      this.#inputStringProperties = await getInputStreamProperties(this.source);
+    }
     const { keyFramesInterval, sourceAudioBitRateFormatted, sourceWidth } =
-      await getInputStreamProperties(this.source);
+      this.#inputStringProperties;
     const staticParams = this.buildStaticParametersCommand(keyFramesInterval);
 
     const audioRateFormatted = formatAudioRate(

@@ -28,8 +28,8 @@ export const TMP_DIR = process.env.TMP_DIR || '/tmp';
 export const TASK_DEFINITION =
   process.env.TASK_DEFINITION || 'ffmpeg-node-hls-task-definition';
 export const REGION = process.env.REGION || 'us-east-1';
-export const S3_URL = process.env.S3_URL;
+export const S3_URL = process.env.S3_URL || 'https://hlsuploads.s3.amazonaws.com/video-input.mp4';
 export const CLUSTER_NAME = process.env.CLUSTER_NAME || 'ffmpeg-node-cluster2';
 export const CONTAINER_NAME =
   process.env.CONTAINER_NAME || 'ffmpeg-node-hls-container';
-export const AWS_EXECUTION_ENV = process.env.AWS_EXECUTION_ENV;
+export const AWS_EXECUTION_ENV = process.env.AWS_EXECUTION_ENV || '';
