@@ -16,6 +16,7 @@ def LambdaFunction(name: str):
         return Cloudwatch(f"{name} logs") << Lambda(f"{name} lambda")
 
 with Diagram("Cloud Architecture", filename=current_file_name, show=False):
+    # TODO: update architecture to reflect changes (ECS, SSM, ECR, ...)
     ImagesBucket = SimpleStorageServiceS3("Images S3 Bucket")
     VideosBucket = SimpleStorageServiceS3("Videos S3 Bucket")
     HlsBucket = SimpleStorageServiceS3("HLS S3 Bucket")
