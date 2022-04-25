@@ -33,9 +33,10 @@ fi
 echo "Dry-run: $dry_run_flag"
 echo "Checking if $service service is affected by a change on $branch_name branch..."
 
-if [ $branch_name = "main" ]
-then
+if [ $branch_name = "main" ]; then
   yarn nx affected:apps --base=main~1 --head=main --plain | grep $service &> /dev/null
+elif [ $branch_name = "unstaged" ]; then
+  yarn nx affected:apps --plain | grep $service &> /dev/null
 else
   yarn nx affected:apps --base=main --head=$branch_name --plain | grep $service &> /dev/null
 fi
