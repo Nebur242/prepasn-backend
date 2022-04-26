@@ -18,8 +18,6 @@ export type AppDispatch = typeof store.dispatch;
 declare global {
   type RootState = ReturnType<typeof store.getState>;
 }
-
-// Thanks to that you will have ability to use useSelector hook with state value
 declare module 'react-redux' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
   interface DefaultRootState extends RootState {}
