@@ -1,7 +1,9 @@
 import {
   CLUSTER_NAME,
   CONTAINER_NAME,
+  PUBLIC_SUBNETS_SSM_KEY,
   REGION,
+  SECURITY_GROUP_SSM_KEY,
   TASK_DEFINITION,
 } from './constants';
 import { getSourceFromS3 } from '../helpers';
@@ -13,14 +15,13 @@ const ecsClient = new ECSClient({ region: REGION });
 const ssmClient = new SSMClient({ region: REGION });
 
 export const handler: Handler = async (event: S3Event) => {
-  // TODO: get parameters by path
   // TODO: find a way to calculate this value or put it as a constant
   const ssmResults = await Promise.all([
     ssmClient.send(
-      new GetParameterCommand({ Name: '/SLS/hls-dev/PublicSubnets' })
+      new GetParameterCommand({ Name: PUBLIC_SUBNETS_SSM_KEY })
     ),
     ssmClient.send(
-      new GetParameterCommand({ Name: '/SLS/hls-dev/AppSecurityGroup' })
+      new GetParameterCommand({ Name: SECURITY_GROUP_SSM_KEY })
     ),
   ]);
 

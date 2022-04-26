@@ -12,5 +12,3 @@ export type OutputStreamProperties = {
   height: number;
   name: string;
 };
-
-export type Fn = (...args) => void;

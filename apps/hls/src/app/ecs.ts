@@ -7,7 +7,7 @@ export const bootstrap = async () => {
 
   console.log(`Going to compress video ${S3_URL}`);
   console.time('compressVideo');
-  source = await compressVideo(S3_URL);
+  source = await compressVideo(source);
   console.timeEnd('compressVideo');
   console.log(`Finished compressing video ${S3_URL}, output: ${source}`);
 

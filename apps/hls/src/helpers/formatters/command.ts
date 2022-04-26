@@ -51,8 +51,7 @@ export class FfmpegCommand {
       execSync(cmd, { stdio: 'inherit' });
       writeFileSync(`${this.target}/playlist.m3u8`, this.#masterPlaylist);
       console.log(`Done - encoded HLS is at ${this.target}/`);
-
-      return ''; // TODO: export files path
+      return this.target;
     } catch (error) {
       console.log('An error occured', error);
     }
