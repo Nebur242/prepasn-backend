@@ -102,7 +102,7 @@ jobs:
           create-repo: true
           extra-build-args: --compress
           dockerfile: apps/hls/Dockerfile
-          repo: prepa-sn-hls-service
+          repo: $FFMPEG_IMAGE_REPO_NAME
           tag: latest
 
   deploy-hls-dry-run:

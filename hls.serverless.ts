@@ -1,10 +1,16 @@
 import type { Serverless } from 'serverless/aws';
 import { readdirSync } from 'fs';
-import { excludeFileOrFolder, getBuildDir } from './libs/serverless/helpers';
+import {
+  excludeFileOrFolder,
+  getBuildDir,
+  getServerlessEnvVariables,
+} from './libs/serverless/helpers';
 import { IncludeDependencies, VpcPlugin } from './libs/serverless/plugins';
 
 const service = 'hls';
 const buildDir = getBuildDir(service);
+const { FFMPEG_IMAGE_REPO_NAME, AWS_ECR_REGISTRY_ID, REGION, STAGE } =
+  getServerlessEnvVariables(service);
 
 const serverlessConfig: Serverless = {
   service,
@@ -12,6 +18,7 @@ const serverlessConfig: Serverless = {
     name: 'aws',
     runtime: 'nodejs14.x',
     architecture: 'arm64',
+    stage: STAGE as string,
     iam: {
       role: {
         statements: [
@@ -44,8 +51,8 @@ const serverlessConfig: Serverless = {
         CONTAINER_NAME: 'hls-service-container',
         CLUSTER_NAME: 'hls-service-cluster',
         TASK_DEFINITION: 'hls-service-task-definition',
-        PUBLIC_SUBNETS_SSM_KEY: `/SLS/${service}-dev/PublicSubnets`,
-        SECURITY_GROUP_SSM_KEY: `/SLS/${service}-dev/AppSecurityGroup`,
+        PUBLIC_SUBNETS_SSM_KEY: `/SLS/${service}-${STAGE}/PublicSubnets`,
+        SECURITY_GROUP_SSM_KEY: `/SLS/${service}-${STAGE}/AppSecurityGroup`,
       },
       events: [
         {
@@ -129,8 +136,7 @@ const serverlessConfig: Serverless = {
             {
               Name: 'hls-service-container',
               Image:
-                // TODO: generate ECR image
-                '608885383035.dkr.ecr.us-east-1.amazonaws.com/ffmpeg-node-tls-2:latest',
+                `${AWS_ECR_REGISTRY_ID}.dkr.ecr.${REGION}.amazonaws.com/${FFMPEG_IMAGE_REPO_NAME}:latest`,
               cpu: 2048,
               memory: 4096,
               Essential: true,
@@ -139,7 +145,7 @@ const serverlessConfig: Serverless = {
                 Options: {
                   'awslogs-create-group': 'true', // logs:CreateLogGroup
                   'awslogs-group': '/ecs/hls-service-task-definition',
-                  'awslogs-region': 'us-east-1',
+                  'awslogs-region': REGION,
                   'awslogs-stream-prefix': 'ecs',
                 },
               },

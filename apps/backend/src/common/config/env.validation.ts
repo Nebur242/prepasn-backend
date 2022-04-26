@@ -61,7 +61,7 @@ class EnvironmentVariables {
   @IsOptional()
   @IsEnum(Environment)
   @Expose()
-  NODE_ENV: Environment;
+  NODE_ENV?: Environment;
 
   @IsString()
   @Expose()
@@ -99,17 +99,22 @@ class EnvironmentVariables {
   @IsOptional()
   @IsString()
   @Expose()
-  DB_SSL: string;
+  DB_SSL?: string;
 
   @IsOptional()
   @IsString()
   @Expose()
-  DB_LOGGING: string;
+  DB_LOGGING?: string;
 
   @IsOptional()
   @IsString()
   @Expose()
-  DB_SYNC: string;
+  DB_SYNC?: string;
+
+  @IsOptional()
+  @IsString()
+  @Expose()
+  STAGE?: string;
 }
 
 export const validate = (config: Record<string, unknown>) => {
