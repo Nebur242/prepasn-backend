@@ -1,5 +1,6 @@
 import { Spin } from 'antd';
 import { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 
 const StyledWrapper = styled.div`
@@ -17,9 +18,10 @@ const StyledWrapper = styled.div`
 `;
 
 const Loader: FC = () => {
+    const { t } = useTranslation()
     return (
         <StyledWrapper>
-            <Spin size="large" />
+            <Spin size="large" tip={t('general.loading')} />
         </StyledWrapper>
     )
 }

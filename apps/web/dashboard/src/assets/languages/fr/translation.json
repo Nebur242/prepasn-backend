@@ -1,4 +1,7 @@
 {
+  "general": {
+    "loading": "Chargement"
+  },
   "auth": {
     "logout": "Deconnexion",
     "email": "Adresse email",
