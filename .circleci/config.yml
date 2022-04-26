@@ -101,7 +101,6 @@ jobs:
           create-repo: true
           extra-build-args: --compress
           path: apps/hls/
-          registry-id: AWS_ECR_REGISTRY_ID
           repo: prepa-sn-hls-service
           tag: latest
 
