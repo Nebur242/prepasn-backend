@@ -21,6 +21,7 @@ const serverlessConfig: Serverless = {
     name: 'aws',
     runtime: 'nodejs14.x',
     architecture: 'arm64',
+    stage: environmentVariables.STAGE,
   },
   package: {
     patterns: [...readdirSync('./').map(excludeFileOrFolder), buildDir],
@@ -30,7 +31,6 @@ const serverlessConfig: Serverless = {
       handler: `${buildDir}/main.handler`,
       url: true,
       environment: environmentVariables,
-      events: [],
     },
   },
   plugins: [ServerlessOffline, IncludeDependencies],

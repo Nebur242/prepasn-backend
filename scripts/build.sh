@@ -25,9 +25,10 @@ fi
 
 echo "Building branch $branch_name if affected by a change..."
 
-if [ $branch_name = "main" ]
-then
+if [ $branch_name = "main" ]; then
   yarn nx affected --base=main~1 --head=main --target=build --configuration=$configuration
+elif [ $branch_name = "unstaged" ]; then
+  yarn nx affected --target=build --configuration=$configuration
 else
   yarn nx affected --base=main --head=$branch_name --target=build --configuration=$configuration
 fi
