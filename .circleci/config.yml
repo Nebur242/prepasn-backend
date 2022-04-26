@@ -98,6 +98,7 @@ jobs:
       - attach_workspace:
           at: ./
       - aws-ecr/build-and-push-image:
+          checkout: false
           create-repo: true
           extra-build-args: --compress
           path: apps/hls/
