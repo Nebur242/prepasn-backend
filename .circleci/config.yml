@@ -1,4 +1,3 @@
-# TODO: add hls jobs
 version: 2.1
 
 orbs:
@@ -66,6 +65,21 @@ jobs:
           name: Build and Deploy backend
           command: bash ./scripts/deploy.sh -s backend -b $PR_BRANCH_NAME
 
+  deploy-hls:
+    working_directory: ~/prepasn-hls
+    executor: aws-cli/default
+    resource_class: medium
+    environment:
+      PR_BRANCH_NAME: << pipeline.git.branch >>
+    steps:
+      - attach_workspace:
+          at: ./
+      - aws-cli/setup:
+          profile-name: default
+      - run:
+          name: Build and Deploy hls
+          command: bash ./scripts/deploy.sh -s hls -b $PR_BRANCH_NAME          
+
   deploy-backend-dry-run:
     working_directory: ~/prepasn-backend
     executor: aws-cli/default
@@ -81,6 +95,21 @@ jobs:
           name: Build backend
           command: bash ./scripts/deploy.sh -s backend -b $PR_BRANCH_NAME -d
 
+  deploy-hls-dry-run:
+    working_directory: ~/prepasn-hls
+    executor: aws-cli/default
+    resource_class: medium
+    environment:
+      PR_BRANCH_NAME: << pipeline.git.branch >>
+    steps:
+      - attach_workspace:
+          at: ./
+      - aws-cli/setup:
+          profile-name: default
+      - run:
+          name: Build hls
+          command: bash ./scripts/deploy.sh -s hls -b $PR_BRANCH_NAME -d          
+
 workflows:
   deploy-affected-apps:
     jobs:
@@ -89,5 +118,9 @@ workflows:
           <<: [*requires-prepare, *branches-only]
       - deploy-backend:
           <<: [*requires-prepare, *main-only]
+      - deploy-hls-dry-run:
+          <<: [*requires-prepare, *branches-only]
+      - deploy-hls:
+          <<: [*requires-prepare, *main-only]          
       # - deploy-frontend:
       #     <<: [*requires-prepare, *main-only]
