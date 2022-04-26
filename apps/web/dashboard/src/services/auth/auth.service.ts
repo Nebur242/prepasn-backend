@@ -13,10 +13,7 @@ export const logInFirebaseWithEmailAndPassword = async (
 ): Promise<[UserCredential | null, unknown | null]> => {
   const auth = getAuth();
   const { email, password } = infos;
-  const response = await Async(
-    signInWithEmailAndPassword(auth, email, password)
-  );
-  return response;
+  return await Async(signInWithEmailAndPassword(auth, email, password));
 };
 
 export const authUser = async (): Promise<[User | null, Error | null]> => {
