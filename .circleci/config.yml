@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   aws-cli: circleci/aws-cli@3.0.0
   node: circleci/node@5.0.2
+  aws-ecr: circleci/aws-ecr@8.1.0
 
 main-only: &main-only
   filters:
@@ -21,10 +22,6 @@ branches-only: &branches-only
       ignore: main
     tags:
       ignore: /^v.*/
-
-requires-prepare: &requires-prepare
-  requires:
-    - prepare
 
 jobs:
   prepare:
@@ -78,7 +75,7 @@ jobs:
           profile-name: default
       - run:
           name: Build and Deploy hls
-          command: bash ./scripts/deploy.sh -s hls -b $PR_BRANCH_NAME          
+          command: bash ./scripts/deploy.sh -s hls -b $PR_BRANCH_NAME
 
   deploy-backend-dry-run:
     working_directory: ~/prepasn-backend
@@ -95,6 +92,19 @@ jobs:
           name: Build backend
           command: bash ./scripts/deploy.sh -s backend -b $PR_BRANCH_NAME -d
 
+  build-and-push-hls-ecr-image:
+    executor: aws-ecr/default
+    steps:
+      - attach_workspace:
+          at: ./
+      - aws-ecr/build-and-push-image:
+          create-repo: true
+          extra-build-args: --compress
+          path: apps/hls/
+          registry-id: AWS_ECR_REGISTRY_ID
+          repo: prepa-sn-hls-service
+          tag: latest
+
   deploy-hls-dry-run:
     working_directory: ~/prepasn-hls
     executor: aws-cli/default
@@ -108,19 +118,30 @@ jobs:
           profile-name: default
       - run:
           name: Build hls
-          command: bash ./scripts/deploy.sh -s hls -b $PR_BRANCH_NAME -d          
+          command: bash ./scripts/deploy.sh -s hls -b $PR_BRANCH_NAME -d
 
 workflows:
   deploy-affected-apps:
     jobs:
       - prepare
       - deploy-backend-dry-run:
-          <<: [*requires-prepare, *branches-only]
+          requires:
+            - prepare
+          <<: [*branches-only]
       - deploy-backend:
-          <<: [*requires-prepare, *main-only]
+          requires:
+            - prepare
+          <<: [*main-only]
+      - build-and-push-hls-ecr-image:
+          requires:
+            - prepare
       - deploy-hls-dry-run:
-          <<: [*requires-prepare, *branches-only]
+          requires:
+            - build-and-push-hls-ecr-image
+          <<: [*branches-only]
       - deploy-hls:
-          <<: [*requires-prepare, *main-only]          
+          requires:
+            - build-and-push-hls-ecr-image
+          <<: [*main-only]
       # - deploy-frontend:
       #     <<: [*requires-prepare, *main-only]
