@@ -15,7 +15,6 @@ const ecsClient = new ECSClient({ region: REGION });
 const ssmClient = new SSMClient({ region: REGION });
 
 export const handler: Handler = async (event: S3Event) => {
-  // TODO: find a way to calculate this value or put it as a constant
   const ssmResults = await Promise.all([
     ssmClient.send(
       new GetParameterCommand({ Name: PUBLIC_SUBNETS_SSM_KEY })

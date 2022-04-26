@@ -6,10 +6,6 @@ import { IncludeDependencies, VpcPlugin } from './libs/serverless/plugins';
 const service = 'hls';
 const buildDir = getBuildDir(service);
 
-// TODO: generate ECR image
-// TODO: create ECR task definition
-// TODO: create ECR cluster
-// TODO: put outputs in ssm
 const serverlessConfig: Serverless = {
   service,
   provider: {
@@ -133,6 +129,7 @@ const serverlessConfig: Serverless = {
             {
               Name: 'hls-service-container',
               Image:
+                // TODO: generate ECR image
                 '608885383035.dkr.ecr.us-east-1.amazonaws.com/ffmpeg-node-tls-2:latest',
               cpu: 2048,
               memory: 4096,
