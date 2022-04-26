@@ -11,6 +11,7 @@ import Loader from '../components/loader';
 
 const StyledApp = styled.div`
   background-color: rgb(246, 246, 249);
+  height: 100vh
 `;
 
 export const App: FC = () => {

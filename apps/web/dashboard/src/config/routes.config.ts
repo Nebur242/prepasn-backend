@@ -1,7 +1,6 @@
 import { lazy } from 'react';
 const Login = lazy(() => import('../pages/auth/login.page'));
 const Dashboard = lazy(() => import('../pages/dashboard/dashboard.page'));
-// const Home = lazy(() => import('../pages/app/home.page'));
 
 export interface Route {
   path: string;
