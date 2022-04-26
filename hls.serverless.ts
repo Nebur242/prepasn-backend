@@ -9,8 +9,15 @@ import { IncludeDependencies, VpcPlugin } from './libs/serverless/plugins';
 
 const service = 'hls';
 const buildDir = getBuildDir(service);
-const { FFMPEG_IMAGE_REPO_NAME, AWS_ECR_REGISTRY_ID, REGION, STAGE } =
-  getServerlessEnvVariables(service);
+const {
+  FFMPEG_IMAGE_REPO_NAME,
+  AWS_ECR_REGISTRY_ID,
+  REGION,
+  STAGE,
+  FFMPEG_IMAGE_CPU,
+  FFMPEG_IMAGE_MEMORY,
+} = getServerlessEnvVariables(service);
+const TASK_DEFINITION_NAME = 'hls-service-task-definition';
 
 const serverlessConfig: Serverless = {
   service,
@@ -50,7 +57,7 @@ const serverlessConfig: Serverless = {
       environment: {
         CONTAINER_NAME: 'hls-service-container',
         CLUSTER_NAME: 'hls-service-cluster',
-        TASK_DEFINITION: 'hls-service-task-definition',
+        TASK_DEFINITION: TASK_DEFINITION_NAME,
         PUBLIC_SUBNETS_SSM_KEY: `/SLS/${service}-${STAGE}/PublicSubnets`,
         SECURITY_GROUP_SSM_KEY: `/SLS/${service}-${STAGE}/AppSecurityGroup`,
       },
@@ -120,7 +127,7 @@ const serverlessConfig: Serverless = {
       taskDefinition: {
         Type: 'AWS::ECS::TaskDefinition',
         Properties: {
-          Family: 'hls-service-task-definition',
+          Family: TASK_DEFINITION_NAME,
           RequiresCompatibilities: ['FARGATE'],
           RuntimePlatform: {
             CpuArchitecture: 'X86_64',
@@ -129,22 +136,21 @@ const serverlessConfig: Serverless = {
           ExecutionRoleArn: {
             Ref: 'taskExecutionRole',
           },
-          cpu: 2048,
-          memory: 4096,
+          cpu: FFMPEG_IMAGE_CPU,
+          memory: FFMPEG_IMAGE_MEMORY,
           NetworkMode: 'awsvpc',
           ContainerDefinitions: [
             {
               Name: 'hls-service-container',
-              Image:
-                `${AWS_ECR_REGISTRY_ID}.dkr.ecr.${REGION}.amazonaws.com/${FFMPEG_IMAGE_REPO_NAME}:latest`,
-              cpu: 2048,
-              memory: 4096,
+              Image: `${AWS_ECR_REGISTRY_ID}.dkr.ecr.${REGION}.amazonaws.com/${FFMPEG_IMAGE_REPO_NAME}:latest`,
+              cpu: FFMPEG_IMAGE_CPU,
+              memory: FFMPEG_IMAGE_MEMORY,
               Essential: true,
               LogConfiguration: {
                 LogDriver: 'awslogs',
                 Options: {
-                  'awslogs-create-group': 'true', // logs:CreateLogGroup
-                  'awslogs-group': '/ecs/hls-service-task-definition',
+                  'awslogs-create-group': 'true',
+                  'awslogs-group': `/ecs/${TASK_DEFINITION_NAME}`,
                   'awslogs-region': REGION,
                   'awslogs-stream-prefix': 'ecs',
                 },
