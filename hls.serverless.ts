@@ -12,12 +12,17 @@ const buildDir = getBuildDir(service);
 const {
   FFMPEG_IMAGE_REPO_NAME,
   AWS_ECR_REGISTRY_ID,
-  REGION,
+  AWS_DEFAULT_REGION,
+  AWS_ACCESS_KEY_ID,
+  AWS_SECRET_ACCESS_KEY,
   STAGE,
   FFMPEG_IMAGE_CPU,
   FFMPEG_IMAGE_MEMORY,
 } = getServerlessEnvVariables(service);
 const TASK_DEFINITION_NAME = 'hls-service-task-definition';
+const S3_BUCKET_NAME = `${service}uploads`;
+const CONTAINER_NAME = 'hls-service-container';
+const CLUSTER_NAME = 'hls-service-cluster';
 
 const serverlessConfig: Serverless = {
   service,
@@ -55,20 +60,24 @@ const serverlessConfig: Serverless = {
     [service]: {
       handler: `${buildDir}/main.handler`,
       environment: {
-        CONTAINER_NAME: 'hls-service-container',
-        CLUSTER_NAME: 'hls-service-cluster',
+        CONTAINER_NAME,
+        CLUSTER_NAME,
         TASK_DEFINITION: TASK_DEFINITION_NAME,
         PUBLIC_SUBNETS_SSM_KEY: `/SLS/${service}-${STAGE}/PublicSubnets`,
         SECURITY_GROUP_SSM_KEY: `/SLS/${service}-${STAGE}/AppSecurityGroup`,
+        S3_BUCKET_NAME,
+        AWS_ACCESS_KEY_ID,
+        AWS_SECRET_ACCESS_KEY,
+        AWS_DEFAULT_REGION,
       },
       events: [
         {
           s3: {
-            bucket: `${service}uploads`,
+            bucket: S3_BUCKET_NAME,
             event: 's3:ObjectCreated:*',
             rules: [
               {
-                prefix: 'uploads/videos/',
+                prefix: 'videos/uploads/',
               },
             ],
           },
@@ -108,6 +117,7 @@ const serverlessConfig: Serverless = {
                       'logs:CreateLogGroup',
                       'logs:CreateLogStream',
                       'logs:PutLogEvents',
+                      's3:*',
                     ],
                     Resource: '*',
                   },
@@ -142,7 +152,7 @@ const serverlessConfig: Serverless = {
           ContainerDefinitions: [
             {
               Name: 'hls-service-container',
-              Image: `${AWS_ECR_REGISTRY_ID}.dkr.ecr.${REGION}.amazonaws.com/${FFMPEG_IMAGE_REPO_NAME}:latest`,
+              Image: `${AWS_ECR_REGISTRY_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${FFMPEG_IMAGE_REPO_NAME}:latest`,
               cpu: FFMPEG_IMAGE_CPU,
               memory: FFMPEG_IMAGE_MEMORY,
               Essential: true,
@@ -151,7 +161,7 @@ const serverlessConfig: Serverless = {
                 Options: {
                   'awslogs-create-group': 'true',
                   'awslogs-group': `/ecs/${TASK_DEFINITION_NAME}`,
-                  'awslogs-region': REGION,
+                  'awslogs-region': AWS_DEFAULT_REGION,
                   'awslogs-stream-prefix': 'ecs',
                 },
               },
