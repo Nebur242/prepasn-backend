@@ -1,3 +1,4 @@
+import { tmpdir } from 'os';
 import { Resolution } from './types';
 
 export const RESOLUTIONS: Resolution[] = [
@@ -24,7 +25,7 @@ export const MISC_PARAMS = '-hide_banner -y';
 export const MAX_BITRATE_RATIO = 1.07;
 export const RATE_MONITOR_BUFFER_RATIO = 1.5;
 
-export const TMP_DIR = process.env.TMP_DIR || '/tmp';
+export const TMP_DIR = process.env.TMP_DIR || tmpdir();
 export const TASK_DEFINITION = process.env.TASK_DEFINITION;
 export const REGION = process.env.AWS_DEFAULT_REGION;
 export const S3_URL = process.env.S3_URL;
