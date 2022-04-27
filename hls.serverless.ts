@@ -18,6 +18,7 @@ const {
   STAGE,
   FFMPEG_IMAGE_CPU,
   FFMPEG_IMAGE_MEMORY,
+  CI,
 } = getServerlessEnvVariables(service);
 const TASK_DEFINITION_NAME = 'hls-service-task-definition';
 const S3_BUCKET_NAME = `${service}uploads`;
@@ -66,9 +67,9 @@ const serverlessConfig: Serverless = {
         PUBLIC_SUBNETS_SSM_KEY: `/SLS/${service}-${STAGE}/PublicSubnets`,
         SECURITY_GROUP_SSM_KEY: `/SLS/${service}-${STAGE}/AppSecurityGroup`,
         S3_BUCKET_NAME,
-        AWS_ACCESS_KEY_ID,
-        AWS_SECRET_ACCESS_KEY,
-        AWS_DEFAULT_REGION,
+        ...(CI
+          ? {}
+          : { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_DEFAULT_REGION }),
       },
       events: [
         {
