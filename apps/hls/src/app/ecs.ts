@@ -1,5 +1,11 @@
-import { cleanDirectory, compressVideo, FfmpegCommand } from '../helpers';
-import { RESOLUTIONS, S3_URL, TMP_DIR } from './constants';
+import path from 'path';
+import {
+  cleanDirectory,
+  compressVideo,
+  FfmpegCommand,
+  uploadToS3,
+} from '../helpers';
+import { RESOLUTIONS, S3_URL, TMP_DIR, S3_BUCKET_NAME } from './constants';
 
 export const bootstrap = async () => {
   let source = S3_URL;
@@ -15,9 +21,17 @@ export const bootstrap = async () => {
 
   console.time('addResolution');
   for (const resolution of RESOLUTIONS) {
-    console.log(`Going to add resolution ${resolution.resolution.split('x')[1]}p for video ${source}`);
+    console.log(
+      `Going to add resolution ${
+        resolution.resolution.split('x')[1]
+      }p for video ${source}`
+    );
     await ffmpegCommand.addResolution(resolution);
-    console.log(`Finished adding resolution ${resolution.resolution.split('x')[1]}p for video ${source}`);
+    console.log(
+      `Finished adding resolution ${
+        resolution.resolution.split('x')[1]
+      }p for video ${source}`
+    );
   }
   console.timeEnd('addResolution');
 
@@ -27,8 +41,14 @@ export const bootstrap = async () => {
   console.log(`Finished generating resolutions for video ${source}`);
   console.timeEnd('generateAdaptiveStreamingFiles');
 
-  // TODO: upload files recursively back to S3
-  // TODO: update db entry to put ffmpeg files path
+  console.time('uploadToS3 target');
+  await uploadToS3(target, S3_BUCKET_NAME, `/videos/streams/${path.parse(S3_URL).name}`);
   cleanDirectory(target);
+  console.timeEnd('uploadToS3 target');
+
+  console.time('uploadToS3 source');
+  const originalVideoPathName = new URL(S3_URL).pathname.substring(1);
+  await uploadToS3(source, S3_BUCKET_NAME, originalVideoPathName);
   cleanDirectory(source);
+  console.timeEnd('uploadToS3 source');
 };
