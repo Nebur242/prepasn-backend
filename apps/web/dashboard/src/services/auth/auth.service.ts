@@ -21,7 +21,7 @@ export const authUser = async (): Promise<[User | null, Error | null]> => {
   return await new Promise((resolve, reject) => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log('user', user);
+        // console.log('user', user);
         resolve([user, null]);
       } else {
         reject([null, new Error('User not connected')]);
