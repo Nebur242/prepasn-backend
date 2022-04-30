@@ -8,6 +8,7 @@ export class CreateGradeDto extends CreateBaseContentDto {
   @ApiProperty({
     description: 'The parent section id',
     required: false,
+    type: Number,
   })
   @IsOptional()
   @IsNumber()

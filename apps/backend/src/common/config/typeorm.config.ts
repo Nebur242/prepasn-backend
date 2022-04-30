@@ -1,5 +1,6 @@
 import { Chapter } from '@prepa-sn/backend/modules/chapters/entities/chapter.entity';
 import { Course } from '@prepa-sn/backend/modules/courses/entities/course.entity';
+import { Document } from '@prepa-sn/backend/modules/documents/entities/document.entity';
 import { Grade } from '@prepa-sn/backend/modules/grades/entities/grade.entity';
 import { Student } from '@prepa-sn/backend/modules/students/entities/student.entity';
 
@@ -13,5 +14,5 @@ export default {
   ssl: process.env.DB_SSL?.toLowerCase() === 'true',
   logging: process.env.DB_LOGGING?.toLowerCase() === 'true',
   synchronize: process.env.DB_SYNC?.toLowerCase() === 'true',
-  entities: [Student, Grade, Course, Chapter],
+  entities: [Document, Student, Grade, Course, Chapter],
 };

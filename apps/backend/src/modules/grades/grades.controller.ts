@@ -1,5 +1,4 @@
 import {
-  Controller,
   Get,
   Post,
   Body,
@@ -11,12 +10,12 @@ import {
 import { GradesService } from './grades.service';
 import { CreateGradeDto } from './dto/create-grade.dto';
 import { UpdateGradeDto } from './dto/update-grade.dto';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse } from '@nestjs/swagger';
 import { Authenticated, Roles } from '../auth/roles-auth.guard';
 import { Role } from '@prepa-sn/shared/enums';
 import { Grade } from './entities/grade.entity';
+import Controller from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
 
-@ApiTags('Grades')
 @Controller('grades')
 export class GradesController {
   constructor(private readonly gradesService: GradesService) {}
