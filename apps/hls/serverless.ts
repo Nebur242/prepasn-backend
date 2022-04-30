@@ -4,8 +4,8 @@ import {
   excludeFileOrFolder,
   getBuildDir,
   getServerlessEnvVariables,
-} from './libs/serverless/helpers';
-import { IncludeDependencies, VpcPlugin } from './libs/serverless/plugins';
+} from '@prepa-sn/sls/helpers';
+import { IncludeDependencies, VpcPlugin } from '@prepa-sn/sls/plugins';
 
 const service = 'hls';
 const buildDir = getBuildDir(service);

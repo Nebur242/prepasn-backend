@@ -62,6 +62,7 @@
     "@nrwl/nest": "13.9.6",
     "@nrwl/node": "13.9.6",
     "@nrwl/workspace": "13.9.6",
+    "@serverless/compose": "^1.0.2",
     "@types/aws-lambda": "^8.10.93",
     "@types/fluent-ffmpeg": "^2.1.20",
     "@types/jest": "27.0.2",

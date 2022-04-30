@@ -4,12 +4,12 @@ import {
   excludeFileOrFolder,
   getServerlessEnvVariables,
   getBuildDir,
-} from './libs/serverless/helpers';
+} from '@prepa-sn/sls/helpers';
 import {
   IncludeDependencies,
   ServerlessOffline,
-} from './libs/serverless/plugins';
-import { validate } from './apps/backend/src/common/config';
+} from '@prepa-sn/sls/plugins';
+import { validate } from './src/common/config';
 
 const service = 'backend';
 const environmentVariables = validate(getServerlessEnvVariables(service));
