@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as routes from '../../config/routes.config';
 import { Route } from '../../config/routes.config';
 import { Button, Layout, Menu, Image, Row, Col, Avatar } from 'antd';
@@ -12,6 +12,9 @@ import { useTranslation } from 'react-i18next';
 import Icon from '../../components/Icon';
 
 import logo from "../../assets/images/logo.png";
+import { useDispatch } from 'react-redux';
+import { fetchAll } from '../../store/features/grades';
+import { AppDispatch } from '../../store';
 
 const { Header, Sider, Content } = Layout;
 
@@ -28,6 +31,7 @@ const Dashboard = () => {
     const [collapsed, setCollapsed] = useState<boolean>(false);
     const [theme,] = React.useState<'dark' | 'light' | undefined>(undefined);
     const { t } = useTranslation();
+    const dispatch: AppDispatch = useDispatch();
 
     const toggle = () => setCollapsed(prev => !prev);
 
@@ -42,6 +46,10 @@ const Dashboard = () => {
             }
         })
     }
+
+    useEffect(() => {
+        dispatch(fetchAll());
+    }, [dispatch]);
 
     return (
         <Layout style={{ height: "100vh" }}>

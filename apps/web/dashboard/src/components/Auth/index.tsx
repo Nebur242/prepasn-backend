@@ -1,7 +1,7 @@
 import { FC, ReactNode, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../store';
-import { authenticateUser } from '../../store/features/auth/authSlice';
+import { authenticateUser } from '../../store/features/auth';
 import Loader from '../loader';
 
 type Props = {

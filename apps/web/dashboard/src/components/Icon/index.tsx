@@ -17,7 +17,9 @@ import {
     SearchOutlined,
     ArrowLeftOutlined,
     PlusOutlined,
-    CheckOutlined
+    CheckOutlined,
+    EditOutlined,
+    DeleteOutlined
 } from '@ant-design/icons';
 
 export interface IIcons {
@@ -46,6 +48,8 @@ const Icon: FC<IIcons> = ({ type, ...rest }): JSX.Element | null => {
         ArrowLeftOutlined: <ArrowLeftOutlined {...rest} />,
         PlusOutlined: <PlusOutlined {...rest} />,
         CheckOutlined: <CheckOutlined {...rest} />,
+        EditOutlined: <EditOutlined />,
+        DeleteOutlined: <DeleteOutlined />,
         default: null
     }[type]);
 

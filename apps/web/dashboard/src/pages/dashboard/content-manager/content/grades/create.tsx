@@ -1,3 +1,4 @@
+/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import {
     Button,
     Card,
@@ -14,25 +15,21 @@ import {
 } from "antd";
 import Icon from "apps/web/dashboard/src/components/Icon";
 import { CKEditor } from 'ckeditor4-react';
+import { useSelector } from "react-redux";
+
+import { LANGUAGE, Status } from '@prepa-sn/shared/enums';
+
 
 const { Title, Text } = Typography;
 const { Dragger } = Upload;
 const { Option } = Select;
 
-export interface ISelectProps {
-    label: string;
-    value: string;
-}
-
-const SELECT_OPTIONS: ISelectProps[] = [
-    {
-        value: '1',
-        label: 'Grade 1',
-    }
-]
-
 
 const CreateGrade = () => {
+    const [form] = Form.useForm();
+
+    const gradesState = useSelector((state: RootState) => state.grades);
+
     return (
         <div>
             <Row justify="space-between">
@@ -52,7 +49,7 @@ const CreateGrade = () => {
                 </Col>
             </Row>
             <Divider />
-            <Form layout="vertical">
+            <Form form={form} layout="vertical">
                 <Row gutter={10}>
                     <Col span={17}>
                         <Card>
@@ -124,7 +121,13 @@ const CreateGrade = () => {
                             <Title style={{ margin: 0, marginTop: 20 }} level={4}>INTERNATIONALIZATION</Title>
                             <Divider />
                             <Form.Item label="Langue">
-                                <Select placeholder="Langues" options={SELECT_OPTIONS} />
+                                <Select placeholder="Langues">
+                                    {
+                                        Object.values(LANGUAGE).map((lang: LANGUAGE) => (
+                                            <Option key={lang} value={lang}>{lang}</Option>
+                                        ))
+                                    }
+                                </Select>
                             </Form.Item>
 
 
@@ -133,11 +136,23 @@ const CreateGrade = () => {
                             <Title style={{ margin: 0 }} level={4}>Relations</Title>
                             <Divider />
                             <Form.Item label="Grades">
-                                <Select placeholder="Grades" options={SELECT_OPTIONS} />
+                                <Select placeholder="Grades" loading={gradesState.loading} >
+                                    {
+                                        gradesState.items.map((item) => (
+                                            <Option key={item.id} value={item.id}>{item.title}</Option>
+                                        ))
+                                    }
+                                </Select>
                             </Form.Item>
 
                             <Form.Item label="Status">
-                                <Select placeholder="Status" options={SELECT_OPTIONS} />
+                                <Select placeholder="Status" >
+                                    {
+                                        Object.values(Status).map((item) => (
+                                            <Option key={item} value={item}>{item}</Option>
+                                        ))
+                                    }
+                                </Select>
                             </Form.Item>
                         </Card>
                     </Col>

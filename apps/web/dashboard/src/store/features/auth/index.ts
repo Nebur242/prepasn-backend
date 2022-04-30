@@ -6,7 +6,7 @@ import {
   logInFirebaseWithEmailAndPassword,
 } from '../../../services/auth/auth.service';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { setUser } from '../user/userSlice';
+import { setUser } from '../user';
 
 export interface AuthInitialState {
   isLoggedIn: boolean;

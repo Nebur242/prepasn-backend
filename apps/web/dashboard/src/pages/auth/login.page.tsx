@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Typography, Card, Alert, Row, Col, Form, Input, Checkbox, Button } from 'antd';
 import { UserOutlined, LoginOutlined, LockOutlined } from '@ant-design/icons'
 import Container from '../../components/container';
-import { loginUser } from '../../store/features/auth/authSlice';
+import { loginUser } from '../../store/features/auth';
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch } from '../../store';
 import { useEffect } from 'react';
@@ -43,7 +43,7 @@ const Login = () => {
     }
 
     useEffect(() => {
-        if (authState.isLoggedIn) return navigate(routes.DASHBOARD.path);
+        if (authState.isLoggedIn) return navigate(routes.HOME.path);
     }, [authState, navigate])
 
     return (

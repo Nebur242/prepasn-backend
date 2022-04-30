@@ -1,13 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 import logger from 'redux-logger';
 
-import auth from './features/auth/authSlice';
-import user from './features/user/userSlice';
+import auth from './features/auth';
+import user from './features/user';
+import grades from './features/grades';
 
 export const store = configureStore({
   reducer: {
     auth,
     user,
+    grades,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
 });

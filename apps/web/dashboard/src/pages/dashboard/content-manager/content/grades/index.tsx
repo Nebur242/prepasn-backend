@@ -1,66 +1,58 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
-import { Button, Table } from "antd";
+import { Button, Space, Table, Tag } from "antd";
+import { Grade } from "apps/web/dashboard/src/common/interfaces/grade.interface";
 import ContentSectionWrapper from "apps/web/dashboard/src/components/content-section-wrapper";
+import Icon from "apps/web/dashboard/src/components/Icon";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const columns = [
-    {
-        title: 'Name',
-        dataIndex: 'name',
-        render: (text: string) => <Button type="link">{text}</Button>,
-    },
-    {
-        title: 'Age',
-        dataIndex: 'age',
-    },
-    {
-        title: 'Address',
-        dataIndex: 'address',
-    },
-];
 
-interface DataType {
-    key: React.Key;
-    name: string;
-    age: number;
-    address: string;
-}
-
-const data: DataType[] = [
-    {
-        key: '1',
-        name: 'John Brown',
-        age: 32,
-        address: 'New York No. 1 Lake Park',
-    },
-    {
-        key: '2',
-        name: 'Jim Green',
-        age: 42,
-        address: 'London No. 1 Lake Park',
-    },
-    {
-        key: '3',
-        name: 'Joe Black',
-        age: 32,
-        address: 'Sidney No. 1 Lake Park',
-    },
-
-];
 
 
 const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: Grade[]) => {
         console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
     },
-    getCheckboxProps: (record: DataType) => ({
-        disabled: record.name === 'Disabled User', // Column configuration not to be checked
-        name: record.name,
-    }),
+    getCheckboxProps: (record: Grade) => ({}),
 };
 
 const Grades = () => {
     const navigate = useNavigate();
+
+    const { items: grades, loading } = useSelector((state: RootState) => state.grades);
+
+    const columns = [
+        {
+            title: 'Titre',
+            dataIndex: 'title',
+            render: (text: string) => <Button type="link">{text}</Button>,
+        },
+        {
+            title: 'Status',
+            dataIndex: 'status',
+            render: (tag: string) => <Tag color="green" key={tag}>{tag}</Tag>,
+        },
+        {
+            title: 'Parent',
+            dataIndex: 'parent',
+            render: (grade: Grade) => <span>{grade?.parent?.title || '-'}</span>
+        },
+        {
+            title: 'Created At',
+            dataIndex: 'createdAt',
+        },
+        {
+            title: 'Action',
+            key: 'action',
+            render: (text: string, grade: Grade) => (
+                <Space size="middle">
+                    <Button type="primary" ghost icon={<Icon type="EditOutlined" />} onClick={() => navigate(`update/${grade.id}`)} />
+                    <Button type="primary" ghost danger icon={<Icon type="DeleteOutlined" />} />
+                </Space>
+            ),
+        }
+    ];
+
     return (
         <ContentSectionWrapper
             title="Grades"
@@ -73,8 +65,9 @@ const Grades = () => {
                     type: "checkbox",
                     ...rowSelection,
                 }}
+                loading={loading}
                 columns={columns}
-                dataSource={data}
+                dataSource={grades}
             />
         </ContentSectionWrapper>
     )

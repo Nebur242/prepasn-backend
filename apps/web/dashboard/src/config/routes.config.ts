@@ -9,15 +9,24 @@ const ContentManagerHome = lazy(
 const Home = lazy(() => import('../pages/app/home.page'));
 const Login = lazy(() => import('../pages/auth/login.page'));
 const Dashboard = lazy(() => import('../pages/dashboard'));
+
+//GRADES
 const Grades = lazy(
   () => import('../pages/dashboard/content-manager/content/grades')
 );
 const CreateGrade = lazy(
   () => import('../pages/dashboard/content-manager/content/grades/create')
 );
+const UpdateGrade = lazy(
+  () => import('../pages/dashboard/content-manager/content/grades/update')
+);
+
+//COURSES
 const Courses = lazy(
   () => import('../pages/dashboard/content-manager/content/courses')
 );
+
+//CHAPTERS
 const Chapters = lazy(
   () => import('../pages/dashboard/content-manager/content/chapters')
 );
@@ -32,7 +41,7 @@ export interface Route {
 }
 
 export const HOME: Route = {
-  path: '',
+  path: '/',
   name: 'home',
   isPublic: false,
   icon: 'HomeOutlined',
@@ -99,6 +108,15 @@ export const DASHBOARD: Route = {
           icon: 'DashboardOutlined',
           isPublic: false,
           element: CreateGrade,
+          routes: [],
+        },
+        {
+          path: 'grades/update/:id',
+          name: 'update-grade',
+          access: ['admin'],
+          icon: 'DashboardOutlined',
+          isPublic: false,
+          element: UpdateGrade,
           routes: [],
         },
         {
