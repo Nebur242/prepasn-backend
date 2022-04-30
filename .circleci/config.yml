@@ -99,7 +99,7 @@ jobs:
           at: ./
       - run:
           name: Build hls service
-          command: yarn nx run backend:build:serverless
+          command: yarn nx run hls:build:serverless
       - aws-ecr/build-and-push-image:
           checkout: false
           create-repo: true
