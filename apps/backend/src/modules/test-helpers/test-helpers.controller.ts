@@ -1,7 +1,8 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Post } from '@nestjs/common';
 import { TestOnly } from '@prepa-sn/shared/guards';
 import { FirebaseService } from '../firebase/firebase.service';
 import { CreateTestUserDto, LoginTestUserDto } from './test-helpers.dto';
+import Controller from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
 
 @Controller('test-helpers')
 @TestOnly()

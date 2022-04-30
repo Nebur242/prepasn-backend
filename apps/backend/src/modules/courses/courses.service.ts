@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { FindManyOptions } from 'typeorm';
+import { DocumentsService } from '../documents/documents.service';
 import { GradesService } from '../grades/grades.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
@@ -10,7 +11,8 @@ import { CoursesRepository } from './repositories/course.repository';
 export class CoursesService {
   constructor(
     private readonly coursesRepository: CoursesRepository,
-    private readonly gradesService: GradesService
+    private readonly gradesService: GradesService,
+    private readonly documentsService: DocumentsService
   ) {}
 
   async create(createCourseDto: CreateCourseDto): Promise<Course> {
@@ -19,7 +21,11 @@ export class CoursesService {
       grades: createCourseDto.grades.map((id) =>
         this.gradesService.createEntity({ id })
       ),
+      documents: createCourseDto.documents.map((id) =>
+        this.documentsService.createEntity({ id })
+      ),
     });
+
     return this.coursesRepository.save(course);
   }
 
@@ -31,19 +37,20 @@ export class CoursesService {
 
   async findOne(id: number): Promise<Course> {
     const course = await this.coursesRepository.findOne(id, {
-      relations: ['grades'],
+      relations: ['grades', 'documents'],
     });
     if (!course) throw new NotFoundException(`Course with id ${id} not found`);
     return course;
   }
 
   async update(id: number, updateCourseDto: UpdateCourseDto): Promise<Course> {
-    const course = await this.findOne(id);
+    const course: Course = await this.findOne(id);
 
     let updatedCourse: Course = {
       ...course,
       ...updateCourseDto,
       grades: course.grades,
+      documents: course.documents,
     };
 
     if (updateCourseDto.grades) {
@@ -51,6 +58,15 @@ export class CoursesService {
         ...updatedCourse,
         grades: updateCourseDto.grades.map((id) =>
           this.gradesService.createEntity({ id })
+        ),
+      };
+    }
+
+    if (updateCourseDto.documents) {
+      updatedCourse = {
+        ...updatedCourse,
+        documents: updateCourseDto.documents.map((id) =>
+          this.documentsService.createEntity({ id })
         ),
       };
     }

@@ -23,4 +23,21 @@ export enum Status {
   INACTIVE = 'inactive',
   DRAFT = 'draft',
   PENDING = 'pending',
+  LOADING = 'loading',
+  SUCCESS = 'success',
+  ERROR = 'error',
+}
+
+export enum FIREBASE_ERRORS {
+  WRONG_PASSWORD = 'auth/wrong-password',
+  TOO_MANY_REQUESTS = 'auth/too-many-requests',
+  EMAIL_ALREADY_USED = 'auth/email-already-in-use',
+  POPUP_CLOSED_BY_USER = 'auth/popup-closed-by-user',
+  USER_NOT_FOUND = 'auth/user-not-found',
+}
+
+export enum documentType {
+  DOCUMENT = 'document',
+  IMAGE = 'image',
+  VIDEO = 'video',
 }

@@ -1,5 +1,4 @@
 import {
-  Controller,
   Get,
   Post,
   Body,
@@ -8,15 +7,15 @@ import {
   Delete,
   ParseIntPipe,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse } from '@nestjs/swagger';
 import { Role } from '@prepa-sn/shared/enums';
 import { Authenticated, Roles } from '../auth/roles-auth.guard';
 import { ChaptersService } from './chapters.service';
 import { CreateChapterDto } from './dto/create-chapter.dto';
 import { UpdateChapterDto } from './dto/update-chapter.dto';
 import { Chapter } from './entities/chapter.entity';
+import Controller from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
 
-@ApiTags('Chapters')
 @Controller('chapters')
 export class ChaptersController {
   constructor(private readonly chaptersService: ChaptersService) {}
