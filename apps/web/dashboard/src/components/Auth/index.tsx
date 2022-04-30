@@ -17,7 +17,7 @@ const Auth: FC<Props> = ({ children }) => {
     }, [dispatch])
 
     if (auth.loading) return <Loader />;
-    return <>{children} </>;
+    return <> {children} </>;
 }
 
 export default Auth;

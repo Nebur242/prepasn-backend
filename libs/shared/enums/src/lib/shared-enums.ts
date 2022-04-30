@@ -28,6 +28,11 @@ export enum Status {
   ERROR = 'error',
 }
 
+export enum LANGUAGE {
+  FR = 'fr',
+  EN = 'en',
+}
+
 export enum FIREBASE_ERRORS {
   WRONG_PASSWORD = 'auth/wrong-password',
   TOO_MANY_REQUESTS = 'auth/too-many-requests',

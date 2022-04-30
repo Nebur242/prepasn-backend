@@ -1,4 +1,4 @@
-import { Status } from '@prepa-sn/shared/enums';
+import { LANGUAGE, Status } from '@prepa-sn/shared/enums';
 import {
   Column,
   CreateDateColumn,
@@ -24,6 +24,9 @@ export abstract class BaseContent {
 
   @Column({ type: 'enum', enum: Status, default: Status.ACTIVE })
   status: Status;
+
+  @Column({ type: 'enum', enum: LANGUAGE, default: LANGUAGE.FR })
+  language: LANGUAGE.FR;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -1,17 +1,32 @@
-import React, { lazy } from 'react';
+import { lazy } from 'react';
+
+const Welcome = lazy(() => import('../pages/app/welcome.page'));
 const ContentManager = lazy(() => import('../pages/dashboard/content-manager'));
+const ContentManagerHome = lazy(
+  () => import('../pages/dashboard/content-manager/home.page')
+);
 
 const Home = lazy(() => import('../pages/app/home.page'));
 const Login = lazy(() => import('../pages/auth/login.page'));
 const Dashboard = lazy(() => import('../pages/dashboard'));
 const Grades = lazy(
-  () => import('../pages/dashboard/content-manager/content/grades.page')
+  () => import('../pages/dashboard/content-manager/content/grades')
+);
+const CreateGrade = lazy(
+  () => import('../pages/dashboard/content-manager/content/grades/create')
+);
+const Courses = lazy(
+  () => import('../pages/dashboard/content-manager/content/courses')
+);
+const Chapters = lazy(
+  () => import('../pages/dashboard/content-manager/content/chapters')
 );
 export interface Route {
   path: string;
   name: string;
   element: React.LazyExoticComponent<() => JSX.Element>;
   isPublic: boolean;
+  icon?: string | null;
   access: string[];
   routes: Route[];
 }
@@ -20,9 +35,9 @@ export const HOME: Route = {
   path: '',
   name: 'home',
   isPublic: false,
+  icon: 'HomeOutlined',
   access: [],
-  element: Dashboard,
-
+  element: Home,
   routes: [],
 };
 
@@ -30,6 +45,7 @@ export const LOGIN: Route = {
   path: 'login',
   name: 'login',
   isPublic: true,
+  icon: null,
   access: [],
   element: Login,
   routes: [],
@@ -40,14 +56,16 @@ export const DASHBOARD: Route = {
   name: 'admin',
   access: ['admin'],
   isPublic: false,
+  icon: 'DashboardOutlined',
   element: Dashboard,
   routes: [
     {
       path: '',
       name: 'home',
       access: ['admin'],
+      icon: 'DashboardOutlined',
       isPublic: false,
-      element: Home,
+      element: Welcome,
       routes: [],
     },
     {
@@ -55,17 +73,61 @@ export const DASHBOARD: Route = {
       name: 'content-manager',
       access: ['admin'],
       isPublic: false,
+      icon: 'InboxOutlined',
       element: ContentManager,
       routes: [
         {
           path: '',
+          name: 'content-manager-home',
+          access: ['admin'],
+          isPublic: false,
+          element: ContentManagerHome,
+          routes: [],
+        },
+        {
+          path: 'grades',
           name: 'grades',
           access: ['admin'],
           isPublic: false,
           element: Grades,
           routes: [],
         },
+        {
+          path: 'grades/create',
+          name: 'create-grade',
+          access: ['admin'],
+          icon: 'DashboardOutlined',
+          isPublic: false,
+          element: CreateGrade,
+          routes: [],
+        },
+        {
+          path: 'courses',
+          name: 'courses',
+          access: ['admin'],
+          isPublic: false,
+          element: Courses,
+          routes: [],
+        },
+        {
+          path: 'chapters',
+          name: 'chapters',
+          access: ['admin'],
+          isPublic: false,
+          element: Chapters,
+          routes: [],
+        },
       ],
     },
   ],
+};
+
+export const NOT_FOUND: Route = {
+  path: '*',
+  name: 'not-found',
+  isPublic: false,
+  icon: null,
+  access: [],
+  element: Dashboard,
+  routes: [],
 };

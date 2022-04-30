@@ -1,7 +1,4 @@
 {
-  "general": {
-    "loading": "Chargement"
-  },
   "auth": {
     "logout": "Deconnexion",
     "email": "Adresse email",
@@ -17,5 +14,17 @@
       "emailInvalid": "email non valide !",
       "passwordInvalid": "mot de passe non valide !"
     }
+  },
+  "general": {
+    "loading": "chargement"
+  },
+  "menu": {
+    "home": "Accueil",
+    "users": "Utilisateurs",
+    "roles": "Rôles",
+    "permissions": "Permissions",
+    "settings": "Paramètres",
+    "content-manager": "Content Manager",
+    "grades": "Sections"
   }
 }

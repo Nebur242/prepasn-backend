@@ -34,14 +34,16 @@ export interface LoginDto {
 const Login = () => {
     const navigate = useNavigate();
     const dispatch: AppDispatch = useDispatch();
-    const { t } = useTranslation()
-    const { login: loginState, ...authState } = useSelector((state: RootState) => state.auth)
+    const { t } = useTranslation();
+
+    const { login: loginState, ...authState } = useSelector((state: RootState) => state.auth);
+
     const login = (values: LoginDto) => {
         return dispatch(loginUser(values));
     }
 
     useEffect(() => {
-        if (authState.isLoggedIn) return navigate(routes.DASHBOARD.path)
+        if (authState.isLoggedIn) return navigate(routes.DASHBOARD.path);
     }, [authState, navigate])
 
     return (
@@ -92,7 +94,6 @@ const Login = () => {
                                         <Alert message={loginState.error} type="error" showIcon />
                                     </Form.Item>
                                 }
-
 
                                 <Form.Item >
                                     <Button loading={loginState.loading} icon={<LoginOutlined />} size='middle' block type="primary" htmlType="submit">
