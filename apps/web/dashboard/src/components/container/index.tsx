@@ -9,13 +9,11 @@ const StyledContainer = styled.div`
 `;
 
 type Props = {
-    children: React.ReactNode;
+  children: React.ReactNode;
 };
 
 const Container: FC<Props> = ({ children }) => {
-    return (
-        <StyledContainer>{children}</StyledContainer>
-    )
-}
+  return <StyledContainer>{children}</StyledContainer>;
+};
 
 export default Container;

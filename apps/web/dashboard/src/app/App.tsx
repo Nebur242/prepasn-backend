@@ -1,17 +1,17 @@
 import { Suspense, FC } from 'react';
 import styled from 'styled-components';
-import { ConfigProvider } from "antd"
+import { ConfigProvider } from 'antd';
 import Routes from '../routes';
 import 'moment/locale/fr';
 import locale from 'antd/lib/locale/fr_FR';
 import '../translations';
-import "../config/firebase.config"
+import '../config/firebase.config';
 import Auth from '../components/auth';
 import Loader from '../components/loader';
 
 const StyledApp = styled.div`
   background-color: rgb(246, 246, 249);
-  height: 100vh
+  height: 100vh;
 `;
 
 export const App: FC = () => {
@@ -26,6 +26,6 @@ export const App: FC = () => {
       </ConfigProvider>
     </Suspense>
   );
-}
+};
 
 export default App;

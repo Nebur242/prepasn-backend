@@ -2,7 +2,7 @@
 // When building for production, this file is replaced with `environment.prod.ts`.
 
 export const environment = {
-  production: false as boolean,
+  production: false,
   firebase: {
     apiKey: 'AIzaSyAaEHzN1WARoUbB5QOH7Gkgrjgu1r7FrN0',
     authDomain: 'prepasndev.firebaseapp.com',
