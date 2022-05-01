@@ -5,6 +5,7 @@
     "hls": "apps/hls",
     "shared-enums": "libs/shared/enums",
     "shared-guards": "libs/shared/guards",
-    "shared-interfaces": "libs/shared/interfaces"
+    "shared-interfaces": "libs/shared/interfaces",
+    "web-dashboard": "apps/web/dashboard"
   }
 }

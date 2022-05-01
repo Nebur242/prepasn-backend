@@ -2,7 +2,7 @@ import { FC, ReactNode, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../store';
 import { authenticateUser } from '../../store/features/auth/authSlice';
-import Loader from '../loader';
+import Loader from '../Loader';
 
 type Props = {
   children: ReactNode;
