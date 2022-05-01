@@ -5,10 +5,7 @@ import {
   getServerlessEnvVariables,
   getBuildDir,
 } from '@prepa-sn/sls/helpers';
-import {
-  IncludeDependencies,
-  ServerlessOffline,
-} from '@prepa-sn/sls/plugins';
+import { IncludeDependencies, ServerlessOffline } from '@prepa-sn/sls/plugins';
 import { validate } from './src/common/config';
 
 const service = 'backend';

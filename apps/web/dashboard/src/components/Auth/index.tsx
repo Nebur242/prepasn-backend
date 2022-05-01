@@ -1,23 +1,23 @@
-import { FC, ReactNode, useEffect } from 'react'
+import { FC, ReactNode, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../store';
 import { authenticateUser } from '../../store/features/auth/authSlice';
 import Loader from '../loader';
 
 type Props = {
-    children: ReactNode;
+  children: ReactNode;
 };
 
 const Auth: FC<Props> = ({ children }) => {
-    const dispatch: AppDispatch = useDispatch();
-    const auth = useSelector((state: RootState) => state.auth);
+  const dispatch: AppDispatch = useDispatch();
+  const auth = useSelector((state: RootState) => state.auth);
 
-    useEffect(() => {
-        dispatch(authenticateUser());
-    }, [dispatch])
+  useEffect(() => {
+    dispatch(authenticateUser());
+  }, [dispatch]);
 
-    if (auth.loading) return <Loader />;
-    return <>{children} </>;
-}
+  if (auth.loading) return <Loader />;
+  return <>{children} </>;
+};
 
 export default Auth;

@@ -2,29 +2,25 @@ import { FC, Suspense } from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import { Route } from '../../config/routes.config';
-import Loader from '../loader';
+import Loader from '../Loader';
 import * as routes from '../../config/routes.config';
 
-
 type Props = {
-    route: Route
-}
+  route: Route;
+};
 
 const AppRoute: FC<Props> = ({ route }) => {
-    const auth = useSelector((state: RootState) => state.auth);
-    const { element: Component, isPublic } = route;
+  const auth = useSelector((state: RootState) => state.auth);
+  const { element: Component, isPublic } = route;
 
-    if (
-        !isPublic
-        && !auth.isLoggedIn
-        && !auth.loading
-    ) return <Navigate to={routes.LOGIN.path} />
+  if (!isPublic && !auth.isLoggedIn && !auth.loading)
+    return <Navigate to={routes.LOGIN.path} />;
 
-    return (
-        <Suspense fallback={<Loader />}>
-            <Component />
-        </Suspense>
-    )
-}
+  return (
+    <Suspense fallback={<Loader />}>
+      <Component />
+    </Suspense>
+  );
+};
 
 export default AppRoute;

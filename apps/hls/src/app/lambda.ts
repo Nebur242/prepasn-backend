@@ -16,12 +16,8 @@ const ssmClient = new SSMClient({ region: REGION });
 
 export const handler: Handler = async (event: S3Event) => {
   const ssmResults = await Promise.all([
-    ssmClient.send(
-      new GetParameterCommand({ Name: PUBLIC_SUBNETS_SSM_KEY })
-    ),
-    ssmClient.send(
-      new GetParameterCommand({ Name: SECURITY_GROUP_SSM_KEY })
-    ),
+    ssmClient.send(new GetParameterCommand({ Name: PUBLIC_SUBNETS_SSM_KEY })),
+    ssmClient.send(new GetParameterCommand({ Name: SECURITY_GROUP_SSM_KEY })),
   ]);
 
   const [publicSubnets, securityGroup] = ssmResults.map(

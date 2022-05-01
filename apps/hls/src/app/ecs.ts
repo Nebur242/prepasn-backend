@@ -42,7 +42,11 @@ export const bootstrap = async () => {
   console.timeEnd('generateAdaptiveStreamingFiles');
 
   console.time('uploadToS3 target');
-  await uploadToS3(target, S3_BUCKET_NAME, `/videos/streams/${path.parse(S3_URL).name}`);
+  await uploadToS3(
+    target,
+    S3_BUCKET_NAME,
+    `/videos/streams/${path.parse(S3_URL).name}`
+  );
   cleanDirectory(target);
   console.timeEnd('uploadToS3 target');
 

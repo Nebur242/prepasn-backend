@@ -5,7 +5,10 @@ import { FirebaseAuthStrategy } from './firebase-auth.strategy';
 import { RolesGuard } from './roles-auth.guard';
 
 @Module({
-  imports: [PassportModule.register({ defaultStrategy: 'firebase-jwt' }), FirebaseModule],
+  imports: [
+    PassportModule.register({ defaultStrategy: 'firebase-jwt' }),
+    FirebaseModule,
+  ],
   providers: [FirebaseAuthStrategy, RolesGuard],
   exports: [PassportModule, RolesGuard],
 })
