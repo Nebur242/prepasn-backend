@@ -29,7 +29,6 @@ jobs:
     executor:
       name: node/default
       tag: '14.19'
-    resource_class: medium
     environment:
       PR_BRANCH_NAME: << pipeline.git.branch >>
     steps:
@@ -50,7 +49,7 @@ jobs:
   deploy-backend:
     working_directory: ~/prepasn-backend
     executor: aws-cli/default
-    resource_class: medium
+    resource_class: large
     environment:
       PR_BRANCH_NAME: << pipeline.git.branch >>
     steps:
