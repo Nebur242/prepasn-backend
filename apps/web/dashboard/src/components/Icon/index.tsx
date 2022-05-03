@@ -22,12 +22,17 @@ import {
     DeleteOutlined,
     SettingOutlined,
     EllipsisOutlined,
-    ExclamationCircleOutlined
+    ExclamationCircleOutlined,
+    FileTextOutlined,
+    CloudUploadOutlined
 } from '@ant-design/icons';
 
 export interface IIcons {
     type: string | null | undefined;
     className?: string;
+    fontSize?: number | string;
+    width?: number | string;
+    height?: number | string;
 }
 
 const Icon: FC<IIcons> = ({ type, ...rest }): JSX.Element | null => {
@@ -56,6 +61,8 @@ const Icon: FC<IIcons> = ({ type, ...rest }): JSX.Element | null => {
         SettingOutlined: <SettingOutlined {...rest} />,
         EllipsisOutlined: <EllipsisOutlined {...rest} />,
         ExclamationCircleOutlined: <ExclamationCircleOutlined {...rest} />,
+        FileTextOutlined: <FileTextOutlined {...rest} />,
+        CloudUploadOutlined: <CloudUploadOutlined {...rest} />,
         default: null
     }[type]);
 

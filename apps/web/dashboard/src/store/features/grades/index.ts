@@ -1,10 +1,9 @@
 import { Status } from '@prepa-sn/shared/enums';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import { Omit } from '@reduxjs/toolkit/dist/tsHelpers';
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { AxiosError } from 'axios';
 import { Grade } from '../../../common/interfaces/grade.interface';
 import { axiosBaseQuery } from '../../../config/api.config';
-import { findAll } from '../../../services/grades';
 
 export interface GradesInitialState {
   loading: boolean;
@@ -20,21 +19,6 @@ export const initialState: GradesInitialState = {
   grades: [],
 };
 
-export const fetchAll = createAsyncThunk(
-  'grades/findAll',
-  async (_, { rejectWithValue, fulfillWithValue }) => {
-    try {
-      const response = await findAll();
-      console.log('response', response);
-      return fulfillWithValue(response.data);
-    } catch (err) {
-      const error = err as AxiosError;
-      console.log('error', error);
-      return rejectWithValue(error.message || 'Grades not found');
-    }
-  }
-);
-
 export const gradesApi = createApi({
   reducerPath: 'gradesApi',
   baseQuery: axiosBaseQuery(),
@@ -45,15 +29,19 @@ export const gradesApi = createApi({
     findAllGrades: build.query<Grade[], void>({
       query: () => ({ url: '/grades', method: 'GET' }),
     }),
-    createGrade: build.mutation<Grade, Grade>({
-      query: (grade: Grade) => ({
+    createGrade: build.mutation<Grade, Omit<Grade, 'id'>>({
+      query: (grade: Omit<Grade, 'id'>) => ({
         url: '/grades',
         method: 'POST',
         data: grade,
       }),
     }),
-    updateGrade: build.mutation<Grade, string>({
-      query: (id: string) => ({ url: `/grades/${id}`, method: 'PATCH' }),
+    updateGrade: build.mutation<Grade, Partial<Grade> & Pick<Grade, 'id'>>({
+      query: ({ id, ...rest }) => ({
+        url: `/grades/${id}`,
+        method: 'PATCH',
+        data: rest,
+      }),
     }),
     deleteGrade: build.mutation<Grade, number>({
       query: (id: number) => ({ url: `/grades/${id}`, method: 'DELETE' }),
@@ -74,23 +62,7 @@ const gradesSlice = createSlice({
   name: 'grades',
   initialState,
   reducers: {},
-  extraReducers: {
-    [`${fetchAll.fulfilled}`]: (state, action) => {
-      state.grades = action.payload;
-      state.loading = false;
-      state.status = Status.SUCCESS;
-    },
-    [`${fetchAll.rejected}`]: (state, action) => {
-      state.error = action.payload;
-      state.loading = false;
-      state.status = Status.ERROR;
-    },
-    [`${fetchAll.pending}`]: (state) => {
-      state.loading = true;
-      state.error = '';
-      state.status = Status.PENDING;
-    },
-  },
+  extraReducers: {},
 });
 
 const { reducer } = gradesSlice;

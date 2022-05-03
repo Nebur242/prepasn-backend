@@ -71,12 +71,15 @@ export const displayAuthError = (error: AuthError) => {
 
 export const loginUser = createAsyncThunk(
   'auth/login/emailPassword',
-  async (loginDto: LoginDto, { rejectWithValue, dispatch }) => {
+  async (
+    loginDto: LoginDto,
+    { rejectWithValue, dispatch, fulfillWithValue }
+  ) => {
     try {
       const response = await logInFirebaseWithEmailAndPassword(loginDto);
       const user = response.user.toJSON();
       dispatch(setUser(user));
-      return user;
+      return fulfillWithValue(user);
     } catch (err) {
       console.log('error', err);
       const error = err as AuthError;

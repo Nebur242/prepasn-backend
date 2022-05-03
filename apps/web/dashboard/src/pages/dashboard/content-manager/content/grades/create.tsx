@@ -1,5 +1,5 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import {
     Button,
     Card,
@@ -20,6 +20,7 @@ import { CKEditor } from 'ckeditor4-react';
 import { LANGUAGE, Status } from '@prepa-sn/shared/enums';
 import { useCreateGradeMutation, useFindAllGradesQuery } from "apps/web/dashboard/src/store/features/grades";
 import { Grade } from "apps/web/dashboard/src/common/interfaces/grade.interface";
+import { Document } from 'apps/web/dashboard/src/common/interfaces/documents.interface';
 
 
 const { Title, Text } = Typography;
@@ -27,6 +28,8 @@ const { Option } = Select;
 
 
 const CreateGrade = () => {
+
+
     const [form] = Form.useForm();
 
     const {
@@ -107,7 +110,13 @@ const CreateGrade = () => {
                             <Row gutter={10}>
                                 <Col span={12}>
                                     <Form.Item label="Image" name="featuredImage">
-                                        <AppUpload />
+                                        <AppUpload
+                                            multiple={false}
+                                            onSelect={(documents: Document[]) => {
+                                                form.setFieldsValue({
+                                                    featuredImage: documents[0]?.id
+                                                })
+                                            }} />
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>
@@ -115,7 +124,14 @@ const CreateGrade = () => {
                                         label="Video"
                                         name="videoUrl"
                                     >
-                                        <AppUpload />
+                                        <AppUpload
+                                            multiple={false}
+                                            onSelect={(documents: Document[]) => {
+                                                form.setFieldsValue({
+                                                    videoUrl: documents[0]?.id
+                                                })
+                                            }}
+                                        />
                                     </Form.Item>
                                 </Col>
                             </Row>

@@ -1,7 +1,7 @@
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import styled from "styled-components";
 import Icon from "../Icon";
-import { Button, Modal, Row, Col, Card, Space, Tabs, Upload, Input, Form, Typography, Divider, Spin } from "antd";
+import { Button, Modal, Row, Col, Card, Space, Tabs, Upload, Input, Form, Typography, Divider, Spin, Image, Checkbox } from "antd";
 import { Document } from "../../common/interfaces/documents.interface";
 import { UploadChangeParam } from "antd/lib/upload";
 import { UploadFile } from "antd/lib/upload/interface";
@@ -10,8 +10,7 @@ import { useFindAllDocumentsQuery } from "../../store/features/documents";
 const { TabPane } = Tabs;
 const { Meta } = Card;
 const { Dragger } = Upload;
-const { Title, Text } = Typography
-
+const { Title, Text, Paragraph } = Typography;
 
 const ButtonWrapper = styled.div`
     width: 100%;
@@ -21,15 +20,26 @@ const ButtonWrapper = styled.div`
 
 `;
 
-const UploadComponent: FC = () => {
+type DocumentsContentProps = {
+    onSelect?: (documents: Document[]) => void;
+    multiple?: boolean;
+    selectedDocuments?: Document[];
+}
+
+const UploadComponent: FC<DocumentsContentProps> = ({ onSelect, multiple = false }) => {
+
     const [showDocumentsMoal, setShowDocumentsMoal] = useState<boolean>(false);
     const [showUploadMoal, setShowUploadsMoal] = useState<boolean>(false);
+    const [selectedDocuments, setSelectedDocuments] = useState<Document[]>([]);
+    const [hasSelected, setHasSelected] = useState<boolean>(false);
 
     const openDocumentsMoal = () => setShowDocumentsMoal(true);
     const closeDocumentsMoal = () => setShowDocumentsMoal(false);
 
     const openUploadMoal = () => setShowUploadsMoal(true);
     const closeUploadMoal = () => setShowUploadsMoal(false);
+
+
 
     return (
         <>
@@ -43,6 +53,25 @@ const UploadComponent: FC = () => {
                     band files
                 </p>
             </ButtonWrapper>
+            {selectedDocuments.length > 0 && hasSelected && <div>
+                {
+                    <Upload
+                        onRemove={(file: UploadFile<Document>) => {
+                            const newSelectedDocuments = selectedDocuments.filter(d => `${d.id}` !== `${file.uid}`);
+                            setSelectedDocuments(newSelectedDocuments);
+                            onSelect && onSelect(newSelectedDocuments);
+                        }}
+                        defaultFileList={
+                            selectedDocuments.map((document: Document) => ({
+                                url: document.url,
+                                uid: document.id,
+                                name: document.title,
+                                status: 'done',
+                            }) as unknown as UploadFile<Document>)
+                        } />
+                }
+            </div>
+            }
             <Modal
                 width="60vw"
                 centered
@@ -54,11 +83,27 @@ const UploadComponent: FC = () => {
                 <Row justify="end">
                     <Button onClick={openUploadMoal} type="primary" icon={<Icon type="PlusOutlined" />}>Add more assets</Button>
                 </Row>
-                <DocumentsContent />
+                <DocumentsContent
+                    multiple={multiple}
+                    onSelect={
+                        (documents: Document[]) => setSelectedDocuments(documents)
+                    }
+                    selectedDocuments={selectedDocuments}
+                />
                 <Divider />
                 <Row justify="space-between">
                     <Button onClick={closeDocumentsMoal} type="primary" ghost danger>Cancel</Button>
-                    <Button onClick={closeDocumentsMoal} type="primary" icon={<Icon type="PlusOutlined" />}>Select</Button>
+                    <Button
+                        onClick={() => {
+                            closeDocumentsMoal();
+                            setHasSelected(true);
+                            onSelect && onSelect(selectedDocuments);
+                        }}
+                        type="primary"
+                        icon={<Icon type="PlusOutlined" />}
+                    >
+                        Select
+                    </Button>
                 </Row>
             </Modal>
             <Modal footer={null} width="40vw" centered title="Add new assets" visible={showUploadMoal} onCancel={closeUploadMoal}>
@@ -70,11 +115,35 @@ const UploadComponent: FC = () => {
 }
 
 
-const DocumentsContent: FC = () => {
+
+
+const DocumentsContent: FC<DocumentsContentProps> = ({ multiple = false, onSelect, selectedDocuments }) => {
     const {
         data: documents = [],
         isLoading: documentsLoading,
     } = useFindAllDocumentsQuery();
+    // const [selectedDocuments, setSelectedDocuments] = useState<Document[]>([]);
+
+    const handleSelect = (document: Document, checked: boolean) => {
+        if (checked) {
+            if (multiple) {
+                const selected: Document[] = [...(selectedDocuments || []), document];
+                onSelect && onSelect(selected);
+            } else {
+                onSelect && onSelect([document]);
+            }
+        }
+
+        if (!checked && multiple) {
+            const selected: Document[] = selectedDocuments?.filter(d => d.id !== document.id) || [];
+            onSelect && onSelect(selected);
+        }
+
+        if (!checked && !multiple) {
+            onSelect && onSelect([]);
+        }
+
+    }
 
     return (
         <div>
@@ -93,10 +162,31 @@ const DocumentsContent: FC = () => {
                                         <Col span={6} key={item.id}>
                                             <Card
                                                 cover={
-                                                    <img
-                                                        alt="example"
-                                                        src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                                                    />
+                                                    <div style={{
+                                                        position: "relative",
+                                                    }}>
+                                                        <Row style={{
+                                                            padding: '10px',
+                                                            position: 'absolute',
+                                                            zIndex: 10,
+                                                            width: '100%',
+
+                                                        }} justify="space-between" align="middle">
+                                                            <Checkbox
+                                                                checked={
+                                                                    selectedDocuments?.some(
+                                                                        d => d.id === item.id
+                                                                    )
+                                                                }
+                                                                onChange={e => handleSelect(item, e.target.checked)}
+                                                            />
+                                                            <Button icon={<Icon type="EditOutlined" />} />
+                                                        </Row>
+                                                        <Image
+                                                            alt="example"
+                                                            src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                                                        />
+                                                    </div>
                                                 }
                                                 actions={[
                                                     <Icon type="DeleteOutlined" key="delete" />,
@@ -129,9 +219,31 @@ const UploadDocuments: FC = () => {
     const [showUpload, setShowUpload] = useState<boolean>(true);
 
     const handleUploadChange = (uploadChangeParam: UploadChangeParam) => {
+        console.log(uploadChangeParam);
+        const seen = new Set();
+        const cuurentFileList = [...fileList, ...uploadChangeParam.fileList];
+        const newFileList = cuurentFileList.filter(el => {
+            const duplicate = seen.has(el.uid);
+            seen.add(el);
+            return !duplicate;
+        });
+        setFileList(newFileList);
         setShowUpload(false);
-        setFileList(prev => [...prev, ...uploadChangeParam.fileList]);
     }
+
+    const handleRemove = (file: UploadFile) => {
+        setFileList(prev => prev.filter(item => item.uid !== file.uid));
+    }
+
+    const handleRequest = () => {
+        console.log('handleRequest');
+    }
+
+    useEffect(() => {
+        if (fileList.length < 1) {
+            setShowUpload(true);
+        }
+    }, [fileList]);
 
     return (
         <div>
@@ -140,7 +252,7 @@ const UploadDocuments: FC = () => {
                     <Row>
                         {showUpload &&
                             <Col span={24}>
-                                <Dragger onChange={handleUploadChange}>
+                                <Dragger customRequest={handleRequest} multiple onChange={handleUploadChange}>
                                     <p className="ant-upload-drag-icon">
                                         <Icon type="InboxOutlined" />
                                     </p>
@@ -157,6 +269,7 @@ const UploadDocuments: FC = () => {
                                 <UploadFiles
                                     files={fileList}
                                     onAddClick={() => setShowUpload(true)}
+                                    onRemoveClick={handleRemove}
                                 />
                             </Col>
                         }
@@ -171,11 +284,16 @@ const UploadDocuments: FC = () => {
                     </Form>
                 </TabPane>
             </Tabs>
-            <Divider />
-            <Row justify="space-between">
-                <Button>Cancel</Button>
-                {fileList.length > 0 && <Button type="primary">Upload {fileList.length} assets to the library</Button>}
-            </Row>
+            {
+                fileList.length > 0 && <>
+                    <Divider />
+                    <Row justify="space-between">
+                        <Button onClick={() => setShowUpload(false)}>Cancel</Button>
+                        <Button icon={<Icon type="CloudUploadOutlined" />} type="primary">Upload {fileList.length} assets to the library</Button>
+                    </Row>
+                </>
+            }
+
         </div>
     )
 }
@@ -183,10 +301,10 @@ const UploadDocuments: FC = () => {
 type UploadFilesProps = {
     files: UploadFile[];
     onAddClick?: () => void;
+    onRemoveClick: (file: UploadFile) => void;
 }
 
-const UploadFiles: FC<UploadFilesProps> = ({ files, onAddClick }) => {
-    // console.log('files', files);
+const UploadFiles: FC<UploadFilesProps> = ({ files, onAddClick, onRemoveClick }) => {
     return (
         <div>
             <Row justify="space-between">
@@ -207,8 +325,85 @@ const UploadFiles: FC<UploadFilesProps> = ({ files, onAddClick }) => {
                     </Col>
                 }
             </Row>
+            <Row gutter={[10, 10]} style={{ marginTop: 20 }}>
+                {files.map((item: UploadFile) => {
+                    return (
+                        <Col span={8} key={item.uid}>
+                            <UploadFileComponent onDeleteClick={(file) => onRemoveClick(file)} file={item} />
+                        </Col>
+                    )
+                })}
+            </Row>
         </div>
     )
+}
+
+
+type UploadFileProps = {
+    file: UploadFile;
+    onDeleteClick: (file: UploadFile) => void;
+}
+
+export const UploadFileComponent: FC<UploadFileProps> = ({ file, onDeleteClick }) => {
+    const imageMimeType = /image\/(png|jpg|jpeg)/i;
+    const videoMimeType = /video\/(mp4|avi)/i;
+    const audioMimeType = /audio\/(mp3|wav)/i;
+    const documentMimeType = /application\/(pdf|doc|docx|vnd.openxmlformats-officedocument.wordprocessingml.document)/i;
+    const [url, setUrl] = useState<string>('');
+
+
+    useEffect(() => {
+        const fileReader: FileReader = new FileReader();
+        let isCancel = false;
+        if (file) {
+            fileReader.readAsDataURL(file.originFileObj as File);
+            fileReader.onload = () => {
+                if (fileReader.result && !isCancel) {
+                    setUrl(fileReader.result as string);
+                }
+            }
+        }
+        return () => {
+            isCancel = true;
+            if (fileReader && fileReader.readyState === 1) {
+                fileReader.abort();
+            }
+        }
+    }, [file]);
+
+    return <Card
+        cover={
+            file?.type?.match(imageMimeType) ?
+                <Image
+                    alt={file.name}
+                    src={url}
+                    height={100}
+                /> :
+                file?.type?.match(documentMimeType) ?
+                    <Row align="middle" justify="center" style={{ height: 100 }}>
+                        <Icon width={'30px'} height={"30px"} type="FileTextOutlined" />
+                    </Row> :
+                    file?.type?.match(videoMimeType) ?
+                        <p style={{ height: 100 }} >video</p> :
+                        file?.type?.match(audioMimeType) ?
+                            <p style={{ height: 100 }} >audio</p> :
+                            <p style={{ height: 100 }} >unknown</p>
+        }
+        actions={[
+            <Button type="text" onClick={() => onDeleteClick(file)}>
+                <Icon type="DeleteOutlined" key="delete" />
+            </Button>,
+            <Icon type="EditOutlined" key="edit" />,
+            <Icon type="EllipsisOutlined" key="ellipsis" />,
+        ]}
+    >
+        <Meta description={
+            <Paragraph ellipsis={{
+                rows: 1,
+            }}> {file.name} </Paragraph>
+        } />
+    </Card>
+
 }
 
 export default UploadComponent;
