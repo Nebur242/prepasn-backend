@@ -19,7 +19,10 @@ import {
     PlusOutlined,
     CheckOutlined,
     EditOutlined,
-    DeleteOutlined
+    DeleteOutlined,
+    SettingOutlined,
+    EllipsisOutlined,
+    ExclamationCircleOutlined
 } from '@ant-design/icons';
 
 export interface IIcons {
@@ -48,8 +51,11 @@ const Icon: FC<IIcons> = ({ type, ...rest }): JSX.Element | null => {
         ArrowLeftOutlined: <ArrowLeftOutlined {...rest} />,
         PlusOutlined: <PlusOutlined {...rest} />,
         CheckOutlined: <CheckOutlined {...rest} />,
-        EditOutlined: <EditOutlined />,
-        DeleteOutlined: <DeleteOutlined />,
+        EditOutlined: <EditOutlined {...rest} />,
+        DeleteOutlined: <DeleteOutlined {...rest} />,
+        SettingOutlined: <SettingOutlined {...rest} />,
+        EllipsisOutlined: <EllipsisOutlined {...rest} />,
+        ExclamationCircleOutlined: <ExclamationCircleOutlined {...rest} />,
         default: null
     }[type]);
 

@@ -3,16 +3,26 @@ import logger from 'redux-logger';
 
 import auth from './features/auth';
 import user from './features/user';
-import grades from './features/grades';
+import { gradesApi } from './features/grades';
+import { documentsApi } from './features/documents';
+import { setupListeners } from '@reduxjs/toolkit/dist/query';
 
 export const store = configureStore({
   reducer: {
     auth,
     user,
-    grades,
+    [gradesApi.reducerPath]: gradesApi.reducer,
+    [documentsApi.reducerPath]: documentsApi.reducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware()
+      .concat(logger)
+      .concat(gradesApi.middleware)
+      .concat(documentsApi.middleware),
+  devTools: process.env['NODE_ENV'] !== 'production',
 });
+
+setupListeners(store.dispatch);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

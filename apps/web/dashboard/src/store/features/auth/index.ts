@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Status } from '@prepa-sn/shared/enums';
 import { LoginDto } from '../../../pages/auth/login.page';
 import {
@@ -7,6 +6,7 @@ import {
 } from '../../../services/auth/auth.service';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { setUser } from '../user';
+import { AuthError } from 'firebase/auth';
 
 export interface AuthInitialState {
   isLoggedIn: boolean;
@@ -32,38 +32,72 @@ const initialState: AuthInitialState = {
   },
 };
 
+export const displayAuthError = (error: AuthError) => {
+  switch (error.code) {
+    case 'auth/wrong-password':
+      return 'Wrong password';
+    case 'auth/user-not-found':
+      return 'User not found';
+    case 'auth/user-disabled':
+      return 'User disabled';
+    case 'auth/invalid-email':
+      return 'Invalid email';
+    case 'auth/email-already-in-use':
+      return 'Email already in use';
+    case 'auth/weak-password':
+      return 'Weak password';
+    case 'auth/operation-not-allowed':
+      return 'Operation not allowed';
+    case 'auth/invalid-verification-code':
+      return 'Invalid verification code';
+    case 'auth/account-exists-with-different-credential':
+      return 'Account exists with different credential';
+    case 'auth/requires-recent-login':
+      return 'Requires recent login';
+    case 'auth/too-many-requests':
+      return 'Too many requests';
+    case 'auth/network-request-failed':
+      return 'Network request failed';
+    case 'auth/invalid-credential':
+      return 'Invalid credential';
+    case 'auth/invalid-user-token':
+      return 'Invalid user token';
+    case 'auth/invalid-password':
+      return 'Invalid password';
+    default:
+      return 'Error';
+  }
+};
+
 export const loginUser = createAsyncThunk(
   'auth/login/emailPassword',
   async (loginDto: LoginDto, { rejectWithValue, dispatch }) => {
     try {
       const response = await logInFirebaseWithEmailAndPassword(loginDto);
-      const [result, error] = response;
-      console.log('response', response, result, error);
-      if (!result?.user || error) throw error;
-      const user: object = result.user.toJSON();
+      const user = response.user.toJSON();
       dispatch(setUser(user));
       return user;
-    } catch (error: any) {
-      console.log('error', error);
-      return rejectWithValue(error?.message || 'Error');
+    } catch (err) {
+      console.log('error', err);
+      const error = err as AuthError;
+      const message = displayAuthError(error);
+      return rejectWithValue(message || 'Error');
     }
   }
 );
 
 export const authenticateUser = createAsyncThunk(
   'auth/authenticate',
-  async (_, { rejectWithValue, dispatch }) => {
+  async (_, { rejectWithValue, dispatch, fulfillWithValue }) => {
     try {
       const response = await authUser();
-      const [result, error] = response;
-      if (!result || error) {
-        throw new Error('User not connected');
-      }
-      const user: object = result.toJSON();
+      if (!response) throw new Error('User not connected');
+      const user = response.toJSON();
       dispatch(setUser(user));
-      return user;
-    } catch (error: any) {
-      return rejectWithValue(error?.message || 'User not found');
+      return fulfillWithValue(user);
+    } catch (error) {
+      const err = error as Error;
+      return rejectWithValue(err.message || 'User not found');
     }
   }
 );

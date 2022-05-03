@@ -26,6 +26,7 @@ export class GradesService {
   findAll(filter: FindManyOptions<Grade> = {}): Promise<Grade[]> {
     return this.gradesRepository.find({
       ...filter,
+      relations: ['parent'],
     });
   }
 

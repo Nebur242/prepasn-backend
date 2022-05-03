@@ -44,7 +44,7 @@ const Login = () => {
 
     useEffect(() => {
         if (authState.isLoggedIn) return navigate(routes.HOME.path);
-    }, [authState, navigate])
+    }, [authState, navigate]);
 
     return (
         <StyledWrapper>

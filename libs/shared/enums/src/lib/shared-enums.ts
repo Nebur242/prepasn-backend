@@ -26,6 +26,8 @@ export enum Status {
   LOADING = 'loading',
   SUCCESS = 'success',
   ERROR = 'error',
+  DELETED = 'deleted',
+  PUBLISHED = 'published',
 }
 
 export enum LANGUAGE {
