@@ -1,0 +1,26 @@
+diff --git a/node_modules/@wanews/nx-vite/src/executors/build/executor.js b/node_modules/@wanews/nx-vite/src/executors/build/executor.js
+index 283472c..4e18e90 100644
+--- a/node_modules/@wanews/nx-vite/src/executors/build/executor.js
++++ b/node_modules/@wanews/nx-vite/src/executors/build/executor.js
+@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
+ const tslib_1 = require("tslib");
+ const tree_1 = require("nx/src/config/tree");
+ const vite_1 = require("vite");
++const path_1 = require("path");
++
+ function runExecutor(_options, context) {
+     return tslib_1.__awaiter(this, void 0, void 0, function* () {
+         if (!context.projectName) {
+@@ -10,8 +12,12 @@ function runExecutor(_options, context) {
+         }
+         const tree = new tree_1.FsTree(context.cwd, context.isVerbose);
+         const appRoot = context.workspace.projects[context.projectName].root;
++        const outputPath = path_1.join(context.root, _options.outputPath);
+         yield (0, vite_1.build)({
+             root: tree.root + '/' + appRoot,
++            build: {
++                outDir: outputPath,
++            },
+         });
+         return {
+             success: true,
