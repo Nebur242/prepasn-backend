@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Status } from '@prepa-sn/shared/enums';
 import { LoginDto } from '../../../pages/auth/login.page';
 import {
@@ -43,7 +42,7 @@ export const loginUser = createAsyncThunk(
       const user: object = result.user.toJSON();
       dispatch(setUser(user));
       return user;
-    } catch (error: any) {
+    } catch (error) {
       console.log('error', error);
       return rejectWithValue(error?.message || 'Error');
     }
@@ -62,7 +61,7 @@ export const authenticateUser = createAsyncThunk(
       const user: object = result.toJSON();
       dispatch(setUser(user));
       return user;
-    } catch (error: any) {
+    } catch (error) {
       return rejectWithValue(error?.message || 'User not found');
     }
   }
