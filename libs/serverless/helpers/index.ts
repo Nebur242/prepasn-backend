@@ -29,8 +29,7 @@ export function excludeFileOrFolder(fileOrFolder: string) {
 }
 
 export function getBuildDir(service: string) {
-  const appWorkspacePath = getAppWorkspacePath(service);
-  return `../../dist/${appWorkspacePath}`;
+  return './dist';
 }
 
 export function getServerlessEnvVariables(
