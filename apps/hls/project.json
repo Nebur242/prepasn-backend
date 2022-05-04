@@ -12,6 +12,7 @@
         "platform": "node",
         "target": ["node14.19"],
         "minify": true,
+        "legalComments": "external",
         "define": {
           "process.env.FLUENTFFMPEG_COV": false
         },

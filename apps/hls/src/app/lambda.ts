@@ -7,7 +7,12 @@ import {
   TASK_DEFINITION,
 } from './constants';
 import { getSourceFromS3 } from '../helpers';
-import { ECSClient, RunTaskCommand } from '@aws-sdk/client-ecs';
+import {
+  AssignPublicIp,
+  ECSClient,
+  LaunchType,
+  RunTaskCommand,
+} from '@aws-sdk/client-ecs';
 import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm';
 import { Handler, S3Event } from 'aws-lambda';
 
@@ -28,12 +33,12 @@ export const handler: Handler = async (event: S3Event) => {
     new RunTaskCommand({
       taskDefinition: TASK_DEFINITION,
       cluster: CLUSTER_NAME,
-      launchType: 'FARGATE',
+      launchType: LaunchType.FARGATE,
       networkConfiguration: {
         awsvpcConfiguration: {
-          subnets: publicSubnets.split(','),
-          assignPublicIp: 'ENABLED',
           securityGroups: [securityGroup],
+          subnets: publicSubnets.split(','),
+          assignPublicIp: AssignPublicIp.ENABLED,
         },
       },
       overrides: {
