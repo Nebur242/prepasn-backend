@@ -8,7 +8,7 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/apps/web/dashboard"
+        "outputPath": "apps/web/dashboard/dist"
       },
       "configurations": {
         "development": {},

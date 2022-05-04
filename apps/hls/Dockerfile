@@ -4,6 +4,6 @@ FROM node:18-alpine AS node
 COPY --from=ffmpeg / /
 
 WORKDIR /code
-COPY ../../dist/apps/hls ./
+COPY ./dist ./
 
 CMD [ "node", "main.js" ]

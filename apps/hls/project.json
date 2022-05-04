@@ -8,7 +8,7 @@
       "outputs": ["{options.outfile}"],
       "options": {
         "entryPoints": ["apps/hls/src/main.ts"],
-        "outfile": "dist/apps/hls/main.js",
+        "outfile": "apps/hls/dist/main.js",
         "platform": "node",
         "target": ["node14.19"],
         "minify": true,
