@@ -21,7 +21,7 @@ const serverlessConfig: Serverless = {
     stage: environmentVariables.STAGE,
   },
   package: {
-    patterns: [...readdirSync('./').map(excludeFileOrFolder), buildDir],
+    patterns: [...readdirSync('./').map(excludeFileOrFolder), `${buildDir}/**`],
   },
   functions: {
     [service]: {

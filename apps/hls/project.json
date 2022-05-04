@@ -28,7 +28,7 @@
       "executor": "@wanews/nx-esbuild:serve",
       "options": {
         "entryPoints": ["apps/hls/src/main.ts"],
-        "outfile": "dist/apps/hls/main.js",
+        "outfile": "dist/main.js",
         "platform": "node",
         "define": {
           "process.env.FLUENTFFMPEG_COV": false

@@ -55,7 +55,7 @@ const serverlessConfig: Serverless = {
     },
   },
   package: {
-    patterns: [...readdirSync('./').map(excludeFileOrFolder), buildDir],
+    patterns: [...readdirSync('./').map(excludeFileOrFolder), `${buildDir}/**`],
   },
   functions: {
     [service]: {
