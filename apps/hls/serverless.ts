@@ -5,7 +5,7 @@ import {
   getBuildDir,
   getServerlessEnvVariables,
 } from '@prepa-sn/sls/helpers';
-import { IncludeDependencies, VpcPlugin } from '@prepa-sn/sls/plugins';
+import { VpcPlugin } from '@prepa-sn/sls/plugins';
 
 const service = 'hls';
 const buildDir = getBuildDir(service);
@@ -178,11 +178,8 @@ const serverlessConfig: Serverless = {
       },
     },
   },
-  plugins: [VpcPlugin, IncludeDependencies],
+  plugins: [VpcPlugin],
   custom: {
-    includeDependencies: {
-      enableCaching: true,
-    },
     vpcConfig: {
       createNatGateway: 1,
       createParameters: true,
