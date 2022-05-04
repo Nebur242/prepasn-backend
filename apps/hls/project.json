@@ -10,6 +10,7 @@
         "entryPoints": ["apps/hls/src/main.ts"],
         "outfile": "dist/apps/hls/main.js",
         "platform": "node",
+        "target": ["node14.19"],
         "minify": true,
         "define": {
           "process.env.FLUENTFFMPEG_COV": false
