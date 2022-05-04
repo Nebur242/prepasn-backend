@@ -4,33 +4,36 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/node:webpack",
-      "outputs": ["{options.outputPath}"],
+      "executor": "@wanews/nx-esbuild:build",
+      "outputs": ["{options.outfile}"],
       "options": {
-        "outputPath": "dist/apps/hls",
-        "main": "apps/hls/src/main.ts",
-        "tsConfig": "apps/hls/tsconfig.app.json"
+        "entryPoints": ["apps/hls/src/main.ts"],
+        "outfile": "dist/apps/hls/main.js",
+        "platform": "node",
+        "target": ["node14.19"],
+        "minify": true,
+        "define": {
+          "process.env.FLUENTFFMPEG_COV": false
+        },
+        "tsconfig": "apps/hls/tsconfig.app.json"
       },
       "configurations": {
         "serverless": {
-          "main": "apps/hls/src/serverless.ts",
-          "optimization": true,
-          "extractLicenses": true,
-          "inspect": false,
-          "generatePackageJson": true,
-          "progress": true
+          "entryPoints": ["apps/hls/src/serverless.ts"]
         },
-        "production": {
-          "optimization": true,
-          "extractLicenses": true,
-          "inspect": false
-        }
+        "production": {}
       }
     },
     "serve": {
-      "executor": "@nrwl/node:node",
+      "executor": "@wanews/nx-esbuild:serve",
       "options": {
-        "buildTarget": "hls:build"
+        "entryPoints": ["apps/hls/src/main.ts"],
+        "outfile": "dist/apps/hls/main.js",
+        "platform": "node",
+        "define": {
+          "process.env.FLUENTFFMPEG_COV": false
+        },
+        "tsconfig": "apps/hls/tsconfig.app.json"
       }
     },
     "lint": {
