@@ -118,8 +118,38 @@ const serverlessConfig: Serverless = {
                       'logs:CreateLogGroup',
                       'logs:CreateLogStream',
                       'logs:PutLogEvents',
-                      's3:*',
                     ],
+                    Resource: '*',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+      taskRole: {
+        Type: 'AWS::IAM::Role',
+        Properties: {
+          AssumeRolePolicyDocument: {
+            Statement: [
+              {
+                Effect: 'Allow',
+                Principal: {
+                  Service: ['ecs-tasks.amazonaws.com'],
+                },
+                Action: ['sts:AssumeRole'],
+              },
+            ],
+          },
+          Path: '/',
+          Policies: [
+            {
+              PolicyName: 'AmazonECSTaskRolePolicy',
+              PolicyDocument: {
+                Statement: [
+                  {
+                    Effect: 'Allow',
+                    Action: ['s3:*'],
                     Resource: '*',
                   },
                 ],
@@ -143,6 +173,9 @@ const serverlessConfig: Serverless = {
           RuntimePlatform: {
             CpuArchitecture: 'X86_64',
             OperatingSystemFamily: 'LINUX',
+          },
+          TaskRoleArn: {
+            Ref: 'taskRole',
           },
           ExecutionRoleArn: {
             Ref: 'taskExecutionRole',
