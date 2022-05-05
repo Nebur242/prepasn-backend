@@ -54,7 +54,7 @@ export const bootstrap = async () => {
   await uploadToS3(
     source,
     S3_BUCKET_NAME,
-    `/videos/compressed/${path.parse(S3_URL).base}`
+    `/videos/compressed/${path.parse(S3_URL).base.split('?')[0]}`
   );
   cleanDirectory(source);
   console.timeEnd('uploadToS3 source');
