@@ -149,9 +149,7 @@ const serverlessConfig: Serverless = {
                 Statement: [
                   {
                     Effect: 'Allow',
-                    Action: [
-                      's3:*',
-                    ],
+                    Action: ['s3:*'],
                     Resource: '*',
                   },
                 ],
