@@ -5,6 +5,7 @@ import {
   REGION,
   SECURITY_GROUP_SSM_KEY,
   TASK_DEFINITION,
+  S3_BUCKET_NAME,
 } from './constants';
 import { getSourceFromS3 } from '../helpers';
 import {
@@ -49,6 +50,10 @@ export const handler: Handler = async (event: S3Event) => {
               {
                 name: 'S3_URL',
                 value: await getSourceFromS3(event),
+              },
+              {
+                name: 'S3_BUCKET_NAME',
+                value: S3_BUCKET_NAME,
               },
             ],
           },
