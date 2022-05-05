@@ -51,8 +51,11 @@ export const bootstrap = async () => {
   console.timeEnd('uploadToS3 target');
 
   console.time('uploadToS3 source');
-  const originalVideoPathName = new URL(S3_URL).pathname.substring(1);
-  await uploadToS3(source, S3_BUCKET_NAME, originalVideoPathName);
+  await uploadToS3(
+    source,
+    S3_BUCKET_NAME,
+    `/videos/compressed/${path.parse(S3_URL).base}`
+  );
   cleanDirectory(source);
   console.timeEnd('uploadToS3 source');
 };
