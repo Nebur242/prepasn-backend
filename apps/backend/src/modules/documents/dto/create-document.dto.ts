@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { documentType } from '@prepa-sn/shared/enums';
-import { IsDefined, IsEnum, IsString, IsUrl } from 'class-validator';
+import { IsDefined, IsNumber, IsString, IsUrl } from 'class-validator';
+import { IUploadFile } from '../../uploads/uploads.service';
 
-export class CreateDocumentDto {
+export class CreateDocumentDto implements Partial<IUploadFile> {
   @ApiProperty({
     description: 'The document title',
     required: true,
@@ -12,12 +12,21 @@ export class CreateDocumentDto {
   title: string;
 
   @ApiProperty({
-    description: 'The document type',
+    description: 'The document url',
     required: true,
   })
   @IsDefined()
-  @IsEnum(documentType)
-  type: documentType;
+  @IsString()
+  @IsUrl()
+  publicUrl: string;
+
+  @ApiProperty({
+    description: 'The document url',
+    required: true,
+  })
+  @IsDefined()
+  @IsNumber()
+  size: number;
 
   @ApiProperty({
     description: 'The document url',
@@ -25,6 +34,21 @@ export class CreateDocumentDto {
   })
   @IsDefined()
   @IsString()
-  @IsUrl()
-  url: string;
+  mimetype: string;
+
+  @ApiProperty({
+    description: 'The document url',
+    required: true,
+  })
+  @IsDefined()
+  @IsString()
+  filename: string;
+
+  @IsDefined()
+  @IsString()
+  originalname: string;
+
+  @IsDefined()
+  @IsString()
+  encoding: string;
 }

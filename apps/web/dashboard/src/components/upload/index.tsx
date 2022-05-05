@@ -63,7 +63,7 @@ const UploadComponent: FC<DocumentsContentProps> = ({ onSelect, multiple = false
                         }}
                         defaultFileList={
                             selectedDocuments.map((document: Document) => ({
-                                url: document.url,
+                                url: document.publicUrl,
                                 uid: document.id,
                                 name: document.title,
                                 status: 'done',
@@ -155,7 +155,7 @@ const DocumentsContent: FC<DocumentsContentProps> = ({ multiple = false, onSelec
                     </Space>
                     {documentsLoading && <Spin />}
                     {!documentsLoading &&
-                        <Row style={{ marginTop: 20 }}>
+                        <Row gutter={[10, 10]} style={{ marginTop: 20 }}>
                             {
                                 documents.map((item: Document) => {
                                     return (
@@ -184,7 +184,7 @@ const DocumentsContent: FC<DocumentsContentProps> = ({ multiple = false, onSelec
                                                         </Row>
                                                         <Image
                                                             alt="example"
-                                                            src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                                                            src={item.publicUrl}
                                                         />
                                                     </div>
                                                 }

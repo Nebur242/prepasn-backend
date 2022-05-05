@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { initializeApp, cert, getApps } from 'firebase-admin/app';
+import { getStorage } from 'firebase-admin/storage';
 import { getAuth } from 'firebase-admin/auth';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom, map } from 'rxjs';
@@ -9,15 +10,27 @@ import { CatchFirebaseException } from './decorators/firebase-exception.decorato
 
 @Injectable()
 export class FirebaseService {
+  private readonly firebaseApp = null;
   constructor(
     private readonly httpService: HttpService,
     private readonly configService: ConfigService
   ) {
     if (getApps().length === 0) {
-      initializeApp({
+      this.firebaseApp = initializeApp({
         credential: cert(configService.get('config.firebase')),
+        storageBucket: configService.get('config.firebase.storageBucket'),
       });
     }
+  }
+
+  async uploadFile(file: Express.Multer.File) {
+    const storage = getStorage();
+    const bucket = storage.bucket();
+    const uploaded = await bucket.upload(`./${file.path}`, {
+      destination: `${file.path}`,
+      public: true,
+    });
+    return uploaded[0].metadata.mediaLink;
   }
 
   @CatchFirebaseException()
