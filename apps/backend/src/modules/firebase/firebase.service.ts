@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { initializeApp, cert, getApps } from 'firebase-admin/app';
-import { getStorage } from 'firebase-admin/storage';
 import { getAuth } from 'firebase-admin/auth';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom, map } from 'rxjs';
@@ -23,15 +22,15 @@ export class FirebaseService {
     }
   }
 
-  async uploadFile(file: Express.Multer.File) {
-    const storage = getStorage();
-    const bucket = storage.bucket();
-    const uploaded = await bucket.upload(`./${file.path}`, {
-      destination: `${file.path}`,
-      public: true,
-    });
-    return uploaded[0].metadata.mediaLink;
-  }
+  // async uploadFile(file: Express.Multer.File) {
+  //   const storage = getStorage();
+  //   const bucket = storage.bucket();
+  //   const uploaded = await bucket.upload(`./${file.path}`, {
+  //     destination: `${file.path}`,
+  //     public: true,
+  //   });
+  //   return uploaded[0].metadata.mediaLink;
+  // }
 
   @CatchFirebaseException()
   verifyToken(token: string, checkRevoked = false) {

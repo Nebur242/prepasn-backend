@@ -1,11 +1,11 @@
 import { FC, useEffect, useState } from "react"
 import styled from "styled-components";
 import Icon from "../Icon";
-import { Button, Modal, Row, Col, Card, Space, Tabs, Upload, Input, Form, Typography, Divider, Spin, Image, Checkbox } from "antd";
+import { Button, Modal, Row, Col, Card, Space, Tabs, Upload, Input, Form, Typography, Divider, Spin, Image, Checkbox, message } from "antd";
 import { Document } from "../../common/interfaces/documents.interface";
 import { UploadChangeParam } from "antd/lib/upload";
 import { UploadFile } from "antd/lib/upload/interface";
-import { useFindAllDocumentsQuery } from "../../store/features/documents";
+import { useFindAllDocumentsQuery, useUploadDocumentsMutation, useUploadsMutation } from "../../store/features/documents";
 
 const { TabPane } = Tabs;
 const { Meta } = Card;
@@ -38,7 +38,6 @@ const UploadComponent: FC<DocumentsContentProps> = ({ onSelect, multiple = false
 
     const openUploadMoal = () => setShowUploadsMoal(true);
     const closeUploadMoal = () => setShowUploadsMoal(false);
-
 
 
     return (
@@ -115,14 +114,11 @@ const UploadComponent: FC<DocumentsContentProps> = ({ onSelect, multiple = false
 }
 
 
-
-
 const DocumentsContent: FC<DocumentsContentProps> = ({ multiple = false, onSelect, selectedDocuments }) => {
     const {
         data: documents = [],
         isLoading: documentsLoading,
     } = useFindAllDocumentsQuery();
-    // const [selectedDocuments, setSelectedDocuments] = useState<Document[]>([]);
 
     const handleSelect = (document: Document, checked: boolean) => {
         if (checked) {
@@ -183,6 +179,7 @@ const DocumentsContent: FC<DocumentsContentProps> = ({ multiple = false, onSelec
                                                             <Button icon={<Icon type="EditOutlined" />} />
                                                         </Row>
                                                         <Image
+                                                            height={100}
                                                             alt="example"
                                                             src={item.publicUrl}
                                                         />
@@ -217,6 +214,12 @@ const DocumentsContent: FC<DocumentsContentProps> = ({ multiple = false, onSelec
 const UploadDocuments: FC = () => {
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [showUpload, setShowUpload] = useState<boolean>(true);
+    const [uploads, {
+        isLoading,
+        isSuccess,
+    }] = useUploadsMutation();
+
+    const { refetch } = useFindAllDocumentsQuery();
 
     const handleUploadChange = (uploadChangeParam: UploadChangeParam) => {
         console.log(uploadChangeParam);
@@ -239,11 +242,34 @@ const UploadDocuments: FC = () => {
         console.log('handleRequest');
     }
 
+
+    const uploadFiles = () => {
+        if (fileList.length < 1) {
+            return;
+        }
+        const documents = new FormData();
+        fileList.forEach(file => {
+            documents.append('documents', file?.originFileObj as File);
+        });
+        const files = fileList.map(file => file.originFileObj as File);
+
+        uploads(files);
+    }
+
     useEffect(() => {
         if (fileList.length < 1) {
             setShowUpload(true);
         }
     }, [fileList]);
+
+    useEffect(() => {
+        if (isSuccess) {
+            setFileList([]);
+            refetch();
+            message.success('Uploaded successfully');
+        }
+    }, [isSuccess, refetch]);
+
 
     return (
         <div>
@@ -288,8 +314,8 @@ const UploadDocuments: FC = () => {
                 fileList.length > 0 && <>
                     <Divider />
                     <Row justify="space-between">
-                        <Button onClick={() => setShowUpload(false)}>Cancel</Button>
-                        <Button icon={<Icon type="CloudUploadOutlined" />} type="primary">Upload {fileList.length} assets to the library</Button>
+                        <Button disabled={isLoading} onClick={() => setShowUpload(false)}>Cancel</Button>
+                        <Button onClick={uploadFiles} loading={isLoading} icon={<Icon type="CloudUploadOutlined" />} type="primary">Upload {fileList.length} assets to the library</Button>
                     </Row>
                 </>
             }

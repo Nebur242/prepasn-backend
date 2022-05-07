@@ -6,10 +6,7 @@ import {
   Param,
   Delete,
   ParseIntPipe,
-  UploadedFiles,
-  UseInterceptors,
 } from '@nestjs/common';
-import { FilesInterceptor } from '@nestjs/platform-express';
 import { ApiOkResponse } from '@nestjs/swagger';
 import Controller from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
 import { Authenticated } from '../auth/roles-auth.guard';
@@ -17,13 +14,7 @@ import { DocumentsService } from './documents.service';
 import { CreateDocumentDto } from './dto/create-document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
 import { Document } from './entities/document.entity';
-import { diskStorage } from 'multer';
 
-function getDatePath(date: Date): string {
-  return (
-    date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate()
-  );
-}
 @Controller('documents')
 @Authenticated()
 export class DocumentsController {
@@ -35,21 +26,12 @@ export class DocumentsController {
     return this.documentsService.create(createDocumentDto);
   }
 
-  @Post('/uploads')
-  @UseInterceptors(
-    FilesInterceptor('documents', 20, {
-      storage: diskStorage({
-        destination: './uploads/' + getDatePath(new Date()),
-        filename: (req, file, cb) => {
-          cb(null, file.originalname);
-        },
-      }),
-    })
-  )
-  createWithUploads(
-    @UploadedFiles() documents: Array<Express.Multer.File>
+  @Post('bulk')
+  @ApiOkResponse({ type: [CreateDocumentDto], isArray: true })
+  bulkCreate(
+    @Body() createDocumentDtos: CreateDocumentDto[]
   ): Promise<Document[]> {
-    return this.documentsService.createWithUploads(documents);
+    return this.documentsService.bulkCreate(createDocumentDtos);
   }
 
   @Get()

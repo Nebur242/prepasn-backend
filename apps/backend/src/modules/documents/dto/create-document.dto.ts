@@ -1,8 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsDefined, IsNumber, IsString, IsUrl } from 'class-validator';
-import { IUploadFile } from '../../uploads/uploads.service';
 
-export class CreateDocumentDto implements Partial<IUploadFile> {
+export class CreateDocumentDto {
   @ApiProperty({
     description: 'The document title',
     required: true,

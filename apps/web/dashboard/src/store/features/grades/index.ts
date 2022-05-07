@@ -22,12 +22,23 @@ export const initialState: GradesInitialState = {
 export const gradesApi = createApi({
   reducerPath: 'gradesApi',
   baseQuery: axiosBaseQuery(),
+  tagTypes: ['Grades'],
   endpoints: (build) => ({
     findOneGrade: build.query<Grade, string>({
       query: (id: string) => ({ url: `/grades/${id}`, method: 'GET' }),
     }),
     findAllGrades: build.query<Grade[], void>({
       query: () => ({ url: '/grades', method: 'GET' }),
+      providesTags: (result = [], error, arg) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const final: any[] = [
+          {
+            type: 'Grades',
+          },
+        ];
+        const other = result.map((grade) => ({ type: 'Grades', id: grade.id }));
+        return [...final, ...other];
+      },
     }),
     createGrade: build.mutation<Grade, Omit<Grade, 'id'>>({
       query: (grade: Omit<Grade, 'id'>) => ({
@@ -35,6 +46,7 @@ export const gradesApi = createApi({
         method: 'POST',
         data: grade,
       }),
+      invalidatesTags: ['Grades'],
     }),
     updateGrade: build.mutation<Grade, Partial<Grade> & Pick<Grade, 'id'>>({
       query: ({ id, ...rest }) => ({
@@ -42,9 +54,13 @@ export const gradesApi = createApi({
         method: 'PATCH',
         data: rest,
       }),
+      invalidatesTags: (result, error, arg) => [
+        { type: 'Grades', id: arg.id as number },
+      ],
     }),
     deleteGrade: build.mutation<Grade, number>({
       query: (id: number) => ({ url: `/grades/${id}`, method: 'DELETE' }),
+      invalidatesTags: (result, error, arg) => [{ type: 'Grades', id: arg }],
     }),
   }),
 });

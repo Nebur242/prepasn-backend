@@ -5,9 +5,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { IUploadFile } from '../../uploads/uploads.service';
 @Entity()
-export class Document implements Partial<IUploadFile> {
+export class Document {
   @PrimaryGeneratedColumn()
   id: number;
 

@@ -28,14 +28,11 @@ const { Option } = Select;
 
 
 const CreateGrade = () => {
-
-
     const [form] = Form.useForm();
 
     const {
         data: grades = [],
         isLoading: gradesloading,
-        refetch
     } = useFindAllGradesQuery();
 
     const [
@@ -63,13 +60,12 @@ const CreateGrade = () => {
         if (isSuccess) {
             message.success("La section a été crée avec succès");
             form.resetFields();
-            refetch();
         }
 
         if (isError) {
             message.error("Une erreur est survenue");
         }
-    }, [isSuccess, isError, form, refetch]);
+    }, [isSuccess, isError, form]);
 
 
     return (
@@ -109,12 +105,12 @@ const CreateGrade = () => {
                             </Form.Item>
                             <Row gutter={10}>
                                 <Col span={12}>
-                                    <Form.Item label="Image" name="featuredImage">
+                                    <Form.Item label="Image" name="image">
                                         <AppUpload
                                             multiple={false}
                                             onSelect={(documents: Document[]) => {
                                                 form.setFieldsValue({
-                                                    featuredImage: documents[0]?.id
+                                                    image: documents[0]?.id
                                                 })
                                             }} />
                                     </Form.Item>
@@ -122,13 +118,13 @@ const CreateGrade = () => {
                                 <Col span={12}>
                                     <Form.Item
                                         label="Video"
-                                        name="videoUrl"
+                                        name="video"
                                     >
                                         <AppUpload
                                             multiple={false}
                                             onSelect={(documents: Document[]) => {
                                                 form.setFieldsValue({
-                                                    videoUrl: documents[0]?.id
+                                                    video: documents[0]?.id
                                                 })
                                             }}
                                         />

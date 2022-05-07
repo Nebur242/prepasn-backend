@@ -1,9 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Status } from '@prepa-sn/shared/enums';
-import { Document } from '../../../common/interfaces/documents.interface';
-import { createApi } from '@reduxjs/toolkit/dist/query/react';
+import {
+  createApi,
+  FetchBaseQueryError,
+} from '@reduxjs/toolkit/dist/query/react';
 import { axiosBaseQuery } from '../../../config/api.config';
 import { Omit } from '@reduxjs/toolkit/dist/tsHelpers';
+import { uploadFileToFirebase } from '@prepa-sn/shared/services';
+import { Document } from '@prepa-sn/shared/interfaces';
 
 export interface DocumentsInitialState {
   loading: boolean;
@@ -36,6 +40,43 @@ export const documentsApi = createApi({
         data: document,
       }),
     }),
+    uploadDocuments: build.mutation<Document[], { documents: FormData }>({
+      query: ({ documents }) => ({
+        url: '/documents/uploads',
+        method: 'POST',
+        data: documents,
+      }),
+    }),
+    uploads: build.mutation<Document[], File[]>({
+      async queryFn(files, _queryApi, _extraOptions, fetchWithBQ) {
+        try {
+          const documents = await Promise.all(
+            files.map(async (file: File): Promise<Partial<Document>> => {
+              const uploaded: Partial<Document> = await uploadFileToFirebase(
+                file
+              );
+              return {
+                ...uploaded,
+              };
+            })
+          );
+
+          const result = await fetchWithBQ({
+            url: '/documents/bulk',
+            method: 'POST',
+            data: documents,
+          });
+
+          return result.data
+            ? { data: result.data as Document[] }
+            : { error: result.error as FetchBaseQueryError };
+        } catch (error) {
+          console.log(error);
+          return { error: error as FetchBaseQueryError };
+        }
+      },
+    }),
+
     updateDocument: build.mutation<Document, Document>({
       query: ({ id, ...rest }) => ({
         url: `/documents/${id}`,
@@ -55,6 +96,8 @@ export const {
   useFindOneDocumentQuery,
   useFindAllDocumentsQuery,
   useUpdateDocumentMutation,
+  useUploadDocumentsMutation,
+  useUploadsMutation,
   usePrefetch,
 } = documentsApi;
 

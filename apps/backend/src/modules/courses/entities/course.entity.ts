@@ -7,6 +7,7 @@ import { Document } from '../../documents/entities/document.entity';
 @Entity()
 export class Course extends BaseContent {
   //has many grades
+
   @ManyToMany(() => Grade, (grade) => grade.courses)
   @JoinTable()
   grades: Grade[];

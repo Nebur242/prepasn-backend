@@ -9,9 +9,7 @@ import { GradesModule } from '../modules/grades/grades.module';
 import { CoursesModule } from '../modules/courses/courses.module';
 import { DocumentsModule } from '../modules/documents/documents.module';
 import { ChaptersModule } from '../modules/chapters/chapters.module';
-// import { MulterModule } from '@nestjs/platform-express';
-// import FirebaseStorage from 'multer-firebase-storage';
-import { UploadsModule } from '../modules/uploads/uploads.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -19,20 +17,6 @@ import { UploadsModule } from '../modules/uploads/uploads.module';
       isGlobal: true,
       validate,
     }),
-    // MulterModule.registerAsync({
-    //   imports: [ConfigModule],
-    //   inject: [ConfigService],
-    //   useFactory: (config: ConfigService) => ({
-    //     storage: FirebaseStorage({
-    //       bucketName: config.get('config.firebase.storageBucket'),
-    //       credentials: {
-    //         clientEmail: config.get('config.firebase.clientEmail'),
-    //         privateKey: config.get('config.firebase.privateKey'),
-    //         projectId: config.get('config.firebase.projectId'),
-    //       },
-    //     }),
-    //   }),
-    // }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -46,7 +30,6 @@ import { UploadsModule } from '../modules/uploads/uploads.module';
     CoursesModule,
     DocumentsModule,
     ChaptersModule,
-    UploadsModule,
   ],
   controllers: [],
   providers: [],

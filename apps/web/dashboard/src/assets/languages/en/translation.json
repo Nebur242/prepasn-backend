@@ -1,0 +1,30 @@
+{
+  "auth": {
+    "logout": "Deconnexion",
+    "email": "Adresse email",
+    "password": "Mot de passe",
+    "rememberMe": "Se souvenir de moi",
+    "login": {
+      "title": "Bienvenu",
+      "subtitle": "Connectez-vous à votre compte administrateur",
+      "submit": "Connexion"
+    },
+    "error": {
+      "required": "*Ce champ est obligatoire !",
+      "emailInvalid": "email non valide !",
+      "passwordInvalid": "mot de passe non valide !"
+    }
+  },
+  "general": {
+    "loading": "chargement"
+  },
+  "menu": {
+    "home": "Accueil",
+    "users": "Utilisateurs",
+    "roles": "Rôles",
+    "permissions": "Permissions",
+    "settings": "Paramètres",
+    "content-manager": "Content Manager",
+    "grades": "Sections"
+  }
+}

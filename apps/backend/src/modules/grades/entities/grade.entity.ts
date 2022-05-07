@@ -1,9 +1,25 @@
 import { BaseContent } from '@prepa-sn/backend/common/entities/base-content.entity';
-import { Entity, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
+import {
+  Entity,
+  JoinColumn,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+} from 'typeorm';
 import { Course } from '@prepa-sn/backend/modules/courses/entities/course.entity';
+import { Document } from '../../documents/entities/document.entity';
 
 @Entity()
 export class Grade extends BaseContent {
+  @OneToOne(() => Document)
+  @JoinColumn()
+  image?: Document | null;
+
+  @OneToOne(() => Document)
+  @JoinColumn()
+  video?: Document | null;
+
   @OneToMany(() => Grade, (grade) => grade.parent, { cascade: true })
   children: Grade[];
 
