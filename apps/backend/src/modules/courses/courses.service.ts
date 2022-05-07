@@ -18,6 +18,16 @@ export class CoursesService {
   async create(createCourseDto: CreateCourseDto): Promise<Course> {
     const course = this.coursesRepository.create({
       ...createCourseDto,
+      image: createCourseDto.image
+        ? this.documentsService.createEntity({
+            id: createCourseDto.image,
+          })
+        : null,
+      video: createCourseDto.video
+        ? this.documentsService.createEntity({
+            id: createCourseDto.video,
+          })
+        : null,
       grades: createCourseDto.grades.map((id) =>
         this.gradesService.createEntity({ id })
       ),
@@ -49,6 +59,16 @@ export class CoursesService {
     let updatedCourse: Course = {
       ...course,
       ...updateCourseDto,
+      image: updateCourseDto.image
+        ? this.documentsService.createEntity({
+            id: updateCourseDto.image,
+          })
+        : null,
+      video: updateCourseDto.video
+        ? this.documentsService.createEntity({
+            id: updateCourseDto.video,
+          })
+        : null,
       grades: course.grades,
       documents: course.documents,
     };
