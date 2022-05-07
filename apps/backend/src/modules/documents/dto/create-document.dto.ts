@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDefined, IsNumber, IsString, IsUrl } from 'class-validator';
+import {
+  IsDefined,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUrl,
+} from 'class-validator';
 
 export class CreateDocumentDto {
   @ApiProperty({
@@ -9,6 +15,14 @@ export class CreateDocumentDto {
   @IsDefined()
   @IsString()
   title: string;
+
+  @ApiProperty({
+    description: 'The document description',
+    required: true,
+  })
+  @IsOptional()
+  @IsString()
+  description: string;
 
   @ApiProperty({
     description: 'The document url',

@@ -10,6 +10,9 @@ const Home = lazy(() => import('../pages/app/home.page'));
 const Login = lazy(() => import('../pages/auth/login.page'));
 const Dashboard = lazy(() => import('../pages/dashboard'));
 
+//MEDIA LIBRAY
+const MediaLibrary = lazy(() => import('../pages/dashboard/media-library'));
+
 //GRADES
 const Grades = lazy(
   () => import('../pages/dashboard/content-manager/content/grades')
@@ -136,6 +139,15 @@ export const DASHBOARD: Route = {
           routes: [],
         },
       ],
+    },
+    {
+      path: 'uploads',
+      name: 'media-library',
+      access: ['admin'],
+      icon: 'DashboardOutlined',
+      isPublic: false,
+      element: MediaLibrary,
+      routes: [],
     },
   ],
 };

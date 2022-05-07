@@ -14,6 +14,7 @@ export interface FirebaseConfig {
 export interface Document {
   id: number;
   title: string;
+  description?: string;
   publicUrl: string;
   size: number;
   mimetype: string;

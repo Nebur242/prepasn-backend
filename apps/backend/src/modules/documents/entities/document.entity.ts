@@ -13,6 +13,9 @@ export class Document {
   @Column({ nullable: false, type: String })
   title: string;
 
+  @Column({ nullable: true, type: String, default: null })
+  description: string;
+
   @Column({ nullable: false })
   publicUrl: string;
 
