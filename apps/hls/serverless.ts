@@ -32,6 +32,7 @@ const serverlessConfig: Serverless = {
     runtime: 'nodejs14.x',
     architecture: 'arm64',
     stage: STAGE as string,
+    deploymentMethod: 'direct',
     iam: {
       role: {
         statements: [
