@@ -5560,10 +5560,10 @@
     "@pnpm/make-dedicated-lockfile" "^0.3.0"
     execa "^5.1.1"
 
-"@wanews/nx-vite@^0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@wanews/nx-vite/-/nx-vite-0.8.0.tgz#ee85eab834d954a285f0478807f8f4aa17a5428b"
-  integrity sha512-3u9yfj1s4RD47u7p7+3LmtSzkxLuzifbMflk/seVADcHmI9xLt0hqTMLSoOVWNOObnNjWMbYx0K5oDVVM+AVfg==
+"@wanews/nx-vite@^0.10.1":
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/@wanews/nx-vite/-/nx-vite-0.10.1.tgz#a4e9116e11b12226e850908af2de1000a6e09921"
+  integrity sha512-Hkwmr/gD9z9zlQMXxvnmtKHBZqLoNmo0YSV3SdUf345a6viUNKsupTaTcD8MwZ8DxUxquRSwhIBYpY35soZO+Q==
   dependencies:
     execa "^5.1.1"
 
