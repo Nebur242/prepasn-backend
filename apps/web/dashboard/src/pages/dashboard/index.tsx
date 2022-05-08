@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import * as routes from '../../config/routes.config';
 import { Route } from '../../config/routes.config';
-import { Button, Layout, Menu, Image, Row, Col, Avatar } from 'antd';
+import { Button, Layout, Menu, Image, Row, Col, Avatar, Space, Popover, Popconfirm } from 'antd';
 
 import {
     MenuUnfoldOutlined,
@@ -11,6 +11,9 @@ import { NavLink, Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Icon from '../../components/Icon';
 import logo from "../../assets/images/logo.png";
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../store';
+import { logoutUser } from '../../store/features/auth';
 
 const { Header, Sider, Content } = Layout;
 
@@ -25,8 +28,9 @@ export interface MenuItem {
 
 const Dashboard = () => {
     const [collapsed, setCollapsed] = useState<boolean>(false);
-    const [theme,] = React.useState<'dark' | 'light' | undefined>(undefined);
+    const [theme] = React.useState<'dark' | 'light' | undefined>(undefined);
     const { t } = useTranslation();
+    const dispatch: AppDispatch = useDispatch()
 
     const toggle = () => setCollapsed(prev => !prev);
 
@@ -41,6 +45,22 @@ const Dashboard = () => {
             }
         })
     }
+
+
+    const content = (
+        <div>
+            <Popconfirm
+                placement="bottomRight"
+                title="Are you sure to log out ?"
+                onConfirm={() => dispatch(logoutUser())}
+                onCancel={() => console.log('cancel')}
+                okText="Yes"
+                cancelText="No"
+            >
+                <Button icon={<Icon type="LogoutOutlined" />} ghost danger block type="primary">Déconnexion</Button>
+            </Popconfirm>
+        </div>
+    );
 
     return (
         <Layout style={{ height: "100vh" }}>
@@ -63,7 +83,12 @@ const Dashboard = () => {
                             <Button type='text' onClick={toggle} icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />} />
                         </Col>
                         <Col>
-                            <Avatar icon={<Icon type="UserOutlined" />} />
+                            <Space>
+                                <Popover placement="bottomRight" content={content} title="Paramètre">
+                                    <Avatar icon={<Icon type="UserOutlined" />} />
+                                </Popover>
+                                <Button shape="circle" type='primary' icon={<Icon type="TranslationOutlined" />} />
+                            </Space>
                         </Col>
                     </Row>
                 </Header>

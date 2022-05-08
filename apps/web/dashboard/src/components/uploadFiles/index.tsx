@@ -55,7 +55,6 @@ const AppUploadDocuments: FC = () => {
             documents.append('documents', file?.originFileObj as File);
         });
         const files = fileList.map(file => file.originFileObj as File);
-
         uploads(files);
     }
 

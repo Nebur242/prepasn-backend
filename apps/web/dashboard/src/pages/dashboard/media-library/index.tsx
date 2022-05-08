@@ -14,9 +14,9 @@ const MediaLibrary = () => {
 
     return (
         <ContentSectionWrapper
-            title="Grades"
-            description="All grades"
-            createButtonText="Create a new grade"
+            title="Media Library"
+            description={`${data.length} assets`}
+            createButtonText="Add new assets"
             onCreate={openModal}
             style={{
                 padding: "2%",

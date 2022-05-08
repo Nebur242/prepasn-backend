@@ -5,6 +5,7 @@ import { authenticateUser } from '../../store/features/auth';
 import { usePrefetch as usePrefetchGrades } from '../../store/features/grades';
 import { usePrefetch as usePrefetchDocuments } from '../../store/features/documents';
 import Loader from '../loader';
+import { usePrefetch as usePrefetchCourses } from '../../store/features/courses';
 
 type Props = {
     children: ReactNode;
@@ -15,6 +16,7 @@ const Auth: FC<Props> = ({ children }) => {
     const auth = useSelector((state: RootState) => state.auth);
     const fetchAllGrades = usePrefetchGrades('findAllGrades');
     const fetchAllDocuments = usePrefetchDocuments('findAllDocuments');
+    const fetchAllCourses = usePrefetchCourses('findAllCourses');
 
 
     useEffect(() => {
@@ -25,8 +27,9 @@ const Auth: FC<Props> = ({ children }) => {
         if (auth.isLoggedIn) {
             fetchAllGrades();
             fetchAllDocuments();
+            fetchAllCourses();
         }
-    }, [auth, fetchAllGrades, fetchAllDocuments])
+    }, [auth, fetchAllGrades, fetchAllDocuments, fetchAllCourses])
 
     if (auth.loading) return <Loader />;
     return <> {children} </>;

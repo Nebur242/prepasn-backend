@@ -23,13 +23,6 @@ const ContentManager = () => {
                 <NavLink to="courses"> Courses </NavLink>
             ),
         },
-        {
-            key: '3',
-            icon: null,
-            label: (
-                <NavLink to="chapters"> Chapters </NavLink>
-            ),
-        }
     ]
     return (
         <Row >
@@ -41,7 +34,7 @@ const ContentManager = () => {
                 <Divider />
                 <Row style={{ marginBottom: 20 }} justify='space-between'>
                     <Paragraph style={{ margin: 0 }}>Collection type</Paragraph>
-                    <Tag>7</Tag>
+                    <Tag>{MENU_ITEMS.length}</Tag>
                 </Row>
                 <Menu
                     style={{ backgroundColor: 'transparent' }}

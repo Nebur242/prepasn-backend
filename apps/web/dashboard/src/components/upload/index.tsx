@@ -2,11 +2,12 @@ import { FC, useState } from "react"
 import styled from "styled-components";
 import Icon from "../Icon";
 import { Button, Modal, Row, Tabs, Upload, Divider } from "antd";
-import { Document } from "../../common/interfaces/documents.interface";
+// import { Document } from "../../common/interfaces/documents.interface";
 import { UploadFile } from "antd/lib/upload/interface";
 import { useFindAllDocumentsQuery } from "../../store/features/documents";
 import AppDocuments from "../documents";
 import AppUploadDocuments from "../uploadFiles";
+import { Document } from "@prepa-sn/shared/interfaces";
 
 const { TabPane } = Tabs;
 

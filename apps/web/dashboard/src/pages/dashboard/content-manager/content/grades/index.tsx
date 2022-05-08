@@ -1,7 +1,7 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
+import { Grade } from "@prepa-sn/shared/interfaces";
 import { Button, Space, Table, Tag, Modal, message } from "antd";
 import { IConfirmation } from "apps/web/dashboard/src/common/interfaces/common.interface";
-import { Grade } from "apps/web/dashboard/src/common/interfaces/grade.interface";
 import ContentSectionWrapper from "apps/web/dashboard/src/components/content-section-wrapper";
 import Icon from "apps/web/dashboard/src/components/Icon";
 import { useDeleteGradeMutation, useFindAllGradesQuery } from "apps/web/dashboard/src/store/features/grades";
@@ -25,7 +25,6 @@ const Grades = () => {
     const {
         data: grades = [],
         isLoading: gradesLoading,
-        refetch,
     } = useFindAllGradesQuery();
 
     const [
@@ -40,13 +39,12 @@ const Grades = () => {
     useEffect(() => {
         if (isSuccess) {
             message.success("Grade supprimé avec succès");
-            refetch();
         }
 
         if (isError) {
             message.error("Une erreur est survenue");
         }
-    }, [isError, isSuccess, refetch]);
+    }, [isError, isSuccess]);
 
 
     const showConfirm = (confirmation: IConfirmation<Grade>) => {

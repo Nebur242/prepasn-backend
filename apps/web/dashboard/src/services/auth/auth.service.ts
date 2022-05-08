@@ -24,3 +24,8 @@ export const authUser = async (): Promise<User | null> => {
     });
   });
 };
+
+export const logout = async (): Promise<void> => {
+  const auth = getAuth();
+  await auth.signOut();
+};

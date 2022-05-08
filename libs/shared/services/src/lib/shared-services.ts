@@ -1,4 +1,9 @@
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import {
+  getDownloadURL,
+  ref,
+  uploadBytes,
+  deleteObject,
+} from 'firebase/storage';
 import { storage } from '@prepa-sn/shared/config';
 import { v4 as uuidv4 } from 'uuid';
 import { Document } from '@prepa-sn/shared/interfaces';
@@ -19,16 +24,16 @@ export const uploadFileToFirebase = async (
     `documents/${getDatePath(new Date())}/${file.name}#${id}`
   );
   const snapshot = await uploadBytes(fileRef, file);
-  console.log(snapshot);
+  // console.log(snapshot);
   const publicUrl = await getDownloadURL(snapshot.ref);
   return {
     mimetype: snapshot.metadata.contentType,
-    originalname: snapshot.metadata.name,
+    originalname: file.name,
     size: snapshot.metadata.size,
     encoding: snapshot.metadata.contentEncoding,
     fieldname: snapshot.metadata.fullPath,
     filename: snapshot.metadata.name,
-    title: snapshot.metadata.name,
+    title: file.name,
     publicUrl,
   };
 };
@@ -37,4 +42,13 @@ export const uploadFilesToFirebase = (
   files: File[]
 ): Promise<Partial<Document>[]> => {
   return Promise.all(files.map((file) => uploadFileToFirebase(file)));
+};
+
+//remove file from firebase storage
+export const removeFileFromFirebase = async (
+  path: string
+): Promise<boolean> => {
+  const desertRef = ref(storage, path);
+  await deleteObject(desertRef);
+  return true;
 };

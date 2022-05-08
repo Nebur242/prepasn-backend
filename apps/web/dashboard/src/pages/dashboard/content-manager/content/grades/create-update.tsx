@@ -1,12 +1,13 @@
+/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Status } from '@prepa-sn/shared/enums';
-import { Card, Col, Form, Input, Row, Typography, Select, Divider, FormInstance, Spin } from 'antd'
+import { Card, Col, Form, Input, Row, Typography, Select, Divider, FormInstance } from 'antd'
 import ContentWithSider from 'apps/web/dashboard/src/components/content-with-sider'
 import { useFindAllGradesQuery } from 'apps/web/dashboard/src/store/features/grades';
 import AppUpload from "apps/web/dashboard/src/components/upload";
-import { Document } from '@prepa-sn/shared/interfaces';
+import { Document, Grade } from '@prepa-sn/shared/interfaces';
 import { CKEditor } from 'ckeditor4-react';
-import { FC, useEffect } from 'react';
-import { Grade } from 'apps/web/dashboard/src/common/interfaces/grade.interface';
+import { FC } from 'react';
+// import { Grade } from 'apps/web/dashboard/src/common/interfaces/grade.interface';
 
 const { Title } = Typography;
 const { Option } = Select;

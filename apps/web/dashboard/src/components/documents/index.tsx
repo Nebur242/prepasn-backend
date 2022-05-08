@@ -1,5 +1,5 @@
 import { Document } from "@prepa-sn/shared/interfaces";
-import { Alert, Button, Col, Divider, Row, Space, Spin } from "antd";
+import { Alert, Button, Col, Divider, Pagination, Row, Space, Spin } from "antd";
 import { FC } from "react";
 import AppDocument from "../document";
 
@@ -11,9 +11,6 @@ interface DocumentsProps {
     selectedDocuments?: Document[];
     multiple?: boolean;
     onDocumentsSelect?: (document: Document[]) => void;
-    onDocumentDelete?: (document: Document) => void;
-    onDocumentEdit?: (document: Document) => void;
-    onDocumentSetting?: (document: Document) => void;
 }
 const Documents: FC<DocumentsProps> = ({
     documents,
@@ -22,9 +19,7 @@ const Documents: FC<DocumentsProps> = ({
     selectedDocuments = [],
     multiple = false,
     onDocumentsSelect,
-    onDocumentDelete,
-    onDocumentEdit,
-    onDocumentSetting,
+
 }) => {
 
     if (loading) return <Spin />;
@@ -68,14 +63,15 @@ const Documents: FC<DocumentsProps> = ({
                                     document={document}
                                     checked={selectedDocuments?.some(d => d.id === document.id)}
                                     onDocumentSelect={handleSelect}
-                                    onDocumentDelete={onDocumentDelete}
-                                    onDocumentEdit={onDocumentEdit}
-                                    onDocumentSetting={onDocumentSetting}
                                 />
                             </Col>
                         )
                     })
                 }
+            </Row>
+            <Divider />
+            <Row justify="end">
+                <Pagination defaultCurrent={1} total={documents.length} />
             </Row>
         </div>
     )

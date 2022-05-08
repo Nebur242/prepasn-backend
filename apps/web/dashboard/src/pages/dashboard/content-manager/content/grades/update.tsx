@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
+import { Grade } from "@prepa-sn/shared/interfaces";
 import { Button, Col, Divider, Form, message, Row, Space, Spin, Typography } from "antd";
-import { Grade } from "apps/web/dashboard/src/common/interfaces/grade.interface";
 import Icon from "apps/web/dashboard/src/components/Icon";
 import { useFindOneGradeQuery, useUpdateGradeMutation } from "apps/web/dashboard/src/store/features/grades";
 import { useEffect } from "react";
@@ -14,9 +14,7 @@ const { Title, Text } = Typography;
 const UpdateGrade = () => {
     const { id } = useParams<{ id: string }>();
     const [form] = Form.useForm();
-
     const { data, isLoading } = useFindOneGradeQuery(id!);
-
 
     const [
         updateGrade,
@@ -52,6 +50,7 @@ const UpdateGrade = () => {
                 ...data,
                 image: data.image ? data.image?.id : null,
                 video: data.video ? data.video?.id : null,
+                parent: data.parent ? data.parent?.id : null,
             });
         }
     }, [data, form])
@@ -66,8 +65,8 @@ const UpdateGrade = () => {
         }
     }, [isUpdated, hasError, form]);
 
-    if (isLoading) return <Row>
-        <Spin />
+    if (isLoading) return <Row justify="center">
+        <Spin tip="Loading..." />
     </Row>
 
 

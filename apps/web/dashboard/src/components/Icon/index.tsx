@@ -24,7 +24,9 @@ import {
     EllipsisOutlined,
     ExclamationCircleOutlined,
     FileTextOutlined,
-    CloudUploadOutlined
+    CloudUploadOutlined,
+    TranslationOutlined,
+    LogoutOutlined
 } from '@ant-design/icons';
 
 export interface IIcons {
@@ -63,6 +65,8 @@ const Icon: FC<IIcons> = ({ type, ...rest }): JSX.Element | null => {
         ExclamationCircleOutlined: <ExclamationCircleOutlined {...rest} />,
         FileTextOutlined: <FileTextOutlined {...rest} />,
         CloudUploadOutlined: <CloudUploadOutlined {...rest} />,
+        TranslationOutlined: <TranslationOutlined {...rest} />,
+        LogoutOutlined: <LogoutOutlined {...rest} />,
         default: null
     }[type]);
 

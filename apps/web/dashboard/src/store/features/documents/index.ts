@@ -6,7 +6,10 @@ import {
 } from '@reduxjs/toolkit/dist/query/react';
 import { axiosBaseQuery } from '../../../config/api.config';
 import { Omit } from '@reduxjs/toolkit/dist/tsHelpers';
-import { uploadFileToFirebase } from '@prepa-sn/shared/services';
+import {
+  removeFileFromFirebase,
+  uploadFileToFirebase,
+} from '@prepa-sn/shared/services';
 import { Document } from '@prepa-sn/shared/interfaces';
 
 export interface DocumentsInitialState {
@@ -26,12 +29,26 @@ export const initialState: DocumentsInitialState = {
 export const documentsApi = createApi({
   reducerPath: 'documentsApi',
   baseQuery: axiosBaseQuery(),
+  tagTypes: ['Documents'],
   endpoints: (build) => ({
     findOneDocument: build.query<Document, string>({
       query: (id: string) => ({ url: `/documents/${id}`, method: 'GET' }),
     }),
     findAllDocuments: build.query<Document[], void>({
       query: () => ({ url: '/documents', method: 'GET' }),
+      providesTags: (result = [], error, arg) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const final: any[] = [
+          {
+            type: 'Documents',
+          },
+        ];
+        const other = result.map((document) => ({
+          type: 'Documents',
+          id: document.id,
+        }));
+        return [...final, ...other];
+      },
     }),
     createDocument: build.mutation<Document, Omit<Document, 'id'>>({
       query: (document: Omit<Document, 'id'>) => ({
@@ -39,14 +56,9 @@ export const documentsApi = createApi({
         method: 'POST',
         data: document,
       }),
+      invalidatesTags: ['Documents'],
     }),
-    uploadDocuments: build.mutation<Document[], { documents: FormData }>({
-      query: ({ documents }) => ({
-        url: '/documents/uploads',
-        method: 'POST',
-        data: documents,
-      }),
-    }),
+
     uploads: build.mutation<Document[], File[]>({
       async queryFn(files, _queryApi, _extraOptions, fetchWithBQ) {
         try {
@@ -75,6 +87,7 @@ export const documentsApi = createApi({
           return { error: error as FetchBaseQueryError };
         }
       },
+      invalidatesTags: ['Documents'],
     }),
 
     updateDocument: build.mutation<Document, Document>({
@@ -83,9 +96,43 @@ export const documentsApi = createApi({
         method: 'PATCH',
         data: rest,
       }),
+      invalidatesTags: (result, error, arg) => [
+        { type: 'Documents', id: arg.id as number },
+      ],
     }),
-    deleteDocument: build.mutation<Document, number>({
-      query: (id: number) => ({ url: `/documents/${id}`, method: 'DELETE' }),
+    deleteDocument: build.mutation<Document, Document>({
+      async queryFn(file, _queryApi, _extraOptions, fetchWithBQ) {
+        try {
+          const deletedInfirebase = await removeFileFromFirebase(
+            file.fieldname
+          );
+
+          if (deletedInfirebase) {
+            const result = await fetchWithBQ({
+              url: `/documents/${file.id}`,
+              method: 'DELETE',
+            });
+
+            return result.data
+              ? { data: result.data as Document }
+              : { error: result.error as FetchBaseQueryError };
+          }
+
+          return {
+            error: {
+              status: 'CUSTOM_ERROR',
+              data: deletedInfirebase,
+              error: 'Did not delete on firebase',
+            } as FetchBaseQueryError,
+          };
+        } catch (error) {
+          console.log(error);
+          return { error: error as FetchBaseQueryError };
+        }
+      },
+      invalidatesTags: (result, error, arg) => [
+        { type: 'Documents', id: arg.id as number },
+      ],
     }),
   }),
 });
@@ -96,7 +143,6 @@ export const {
   useFindOneDocumentQuery,
   useFindAllDocumentsQuery,
   useUpdateDocumentMutation,
-  useUploadDocumentsMutation,
   useUploadsMutation,
   usePrefetch,
 } = documentsApi;

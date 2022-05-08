@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import logger from 'redux-logger';
-
 import auth from './features/auth';
 import user from './features/user';
 import { gradesApi } from './features/grades';
 import { documentsApi } from './features/documents';
+import { coursesApi } from './features/courses';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 
 export const store = configureStore({
@@ -13,12 +13,14 @@ export const store = configureStore({
     user,
     [gradesApi.reducerPath]: gradesApi.reducer,
     [documentsApi.reducerPath]: documentsApi.reducer,
+    [coursesApi.reducerPath]: coursesApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(logger)
       .concat(gradesApi.middleware)
-      .concat(documentsApi.middleware),
+      .concat(documentsApi.middleware)
+      .concat(coursesApi.middleware),
   devTools: process.env['NODE_ENV'] !== 'production',
 });
 

@@ -3,6 +3,7 @@ import { LoginDto } from '../../../pages/auth/login.page';
 import {
   authUser,
   logInFirebaseWithEmailAndPassword,
+  logout,
 } from '../../../services/auth/auth.service';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { setUser } from '../user';
@@ -18,6 +19,11 @@ export interface AuthInitialState {
     error: string;
     status: Status.PENDING | Status.SUCCESS | Status.ERROR;
   };
+  logout: {
+    loading: boolean;
+    error: string;
+    status: Status.PENDING | Status.SUCCESS | Status.ERROR;
+  };
 }
 
 const initialState: AuthInitialState = {
@@ -26,6 +32,11 @@ const initialState: AuthInitialState = {
   error: '',
   status: Status.PENDING,
   login: {
+    loading: false,
+    error: '',
+    status: Status.PENDING,
+  },
+  logout: {
     loading: false,
     error: '',
     status: Status.PENDING,
@@ -80,6 +91,22 @@ export const loginUser = createAsyncThunk(
       const user = response.user.toJSON();
       dispatch(setUser(user));
       return fulfillWithValue(user);
+    } catch (err) {
+      console.log('error', err);
+      const error = err as AuthError;
+      const message = displayAuthError(error);
+      return rejectWithValue(message || 'Error');
+    }
+  }
+);
+
+export const logoutUser = createAsyncThunk(
+  'auth/logout',
+  async (_, { rejectWithValue, dispatch }) => {
+    try {
+      await logout();
+      dispatch(setUser(null));
+      return;
     } catch (err) {
       console.log('error', err);
       const error = err as AuthError;
@@ -144,6 +171,23 @@ const authSlice = createSlice({
       state.status = Status.ERROR;
       state.error = action.payload || 'Error';
       state.isLoggedIn = false;
+    },
+
+    //logout actions
+    [`${logoutUser.pending}`]: (state: AuthInitialState, action) => {
+      state.logout.loading = true;
+      state.logout.status = Status.PENDING;
+      state.logout.error = '';
+    },
+    [`${logoutUser.fulfilled}`]: (state: AuthInitialState, action) => {
+      state.logout.loading = false;
+      state.logout.status = Status.SUCCESS;
+      state.isLoggedIn = false;
+    },
+    [`${logoutUser.rejected}`]: (state: AuthInitialState, action) => {
+      state.logout.loading = false;
+      state.logout.status = Status.ERROR;
+      state.logout.error = action.payload || 'Error';
     },
   },
 });

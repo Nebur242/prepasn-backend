@@ -1,3 +1,5 @@
+import { Status } from '@prepa-sn/shared/enums';
+
 export interface FirebaseConfig {
   type: string;
   projectId: string;
@@ -19,9 +21,32 @@ export interface Document {
   size: number;
   mimetype: string;
   filename: string;
-  fieldname?: string;
+  fieldname: string;
   originalname?: string;
   encoding?: string;
   createdAt?: Date;
   updatedAt?: Date;
+}
+
+export interface BaseContent {
+  id: number;
+  title: string;
+  description: string;
+  image: Document;
+  video: Document;
+  status: Status.ACTIVE | Status.PENDING;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Grade extends BaseContent {
+  children: Grade[];
+  parent: Grade | null;
+  courses: Course[];
+}
+
+export interface Course extends BaseContent {
+  grades: Grade[];
+  chapters: unknown[];
+  documents: Document[];
 }

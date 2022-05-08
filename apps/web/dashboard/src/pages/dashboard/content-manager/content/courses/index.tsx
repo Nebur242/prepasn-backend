@@ -1,64 +1,82 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
-import { Button, Table } from "antd";
+import { Course } from "@prepa-sn/shared/interfaces";
+import { Button, Space, Table, Tag, Modal } from "antd";
+import { IConfirmation } from "apps/web/dashboard/src/common/interfaces/common.interface";
 import ContentSectionWrapper from "apps/web/dashboard/src/components/content-section-wrapper";
+import Icon from "apps/web/dashboard/src/components/Icon";
+import { useFindAllCoursesQuery } from "apps/web/dashboard/src/store/features/courses";
+import { useNavigate } from "react-router-dom";
 
-const columns = [
-    {
-        title: 'Name',
-        dataIndex: 'name',
-        render: (text: string) => <Button type="link">{text}</Button>,
-    },
-    {
-        title: 'Age',
-        dataIndex: 'age',
-    },
-    {
-        title: 'Address',
-        dataIndex: 'address',
-    },
-];
 
-interface DataType {
-    key: React.Key;
-    name: string;
-    age: number;
-    address: string;
-}
-
-const data: DataType[] = [
-    {
-        key: '1',
-        name: 'John Brown',
-        age: 32,
-        address: 'New York No. 1 Lake Park',
-    },
-    {
-        key: '2',
-        name: 'Jim Green',
-        age: 42,
-        address: 'London No. 1 Lake Park',
-    },
-    {
-        key: '3',
-        name: 'Joe Black',
-        age: 32,
-        address: 'Sidney No. 1 Lake Park',
-    },
-
-];
+const { confirm } = Modal;
 
 
 const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: Course[]) => {
         console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
     },
-    getCheckboxProps: (record: DataType) => ({
-        disabled: record.name === 'Disabled User', // Column configuration not to be checked
-        name: record.name,
-    }),
+    getCheckboxProps: (record: Course) => ({}),
 };
 
 const Courses = () => {
+
+    const navigate = useNavigate();
+
+    const {
+        data: courses = [],
+        isLoading: coursesLoading,
+    } = useFindAllCoursesQuery();
+
+    const showConfirm = (confirmation: IConfirmation<Course>) => {
+        const { title, content, onCancel, onOk } = confirmation;
+        confirm({
+            title,
+            icon: <Icon type="ExclamationCircleOutlined" />,
+            content,
+            okButtonProps: {
+                danger: true,
+            },
+            onCancel,
+            onOk,
+        });
+    }
+
+    const columns = [
+        {
+            title: 'Titre',
+            dataIndex: 'title',
+            render: (text: string) => <Button type="link">{text}</Button>,
+        },
+        {
+            title: 'Status',
+            dataIndex: 'status',
+            render: (tag: string) => <Tag color="green" key={tag}>{tag}</Tag>,
+        },
+
+        {
+            title: 'Created At',
+            dataIndex: 'createdAt',
+        },
+        {
+            title: 'Action',
+            key: 'action',
+            render: (_: string, grade: Course) => (
+                <Space size="middle">
+                    <Button type="primary" ghost icon={<Icon type="EditOutlined" />} onClick={() => navigate(`update/${grade.id}`)} />
+                    <Button type="primary" ghost danger icon={<Icon type="DeleteOutlined" />}
+                        onClick={() => showConfirm({
+                            title: grade.title,
+                            content: 'Voulez-vous vraiment supprimer cette section ?',
+                            data: grade,
+                            onCancel: () => console.log('cancel'),
+                            onOk: () => console.log('ok'),
+                        } as IConfirmation<Course>)}
+                    />
+                </Space>
+            ),
+        }
+    ];
+
     return (
         <ContentSectionWrapper
             title="Courses"
@@ -70,8 +88,9 @@ const Courses = () => {
                     type: "checkbox",
                     ...rowSelection,
                 }}
+                loading={coursesLoading}
                 columns={columns}
-                dataSource={data}
+                dataSource={courses}
             />
         </ContentSectionWrapper>
     )

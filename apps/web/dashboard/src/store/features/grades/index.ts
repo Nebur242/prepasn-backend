@@ -1,8 +1,9 @@
 import { Status } from '@prepa-sn/shared/enums';
+import { Grade } from '@prepa-sn/shared/interfaces';
 import { createSlice } from '@reduxjs/toolkit';
 import { Omit } from '@reduxjs/toolkit/dist/tsHelpers';
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { Grade } from '../../../common/interfaces/grade.interface';
+// import { Grade } from '../../../common/interfaces/grade.interface';
 import { axiosBaseQuery } from '../../../config/api.config';
 
 export interface GradesInitialState {
