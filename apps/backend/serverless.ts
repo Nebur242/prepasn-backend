@@ -19,6 +19,7 @@ const serverlessConfig: Serverless = {
     runtime: 'nodejs14.x',
     architecture: 'arm64',
     stage: environmentVariables.STAGE,
+    deploymentMethod: 'direct',
   },
   package: {
     patterns: [...readdirSync('./').map(excludeFileOrFolder), `${buildDir}/**`],
