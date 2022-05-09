@@ -24,7 +24,6 @@ export const uploadFileToFirebase = async (
     `documents/${getDatePath(new Date())}/${file.name}#${id}`
   );
   const snapshot = await uploadBytes(fileRef, file);
-  // console.log(snapshot);
   const publicUrl = await getDownloadURL(snapshot.ref);
   return {
     mimetype: snapshot.metadata.contentType,
@@ -44,7 +43,6 @@ export const uploadFilesToFirebase = (
   return Promise.all(files.map((file) => uploadFileToFirebase(file)));
 };
 
-//remove file from firebase storage
 export const removeFileFromFirebase = async (
   path: string
 ): Promise<boolean> => {

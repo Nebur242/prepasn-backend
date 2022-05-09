@@ -131,16 +131,11 @@ const AppFileReader: FC<{ document: Document }> = ({ document }) => {
         </Row>
     }
 
-    if (mimetype.match(videoMimeType)) {
-        return <p style={{ height: 100 }} >video</p>
-    }
+    if (mimetype.match(videoMimeType)) return <p style={{ height: 100 }} >video</p>
 
-    if (mimetype.match(audioMimeType)) {
-        return <p style={{ height: 100 }} >audio</p>
-    }
+    if (mimetype.match(audioMimeType)) return <p style={{ height: 100 }} >audio</p>
 
     return <p style={{ height: 100 }} >unknown</p>
-
 }
 
-export default AppDocument
+export default AppDocument;

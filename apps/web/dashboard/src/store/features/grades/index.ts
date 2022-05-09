@@ -3,7 +3,6 @@ import { Grade } from '@prepa-sn/shared/interfaces';
 import { createSlice } from '@reduxjs/toolkit';
 import { Omit } from '@reduxjs/toolkit/dist/tsHelpers';
 import { createApi } from '@reduxjs/toolkit/query/react';
-// import { Grade } from '../../../common/interfaces/grade.interface';
 import { axiosBaseQuery } from '../../../config/api.config';
 
 export interface GradesInitialState {
@@ -55,13 +54,13 @@ export const gradesApi = createApi({
         method: 'PATCH',
         data: rest,
       }),
-      invalidatesTags: (result, error, arg) => [
+      invalidatesTags: (_result, _error, arg) => [
         { type: 'Grades', id: arg.id as number },
       ],
     }),
     deleteGrade: build.mutation<Grade, number>({
       query: (id: number) => ({ url: `/grades/${id}`, method: 'DELETE' }),
-      invalidatesTags: (result, error, arg) => [{ type: 'Grades', id: arg }],
+      invalidatesTags: (_result, _error, arg) => [{ type: 'Grades', id: arg }],
     }),
   }),
 });

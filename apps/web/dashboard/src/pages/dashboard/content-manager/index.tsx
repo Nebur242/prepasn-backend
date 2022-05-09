@@ -13,14 +13,14 @@ const ContentManager = () => {
             key: '1',
             icon: null,
             label: (
-                <NavLink to="grades"> Grades </NavLink>
+                <NavLink to="grades">Grades</NavLink>
             ),
         },
         {
             key: '2',
             icon: null,
             label: (
-                <NavLink to="courses"> Courses </NavLink>
+                <NavLink to="courses">Courses</NavLink>
             ),
         },
     ]

@@ -17,20 +17,9 @@ export class FirebaseService {
     if (getApps().length === 0) {
       this.firebaseApp = initializeApp({
         credential: cert(configService.get('config.firebase')),
-        storageBucket: configService.get('config.firebase.storageBucket'),
       });
     }
   }
-
-  // async uploadFile(file: Express.Multer.File) {
-  //   const storage = getStorage();
-  //   const bucket = storage.bucket();
-  //   const uploaded = await bucket.upload(`./${file.path}`, {
-  //     destination: `${file.path}`,
-  //     public: true,
-  //   });
-  //   return uploaded[0].metadata.mediaLink;
-  // }
 
   @CatchFirebaseException()
   verifyToken(token: string, checkRevoked = false) {

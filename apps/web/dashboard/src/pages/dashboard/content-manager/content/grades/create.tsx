@@ -12,7 +12,6 @@ import {
 } from "antd";
 import Icon from "apps/web/dashboard/src/components/Icon";
 import { useCreateGradeMutation } from "apps/web/dashboard/src/store/features/grades";
-// import { Grade } from "apps/web/dashboard/src/common/interfaces/grade.interface";
 import CreateAndUpdate from './create-update';
 import { Grade } from '@prepa-sn/shared/interfaces';
 

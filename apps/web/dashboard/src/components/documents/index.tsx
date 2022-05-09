@@ -19,7 +19,6 @@ const Documents: FC<DocumentsProps> = ({
     selectedDocuments = [],
     multiple = false,
     onDocumentsSelect,
-
 }) => {
 
     if (loading) return <Spin />;
