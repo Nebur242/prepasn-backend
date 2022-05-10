@@ -10,7 +10,7 @@
         "entryPoints": ["apps/hls/src/main.ts"],
         "outfile": "apps/hls/dist/main.js",
         "platform": "node",
-        "target": ["node14.19"],
+        "target": ["node16.15"],
         "minify": true,
         "legalComments": "external",
         "define": {
