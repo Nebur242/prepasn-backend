@@ -16,7 +16,7 @@ const serverlessConfig: Serverless = {
   service,
   provider: {
     name: 'aws',
-    runtime: 'nodejs14.x',
+    runtime: 'nodejs16.x',
     architecture: 'arm64',
     stage: environmentVariables.STAGE,
     deploymentMethod: 'direct',
