@@ -21,7 +21,8 @@
       "@prepa-sn/shared/enums": ["libs/shared/enums/src/index.ts"],
       "@prepa-sn/shared/guards": ["libs/shared/guards/src/index.ts"],
       "@prepa-sn/shared/interfaces": ["libs/shared/interfaces/src/index.ts"],
-      "@prepa-sn/shared/services": ["libs/shared/services/src/index.ts"]
+      "@prepa-sn/shared/services": ["libs/shared/services/src/index.ts"],
+      "@prepa-sn/sls/*": ["libs/serverless/*"]
     },
     "resolveJsonModule": true,
     "esModuleInterop": true

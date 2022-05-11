@@ -1,0 +1,8 @@
+services:
+  backend:
+    path: apps/backend
+    config: serverless.ts
+
+  hls:
+    path: apps/hls
+    config: serverless.ts

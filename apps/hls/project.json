@@ -1,0 +1,57 @@
+{
+  "root": "apps/hls",
+  "sourceRoot": "apps/hls/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@wanews/nx-esbuild:build",
+      "outputs": ["{options.outfile}"],
+      "options": {
+        "entryPoints": ["apps/hls/src/main.ts"],
+        "outfile": "apps/hls/dist/main.js",
+        "platform": "node",
+        "target": ["node16.15"],
+        "minify": true,
+        "legalComments": "external",
+        "define": {
+          "process.env.FLUENTFFMPEG_COV": false
+        },
+        "tsconfig": "apps/hls/tsconfig.app.json"
+      },
+      "configurations": {
+        "serverless": {
+          "entryPoints": ["apps/hls/src/serverless.ts"]
+        },
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@wanews/nx-esbuild:serve",
+      "options": {
+        "entryPoints": ["apps/hls/src/main.ts"],
+        "outfile": "dist/main.js",
+        "platform": "node",
+        "define": {
+          "process.env.FLUENTFFMPEG_COV": false
+        },
+        "tsconfig": "apps/hls/tsconfig.app.json"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/hls/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/hls"],
+      "options": {
+        "jestConfig": "apps/hls/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

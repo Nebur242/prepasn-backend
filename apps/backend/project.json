@@ -9,13 +9,13 @@
         "{options.outputPath}"
       ],
       "options": {
-        "outputPath": "dist/apps/backend",
+        "outputPath": "apps/backend/dist",
         "main": "apps/backend/src/main.ts",
         "tsConfig": "apps/backend/tsconfig.app.json"
       },
       "configurations": {
         "serverless": {
-          "main": "apps/backend/src/lambda.ts",
+          "main": "apps/backend/src/serverless.ts",
           "optimization": true,
           "extractLicenses": true,
           "inspect": false,

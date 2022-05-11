@@ -1,0 +1,12 @@
+diff --git a/node_modules/@types/serverless/plugins/aws/provider/awsProvider.d.ts b/node_modules/@types/serverless/plugins/aws/provider/awsProvider.d.ts
+index d6bae48..9bf15b5 100644
+--- a/node_modules/@types/serverless/plugins/aws/provider/awsProvider.d.ts
++++ b/node_modules/@types/serverless/plugins/aws/provider/awsProvider.d.ts
+@@ -36,6 +36,7 @@ declare namespace Aws {
+         name: 'aws';
+         runtime?: string | undefined;
+         stage?: string | undefined;
++        deploymentMethod?: 'changesets' | 'direct' | undefined;
+         region?: string | undefined;
+         stackName?: string | undefined;
+         apiName?: string | undefined;

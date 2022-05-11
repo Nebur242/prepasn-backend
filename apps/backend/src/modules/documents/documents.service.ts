@@ -19,7 +19,7 @@ export class DocumentsService {
   }
 
   async bulkCreate(documents: CreateDocumentDto[]): Promise<Document[]> {
-    return await Promise.all(
+    return Promise.all(
       documents.map(async (document) => {
         return this.create(document);
       })

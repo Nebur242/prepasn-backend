@@ -4,12 +4,9 @@ import {
   excludeFileOrFolder,
   getServerlessEnvVariables,
   getBuildDir,
-} from './libs/serverless/helpers';
-import {
-  IncludeDependencies,
-  ServerlessOffline,
-} from './libs/serverless/plugins';
-import { validate } from './apps/backend/src/common/config';
+} from '@prepa-sn/sls/helpers';
+import { IncludeDependencies, ServerlessOffline } from '@prepa-sn/sls/plugins';
+import { validate } from './src/common/config';
 
 const service = 'backend';
 const environmentVariables = validate(getServerlessEnvVariables(service));
@@ -19,18 +16,19 @@ const serverlessConfig: Serverless = {
   service,
   provider: {
     name: 'aws',
-    runtime: 'nodejs14.x',
+    runtime: 'nodejs16.x',
     architecture: 'arm64',
+    stage: environmentVariables.STAGE,
+    deploymentMethod: 'direct',
   },
   package: {
-    patterns: [...readdirSync('./').map(excludeFileOrFolder), buildDir],
+    patterns: [...readdirSync('./').map(excludeFileOrFolder), `${buildDir}/**`],
   },
   functions: {
     [service]: {
       handler: `${buildDir}/main.handler`,
       url: true,
       environment: environmentVariables,
-      events: [],
     },
   },
   plugins: [ServerlessOffline, IncludeDependencies],

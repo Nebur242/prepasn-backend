@@ -5,17 +5,17 @@ import HttpApi from "i18next-http-backend";
 
 
 i18n
-    .use(initReactI18next)
-    .use(LanguageDetector)
-    .use(HttpApi)
-    .init({
-        supportedLngs: ["en", "fr"],
-        fallbackLng: "fr",
-        detection: {
-            order: ["cookie", "htmlTag", "localStorage", "path", "subdomain"],
-            caches: ["cookie", "localStorage"],
-        },
-        backend: {
-            loadPath: "./assets/languages/{{lng}}/{{ns}}.json",
-        },
-    });
+  .use(initReactI18next)
+  .use(LanguageDetector)
+  .use(HttpApi)
+  .init({
+    supportedLngs: ["en", "fr"],
+    fallbackLng: "fr",
+    detection: {
+      order: ["cookie", "htmlTag", "localStorage", "path", "subdomain"],
+      caches: ["cookie", "localStorage"],
+    },
+    backend: {
+      loadPath: "./assets/languages/{{lng}}/{{ns}}.json",
+    },
+  });

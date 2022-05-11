@@ -10,5 +10,5 @@ export class ChapterDto extends CreateBaseContentDto {
     type: CourseDto,
   })
   @IsDefined()
-  course!: CourseDto;
+  course: CourseDto;
 }

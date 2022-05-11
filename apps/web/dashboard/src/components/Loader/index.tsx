@@ -17,12 +17,12 @@ const StyledWrapper = styled.div`
     align-items: center;
 `;
 
-const Loader: FC = () => {
-    const { t } = useTranslation()
-    return (
-        <StyledWrapper>
-            <Spin size="large" tip={t('general.loading')} />
-        </StyledWrapper>
-    )
+const AppLoader: FC = () => {
+  const { t } = useTranslation()
+  return (
+    <StyledWrapper>
+      <Spin size="large" tip={t('general.loading')} />
+    </StyledWrapper>
+  )
 }
-export default Loader;
+export default AppLoader;

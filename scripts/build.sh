@@ -23,11 +23,12 @@ if [ -z $branch_name ]; then
   exit 1
 fi
 
-echo "Building on branch $branch_name if affected by a change..."
+echo "Building branch $branch_name if affected by a change..."
 
-if [ $branch_name = "main" ]
-then
-  yarn nx affected --base=origin/main~1 --head=origin/main --target=build --configuration=$configuration
+if [ $branch_name = "main" ]; then
+  yarn nx affected --base=main~1 --head=main --target=build --configuration=$configuration --skip-nx-cache
+elif [ $branch_name = "unstaged" ]; then
+  yarn nx affected --target=build --configuration=$configuration --skip-nx-cache
 else
-  yarn nx affected --base=origin/main --head=origin/$branch_name --target=build --configuration=$configuration
+  yarn nx affected --base=main --head=$branch_name --target=build --configuration=$configuration --skip-nx-cache
 fi

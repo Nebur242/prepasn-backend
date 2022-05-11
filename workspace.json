@@ -2,12 +2,10 @@
   "version": 2,
   "projects": {
     "backend": "apps/backend",
-    "shared-config": "libs/shared/config",
+    "hls": "apps/hls",
     "shared-enums": "libs/shared/enums",
     "shared-guards": "libs/shared/guards",
     "shared-interfaces": "libs/shared/interfaces",
-    "shared-services": "libs/shared/services",
-    "web-dashboard": "apps/web/dashboard",
-    "web-dashboard-e2e": "apps/web/dashboard-e2e"
+    "web-dashboard": "apps/web/dashboard"
   }
 }

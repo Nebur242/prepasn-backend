@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euo pipefail
+set -uo pipefail
 
 dry_run_flag="false"
 service=""
@@ -33,11 +33,12 @@ fi
 echo "Dry-run: $dry_run_flag"
 echo "Checking if $service service is affected by a change on $branch_name branch..."
 
-if [ $branch_name = "main" ]
-then
-  yarn nx affected:apps --base=origin/main~1 --head=origin/main --plain | grep $service &> /dev/null
+if [ $branch_name = "main" ]; then
+  yarn nx affected:apps --base=main~1 --head=main --plain | grep $service &> /dev/null
+elif [ $branch_name = "unstaged" ]; then
+  yarn nx affected:apps --plain | grep $service &> /dev/null
 else
-  yarn nx affected:apps --base=origin/main --head=origin/$branch_name --plain | grep $service &> /dev/null
+  yarn nx affected:apps --base=main --head=$branch_name --plain | grep $service &> /dev/null
 fi
 
 if [ $? -eq 1 ]; then
@@ -45,10 +46,10 @@ if [ $? -eq 1 ]; then
   exit 0
 fi
 
-echo "Packaging $service application"
-yarn sls package -c ./$service.serverless.ts --verbose
-
-if [ $dry_run_flag = "false" ]; then
+if [ $dry_run_flag = "true" ]; then
+  echo "Packaging $service application"
+  yarn sls $service:package --verbose
+else
   echo "Deploying $service application..."
-  yarn sls deploy -c ./$service.serverless.ts -p .serverless --verbose
+  yarn sls deploy --service=$service --verbose
 fi

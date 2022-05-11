@@ -3,8 +3,9 @@ import { BaseQueryFn } from '@reduxjs/toolkit/query';
 
 import { getIdToken, getAuth } from 'firebase/auth';
 import { firebaseApp } from './firebase.config';
+import { environment } from '../environments/environment';
 
-export const API_URL = 'http://localhost:1148/api/v1';
+export const API_URL = environment.apiUrl;
 
 //API ROUTES
 export const API_ROUTES = {

@@ -14,7 +14,7 @@ import { TypeOrmErrorsFilter } from './common/filters/typeorm-errors.filter';
 
 const globalPrefix = 'api';
 const defaultVersion = '1';
-const port = process.env.PORT || 1148;
+const port = process.env.port || process.env.PORT || 1148;
 
 export function setupGlobalMiddlewares(app: INestApplication) {
   return app
