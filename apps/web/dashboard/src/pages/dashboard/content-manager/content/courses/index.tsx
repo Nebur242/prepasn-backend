@@ -15,7 +15,7 @@ const rowSelection = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: Course[]) => {
         console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
     },
-    getCheckboxProps: (record: Course) => ({}),
+    getCheckboxProps: (_record: Course) => ({}),
 };
 
 const Courses = () => {

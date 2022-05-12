@@ -14,9 +14,9 @@ export class Course extends BaseContent {
 
   @OneToMany(() => Chapter, (chapter: Chapter) => chapter.course)
   @JoinColumn()
-  chapters: Chapter[];
+  chapters?: Chapter[];
 
   @ManyToMany(() => Document)
   @JoinTable()
-  documents: Document[];
+  documents?: Document[];
 }

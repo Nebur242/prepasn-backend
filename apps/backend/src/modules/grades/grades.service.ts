@@ -18,16 +18,15 @@ export class GradesService {
   }
 
   async create(createGradeDto: CreateGradeDto): Promise<Grade> {
-    createGradeDto.image;
     const grade = this.createEntity({
       ...createGradeDto,
       image: createGradeDto.image
-        ? await this.documentsService.createEntity({
+        ? this.documentsService.createEntity({
             id: createGradeDto.image,
           })
         : null,
       video: createGradeDto.video
-        ? await this.documentsService.createEntity({
+        ? this.documentsService.createEntity({
             id: createGradeDto.video,
           })
         : null,

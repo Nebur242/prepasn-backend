@@ -36,7 +36,7 @@ export const documentsApi = createApi({
     }),
     findAllDocuments: build.query<Document[], void>({
       query: () => ({ url: '/documents', method: 'GET' }),
-      providesTags: (result = [], error, arg) => {
+      providesTags: (result = [], _error, _arg) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const final: any[] = [
           {

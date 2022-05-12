@@ -53,7 +53,7 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (authState.isLoggedIn) return navigate(routes.DASHBOARD.path);
+    if (authState.isLoggedIn) return navigate(`/${routes.DASHBOARD.path}`);
   }, [authState, navigate]);
 
   return (
