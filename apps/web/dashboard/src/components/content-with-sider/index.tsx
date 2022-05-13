@@ -1,4 +1,4 @@
-import { LANGUAGE } from '@prepa-sn/shared/enums';
+import { LANGUAGE, Status } from '@prepa-sn/shared/enums';
 import {
   Alert,
   Card,
@@ -10,6 +10,7 @@ import {
   Select,
   Divider,
 } from 'antd';
+import { Store } from 'antd/lib/form/interface';
 import { FC } from 'react';
 
 const { Title, Text } = Typography;
@@ -20,19 +21,26 @@ interface IContentWithSiderProps {
   form?: FormInstance;
   onFinish?: (values: unknown) => void;
   sidebarExtra?: React.ReactNode;
+  initialValues?: Store;
 }
 const ContentWithSider: FC<IContentWithSiderProps> = ({
   children,
   onFinish,
   form,
   sidebarExtra,
+  initialValues = {},
 }) => {
   return (
     <Form
-      validateTrigger={['onFinish']}
+      validateTrigger={['onChange']}
       form={form}
       layout="vertical"
       onFinish={onFinish}
+      initialValues={{
+        status: Status.ACTIVE,
+        language: LANGUAGE.FR,
+        ...initialValues,
+      }}
     >
       <Row gutter={10}>
         <Col span={17}>
@@ -70,22 +78,25 @@ const ContentWithSider: FC<IContentWithSiderProps> = ({
               <Text>Now </Text>
             </Row>
 
-            <Title style={{ margin: 0, marginTop: 20 }} level={4}>
-              Internationalization
-            </Title>
             <Divider />
             <Form.Item
               label="Langue"
               name="language"
               rules={[{ required: true, message: 'Language is required' }]}
-              initialValue={LANGUAGE.FR}
             >
-              <Select placeholder="Langues" defaultValue={LANGUAGE.FR}>
+              <Select placeholder="Langues">
                 {Object.values(LANGUAGE).map((lang: LANGUAGE) => (
                   <Option key={lang} value={lang}>
                     {lang}
                   </Option>
                 ))}
+              </Select>
+            </Form.Item>
+            <Form.Item name="status" label="Status">
+              <Select placeholder="Status">
+                <Option value={Status.ACTIVE}>Active</Option>
+                <Option value={Status.DRAFT}>Draft</Option>
+                <Option value={Status.INACTIVE}>Inactive</Option>
               </Select>
             </Form.Item>
           </Card>

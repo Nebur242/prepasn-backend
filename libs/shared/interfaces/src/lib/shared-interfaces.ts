@@ -39,14 +39,19 @@ export interface BaseContent {
   updatedAt: Date;
 }
 
-export interface Grade extends BaseContent {
-  children: Grade[];
-  parent: Grade | null;
-  courses: Course[];
+export interface Chapter extends BaseContent {
+  course: Course;
+  documents: Document[];
 }
 
 export interface Course extends BaseContent {
   grades: Grade[];
-  chapters: unknown[];
+  chapters: Chapter[];
   documents: Document[];
+}
+
+export interface Grade extends BaseContent {
+  children: Grade[];
+  parent: Grade | null;
+  courses: Course[];
 }

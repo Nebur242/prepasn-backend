@@ -29,6 +29,18 @@ const Courses = lazy(
   () => import('../pages/dashboard/content-manager/content/courses')
 );
 
+const CreateCourses = lazy(
+  () => import('../pages/dashboard/content-manager/content/courses/create')
+);
+
+const UpdateCourses = lazy(
+  () => import('../pages/dashboard/content-manager/content/courses/update')
+);
+
+const CourseChapters = lazy(
+  () => import('../pages/dashboard/content-manager/content/courses/chapters')
+);
+
 //CHAPTERS
 const Chapters = lazy(
   () => import('../pages/dashboard/content-manager/content/chapters')
@@ -128,6 +140,30 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: Courses,
+          routes: [],
+        },
+        {
+          path: 'courses/create',
+          name: 'create-course',
+          access: ['admin'],
+          isPublic: false,
+          element: CreateCourses,
+          routes: [],
+        },
+        {
+          path: 'courses/update/:id',
+          name: 'update-course',
+          access: ['admin'],
+          isPublic: false,
+          element: UpdateCourses,
+          routes: [],
+        },
+        {
+          path: 'courses/:id/chapters',
+          name: 'course-chapters',
+          access: ['admin'],
+          isPublic: false,
+          element: CourseChapters,
           routes: [],
         },
         {

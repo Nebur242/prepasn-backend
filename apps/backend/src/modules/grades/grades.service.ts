@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { DeepPartial, FindManyOptions } from 'typeorm';
-import { DocumentsService } from '../documents/documents.service';
 import { CreateGradeDto } from './dto/create-grade.dto';
 import { UpdateGradeDto } from './dto/update-grade.dto';
 import { Grade } from './entities/grade.entity';
@@ -8,10 +7,7 @@ import { GradesRepository } from './repositories/grade.repository';
 
 @Injectable()
 export class GradesService {
-  constructor(
-    private readonly gradesRepository: GradesRepository,
-    private readonly documentsService: DocumentsService
-  ) {}
+  constructor(private readonly gradesRepository: GradesRepository) {}
 
   createEntity(entityLike: DeepPartial<Grade>): Grade {
     return this.gradesRepository.create(entityLike);
@@ -20,16 +16,6 @@ export class GradesService {
   async create(createGradeDto: CreateGradeDto): Promise<Grade> {
     const grade = this.createEntity({
       ...createGradeDto,
-      image: createGradeDto.image
-        ? this.documentsService.createEntity({
-            id: createGradeDto.image,
-          })
-        : null,
-      video: createGradeDto.video
-        ? this.documentsService.createEntity({
-            id: createGradeDto.video,
-          })
-        : null,
       parent: {
         id: createGradeDto.parent,
       },
@@ -56,16 +42,6 @@ export class GradesService {
     const grade = await this.findOne(id);
     await this.gradesRepository.update(grade.id, {
       ...updateGradeDto,
-      image: updateGradeDto.image
-        ? this.documentsService.createEntity({
-            id: updateGradeDto.image,
-          })
-        : null,
-      video: updateGradeDto.video
-        ? this.documentsService.createEntity({
-            id: updateGradeDto.video,
-          })
-        : null,
       parent: {
         id: updateGradeDto.parent,
       },

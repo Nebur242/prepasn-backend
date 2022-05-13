@@ -1,18 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Grade } from '@prepa-sn/shared/interfaces';
-import {
-  Button,
-  Col,
-  Divider,
-  Form,
-  message,
-  Row,
-  Space,
-  Spin,
-  Typography,
-} from 'antd';
-import Icon from 'apps/web/dashboard/src/components/Icon';
+import { Form, message, Row, Spin } from 'antd';
+import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
 import {
   useFindOneGradeQuery,
   useUpdateGradeMutation,
@@ -21,12 +11,10 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import CreateAndUpdate from './create-update';
 
-const { Title, Text } = Typography;
-
 const UpdateGrade = () => {
   const { id } = useParams<{ id: string }>();
   const [form] = Form.useForm();
-  const { data, isLoading } = useFindOneGradeQuery(id!);
+  const { data, isLoading } = useFindOneGradeQuery(id as string);
 
   const [
     updateGrade,
@@ -78,28 +66,15 @@ const UpdateGrade = () => {
     );
 
   return (
-    <div>
-      <Row justify="space-between">
-        <Col>
-          <Title level={4}>Update the entry : {data?.title}</Title>
-          <Text>Grade ID : {data?.id}</Text>
-        </Col>
-        <Col>
-          <Space>
-            <Button
-              loading={isUpdating}
-              onClick={onFinish}
-              type="primary"
-              icon={<Icon type="PlusOutlined" />}
-            >
-              Update the grade
-            </Button>
-          </Space>
-        </Col>
-      </Row>
-      <Divider />
+    <ContentSectionWrapper
+      title={`Update the entry : ${data?.title}`}
+      description={`Grade ID : ${data?.id}`}
+      createButtonText="Update the grade"
+      onCreate={onFinish}
+      createButtonProps={{ loading: isUpdating }}
+    >
       <CreateAndUpdate initialValues={data} form={form} onFinish={onFinish} />
-    </div>
+    </ContentSectionWrapper>
   );
 };
 

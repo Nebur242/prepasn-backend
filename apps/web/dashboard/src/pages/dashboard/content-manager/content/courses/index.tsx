@@ -1,13 +1,16 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Course } from '@prepa-sn/shared/interfaces';
-import { Button, Space, Table, Tag, Modal } from 'antd';
+import { Button, Space, Table, Tag, message } from 'antd';
 import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.interface';
 import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
 import Icon from 'apps/web/dashboard/src/components/Icon';
-import { useFindAllCoursesQuery } from 'apps/web/dashboard/src/store/features/courses';
+import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
+import {
+  useDeleteCourseMutation,
+  useFindAllCoursesQuery,
+} from 'apps/web/dashboard/src/store/features/courses';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-const { confirm } = Modal;
 
 const rowSelection = {
   onChange: (selectedRowKeys: React.Key[], selectedRows: Course[]) => {
@@ -26,25 +29,17 @@ const Courses = () => {
   const { data: courses = [], isLoading: coursesLoading } =
     useFindAllCoursesQuery();
 
-  const showConfirm = (confirmation: IConfirmation<Course>) => {
-    const { title, content, onCancel, onOk } = confirmation;
-    confirm({
-      title,
-      icon: <Icon type="ExclamationCircleOutlined" />,
-      content,
-      okButtonProps: {
-        danger: true,
-      },
-      onCancel,
-      onOk,
-    });
-  };
+  const [deleteCourse, { isSuccess, isError }] = useDeleteCourseMutation();
 
   const columns = [
     {
       title: 'Titre',
       dataIndex: 'title',
-      render: (text: string) => <Button type="link">{text}</Button>,
+      render: (text: string, course: Course) => (
+        <Button onClick={() => navigate(`update/${course.id}`)} type="link">
+          {text}
+        </Button>
+      ),
     },
     {
       title: 'Status',
@@ -61,15 +56,24 @@ const Courses = () => {
       dataIndex: 'createdAt',
     },
     {
+      title: 'Chapters',
+      dataIndex: 'createdAt',
+      render: (_text: undefined, course: Course) => (
+        <Button onClick={() => navigate(`${course.id}/chapters`)} type="link">
+          Chapters
+        </Button>
+      ),
+    },
+    {
       title: 'Action',
       key: 'action',
-      render: (_: string, grade: Course) => (
+      render: (_: string, course: Course) => (
         <Space size="middle">
           <Button
             type="primary"
             ghost
             icon={<Icon type="EditOutlined" />}
-            onClick={() => navigate(`update/${grade.id}`)}
+            onClick={() => navigate(`update/${course.id}`)}
           />
           <Button
             type="primary"
@@ -78,11 +82,12 @@ const Courses = () => {
             icon={<Icon type="DeleteOutlined" />}
             onClick={() =>
               showConfirm({
-                title: grade.title,
+                title: course.title,
+                icon: <Icon type="ExclamationCircleOutlined" />,
                 content: 'Voulez-vous vraiment supprimer cette section ?',
-                data: grade,
+                data: course,
                 onCancel: () => console.log('cancel'),
-                onOk: () => console.log('ok'),
+                onOk: () => deleteCourse(course.id),
               } as IConfirmation<Course>)
             }
           />
@@ -91,11 +96,22 @@ const Courses = () => {
     },
   ];
 
+  useEffect(() => {
+    if (isSuccess) {
+      message.success('Grade supprimé avec succès');
+    }
+
+    if (isError) {
+      message.error('Une erreur est survenue');
+    }
+  }, [isError, isSuccess]);
+
   return (
     <ContentSectionWrapper
       title="Courses"
       description="All courses"
       createButtonText="Create a new course"
+      onCreate={() => navigate('create')}
     >
       <Table
         rowSelection={{
@@ -104,7 +120,10 @@ const Courses = () => {
         }}
         loading={coursesLoading}
         columns={columns}
-        dataSource={courses}
+        dataSource={courses.map((course: Course) => ({
+          ...course,
+          key: course.id,
+        }))}
       />
     </ContentSectionWrapper>
   );
