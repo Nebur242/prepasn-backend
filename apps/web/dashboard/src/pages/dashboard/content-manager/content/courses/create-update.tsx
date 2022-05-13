@@ -1,21 +1,21 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import {
-  Card,
   Col,
   Form,
   Input,
   Row,
+  FormInstance,
+  Card,
   Typography,
   Select,
   Divider,
-  FormInstance,
 } from 'antd';
 import ContentWithSider from 'apps/web/dashboard/src/components/content-with-sider';
-import { useFindAllGradesQuery } from 'apps/web/dashboard/src/store/features/grades';
 import AppUpload from 'apps/web/dashboard/src/components/upload';
-import { Document, Grade } from '@prepa-sn/shared/interfaces';
+import { Course, Document } from '@prepa-sn/shared/interfaces';
 import { CKEditor } from 'ckeditor4-react';
 import { FC } from 'react';
+import { useFindAllGradesQuery } from 'apps/web/dashboard/src/store/features/grades';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -23,7 +23,7 @@ const { Option } = Select;
 interface ICreateAndUpdateProps {
   onFinish: () => Promise<void>;
   form: FormInstance;
-  initialValues?: Grade;
+  initialValues?: Course;
 }
 
 const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
@@ -44,8 +44,13 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
             Relations
           </Title>
           <Divider />
-          <Form.Item label="Grades" name="parent">
-            <Select placeholder="Grades" loading={gradesloading}>
+          <Form.Item label="Grades" name="grades">
+            <Select
+              mode="multiple"
+              allowClear
+              placeholder="Grades"
+              loading={gradesloading}
+            >
               {grades.map((item) => (
                 <Option key={item.id} value={item.id}>
                   {item.title}
@@ -73,7 +78,7 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
               }
               onSelect={(documents: Document[]) => {
                 form.setFieldsValue({
-                  image: documents[0] || null,
+                  image: documents[0]?.id,
                 });
               }}
             />
@@ -88,7 +93,7 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
               }
               onSelect={(documents: Document[]) => {
                 form.setFieldsValue({
-                  image: documents[0] || null,
+                  video: documents[0]?.id,
                 });
               }}
             />
@@ -106,6 +111,18 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
           onChange={(evt) => {
             form.setFieldsValue({
               description: evt.editor.getData(),
+            });
+          }}
+        />
+      </Form.Item>
+
+      <Form.Item label="Documents" name="documents">
+        <AppUpload
+          multiple={true}
+          selectedDocuments={initialValues?.image ? [initialValues?.image] : []}
+          onSelect={(documents: Document[]) => {
+            form.setFieldsValue({
+              documents,
             });
           }}
         />
