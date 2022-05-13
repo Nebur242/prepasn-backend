@@ -17,6 +17,7 @@ const defaultVersion = '1';
 const port = process.env.port || process.env.PORT || 1148;
 
 export function setupGlobalMiddlewares(app: INestApplication) {
+  app.enableCors();
   return app
     .setGlobalPrefix(globalPrefix)
     .useGlobalPipes(new ValidationPipe())
@@ -26,8 +27,7 @@ export function setupGlobalMiddlewares(app: INestApplication) {
     .enableVersioning({
       type: VersioningType.URI,
       defaultVersion,
-    })
-    .enableCors();
+    });
 }
 
 export async function setupDevEnvironment(app: INestApplication) {
