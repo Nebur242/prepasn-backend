@@ -12,5 +12,5 @@ export class CourseDto extends CreateBaseContentDto {
   @IsDefined()
   @IsArray()
   @ArrayNotEmpty()
-  grades!: GradeDto[];
+  grades: GradeDto[];
 }

@@ -25,10 +25,12 @@ export abstract class BaseContent {
   @Column({ type: 'enum', enum: LANGUAGE, default: LANGUAGE.FR })
   language: LANGUAGE.FR;
 
+  @Column({ nullable: true, default: null })
   @OneToOne(() => Document)
   @JoinColumn()
   image?: Document | null;
 
+  @Column({ nullable: true, default: null })
   @OneToOne(() => Document)
   @JoinColumn()
   video?: Document | null;

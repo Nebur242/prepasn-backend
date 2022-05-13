@@ -26,7 +26,8 @@ export function setupGlobalMiddlewares(app: INestApplication) {
     .enableVersioning({
       type: VersioningType.URI,
       defaultVersion,
-    });
+    })
+    .enableCors();
 }
 
 export async function setupDevEnvironment(app: INestApplication) {
@@ -56,7 +57,6 @@ export function setupSwagger(app: INestApplication) {
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.enableCors();
   setupGlobalMiddlewares(app);
   setupDevEnvironment(app);
   setupSwagger(app);

@@ -5,37 +5,38 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
 @Entity()
 export class Document {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: false, type: String })
+  @Column()
   title: string;
 
-  @Column({ nullable: true, type: String, default: null })
-  description: string;
+  @Column({ nullable: true, default: null })
+  description?: string;
 
-  @Column({ nullable: false })
+  @Column()
   publicUrl: string;
 
   @Column({ nullable: true, default: 0 })
-  size: number;
+  size?: number;
 
   @Column({ nullable: true })
-  mimetype: string;
+  mimetype?: string;
 
   @Column({ nullable: true })
-  filename: string;
+  filename?: string;
 
   @Column({ nullable: true })
-  fieldname: string;
+  fieldname?: string;
 
   @Column({ nullable: true })
-  originalname: string;
+  originalname?: string;
 
   @Column({ nullable: true })
-  encoding: string;
+  encoding?: string;
 
   @CreateDateColumn()
   createdAt: Date;

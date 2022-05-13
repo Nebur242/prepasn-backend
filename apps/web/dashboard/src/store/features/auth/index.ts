@@ -8,6 +8,7 @@ import {
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { setUser } from '../user';
 import { AuthError } from 'firebase/auth';
+import { displayAuthError } from './authSlice';
 
 export interface AuthInitialState {
   isLoggedIn: boolean;
@@ -41,43 +42,6 @@ const initialState: AuthInitialState = {
     error: '',
     status: Status.PENDING,
   },
-};
-
-export const displayAuthError = (error: AuthError) => {
-  switch (error.code) {
-    case 'auth/wrong-password':
-      return 'Wrong password';
-    case 'auth/user-not-found':
-      return 'User not found';
-    case 'auth/user-disabled':
-      return 'User disabled';
-    case 'auth/invalid-email':
-      return 'Invalid email';
-    case 'auth/email-already-in-use':
-      return 'Email already in use';
-    case 'auth/weak-password':
-      return 'Weak password';
-    case 'auth/operation-not-allowed':
-      return 'Operation not allowed';
-    case 'auth/invalid-verification-code':
-      return 'Invalid verification code';
-    case 'auth/account-exists-with-different-credential':
-      return 'Account exists with different credential';
-    case 'auth/requires-recent-login':
-      return 'Requires recent login';
-    case 'auth/too-many-requests':
-      return 'Too many requests';
-    case 'auth/network-request-failed':
-      return 'Network request failed';
-    case 'auth/invalid-credential':
-      return 'Invalid credential';
-    case 'auth/invalid-user-token':
-      return 'Invalid user token';
-    case 'auth/invalid-password':
-      return 'Invalid password';
-    default:
-      return 'Error';
-  }
 };
 
 export const loginUser = createAsyncThunk(

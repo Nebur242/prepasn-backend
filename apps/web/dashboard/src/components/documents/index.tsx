@@ -36,21 +36,19 @@ const Documents: FC<DocumentsProps> = ({
     if (checked) {
       if (multiple) {
         const selected: Document[] = [...(selectedDocuments || []), document];
-        onDocumentsSelect && onDocumentsSelect(selected);
+        return onDocumentsSelect?.(selected);
       } else {
-        onDocumentsSelect && onDocumentsSelect([document]);
+        return onDocumentsSelect?.([document]);
       }
     }
 
-    if (!checked && multiple) {
+    if (multiple) {
       const selected: Document[] =
         selectedDocuments?.filter((d) => d.id !== document.id) || [];
-      onDocumentsSelect && onDocumentsSelect(selected);
+      return onDocumentsSelect?.(selected);
     }
 
-    if (!checked && !multiple) {
-      onDocumentsSelect && onDocumentsSelect([]);
-    }
+    return onDocumentsSelect?.([]);
   };
 
   return (
