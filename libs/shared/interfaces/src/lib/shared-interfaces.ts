@@ -55,3 +55,8 @@ export interface Grade extends BaseContent {
   parent: Grade | null;
   courses: Course[];
 }
+
+export interface Chapter extends BaseContent {
+  course: Course;
+  documents: Document[];
+}
