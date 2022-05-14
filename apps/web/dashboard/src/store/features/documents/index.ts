@@ -6,10 +6,7 @@ import {
 } from '@reduxjs/toolkit/dist/query/react';
 import { axiosBaseQuery } from '../../../config/api.config';
 import { Omit } from '@reduxjs/toolkit/dist/tsHelpers';
-import {
-  removeFileFromFirebase,
-  uploadFileToFirebase,
-} from '@prepa-sn/shared/services';
+import { removeAsset, uploadAsset } from '@prepa-sn/shared/services';
 import { Document } from '@prepa-sn/shared/interfaces';
 
 export interface DocumentsInitialState {
@@ -64,9 +61,7 @@ export const documentsApi = createApi({
         try {
           const documents = await Promise.all(
             files.map(async (file: File): Promise<Partial<Document>> => {
-              const uploaded: Partial<Document> = await uploadFileToFirebase(
-                file
-              );
+              const uploaded: Partial<Document> = await uploadAsset(file);
               return {
                 ...uploaded,
               };
@@ -103,11 +98,9 @@ export const documentsApi = createApi({
     deleteDocument: build.mutation<Document, Document>({
       async queryFn(file, _queryApi, _extraOptions, fetchWithBQ) {
         try {
-          const deletedInfirebase = await removeFileFromFirebase(
-            file.fieldname
-          );
+          const deletedFile = await removeAsset(file.fieldname);
 
-          if (deletedInfirebase) {
+          if (deletedFile) {
             const result = await fetchWithBQ({
               url: `/documents/${file.id}`,
               method: 'DELETE',
@@ -121,8 +114,8 @@ export const documentsApi = createApi({
           return {
             error: {
               status: 'CUSTOM_ERROR',
-              data: deletedInfirebase,
-              error: 'Did not delete on firebase',
+              data: deletedFile,
+              error: 'Did not delete file',
             } as FetchBaseQueryError,
           };
         } catch (error) {
