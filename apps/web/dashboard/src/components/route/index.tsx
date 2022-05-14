@@ -2,8 +2,8 @@ import { FC, Suspense } from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import { Route } from '../../config/routes.config';
-import Loader from '../Loader';
 import * as routes from '../../config/routes.config';
+import Loader from '../Loader';
 
 type Props = {
   route: Route;

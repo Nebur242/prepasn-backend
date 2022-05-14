@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString, IsUrl } from 'class-validator';
+import { Document } from '@prepa-sn/backend/modules/documents/entities/document.entity';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateBaseContentDto {
   @ApiProperty({
@@ -20,18 +21,20 @@ export class CreateBaseContentDto {
   description?: string;
 
   @ApiProperty({
-    description: 'The featured image link',
-    required: false,
+    description: 'The image document id',
+    required: true,
+    type: Number,
   })
   @IsOptional()
-  @IsUrl()
-  featuredImage?: string;
+  @IsNumber()
+  image?: Document['id'];
 
   @ApiProperty({
-    description: 'The content video link',
-    required: false,
+    description: 'The video document id',
+    required: true,
+    type: Number,
   })
   @IsOptional()
-  @IsUrl()
-  videoUrl?: string;
+  @IsNumber()
+  video?: Document['id'];
 }

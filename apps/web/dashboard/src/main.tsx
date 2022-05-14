@@ -7,7 +7,7 @@ import './styles/global.less';
 import App from './app/App';
 import { store } from './store';
 
-const root = createRoot(document.getElementById('root'));
+const root = createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <StrictMode>
     <BrowserRouter>

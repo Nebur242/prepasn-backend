@@ -18,6 +18,14 @@ export class DocumentsService {
     return this.documentsRepository.save(document);
   }
 
+  async bulkCreate(documents: CreateDocumentDto[]): Promise<Document[]> {
+    return Promise.all(
+      documents.map(async (document) => {
+        return this.create(document);
+      })
+    );
+  }
+
   findAll(): Promise<Document[]> {
     return this.documentsRepository.find();
   }

@@ -10,4 +10,5 @@ export default {
   authProviderX509CertUrl: process.env.FIREBASE_AUTH_PROVIDER_X509_CERT_URL,
   clientC509CertUrl: process.env.FIREBASE_CLIENT_X509_CERT_URL,
   firebaseRestApiKey: process.env.FIREBASE_REST_API_KEY,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
 };

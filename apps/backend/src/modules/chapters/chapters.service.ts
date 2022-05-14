@@ -16,6 +16,16 @@ export class ChaptersService {
   async create(createChapterDto: CreateChapterDto): Promise<Chapter> {
     const chapter = this.chaptersRepository.create({
       ...createChapterDto,
+      image: createChapterDto.image
+        ? this.documentsService.createEntity({
+            id: createChapterDto.image,
+          })
+        : null,
+      video: createChapterDto.video
+        ? this.documentsService.createEntity({
+            id: createChapterDto.video,
+          })
+        : null,
       course: {
         id: createChapterDto.course,
       },
@@ -46,6 +56,16 @@ export class ChaptersService {
     let updatedChapter: Chapter = {
       ...chapter,
       ...updateChapterDto,
+      image: updateChapterDto.image
+        ? this.documentsService.createEntity({
+            id: updateChapterDto.image,
+          })
+        : null,
+      video: updateChapterDto.video
+        ? this.documentsService.createEntity({
+            id: updateChapterDto.video,
+          })
+        : null,
       documents: chapter.documents,
     };
     if (updatedChapter.documents) {

@@ -1,5 +1,7 @@
+import { Navigate } from 'react-router-dom';
+
 const Home = () => {
-  return <h2>Home</h2>;
+  return <Navigate replace to="/admin" />;
 };
 
 export default Home;

@@ -9,6 +9,7 @@ import { VpcPlugin } from '@prepa-sn/sls/plugins';
 
 const service = 'hls';
 const buildDir = getBuildDir(service);
+
 const {
   FFMPEG_IMAGE_REPO_NAME,
   AWS_ECR_REGISTRY_ID,
@@ -20,6 +21,7 @@ const {
   FFMPEG_IMAGE_MEMORY,
   CI,
 } = getServerlessEnvVariables(service);
+
 const TASK_DEFINITION_NAME = 'hls-service-task-definition';
 const S3_BUCKET_NAME = `${service}uploads`;
 const CONTAINER_NAME = 'hls-service-container';

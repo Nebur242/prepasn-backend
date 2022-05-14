@@ -7,15 +7,16 @@ import { Document } from '../../documents/entities/document.entity';
 @Entity()
 export class Course extends BaseContent {
   //has many grades
+
   @ManyToMany(() => Grade, (grade) => grade.courses)
   @JoinTable()
   grades: Grade[];
 
   @OneToMany(() => Chapter, (chapter: Chapter) => chapter.course)
   @JoinColumn()
-  chapters: Chapter[];
+  chapters?: Chapter[];
 
   @ManyToMany(() => Document)
   @JoinTable()
-  documents: Document[];
+  documents?: Document[];
 }

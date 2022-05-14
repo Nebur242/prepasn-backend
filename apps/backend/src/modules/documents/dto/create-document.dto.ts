@@ -1,6 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { DocumentType } from '@prepa-sn/shared/enums';
-import { IsDefined, IsEnum, IsString, IsUrl } from 'class-validator';
+import {
+  IsDefined,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUrl,
+} from 'class-validator';
 
 export class CreateDocumentDto {
   @ApiProperty({
@@ -12,12 +17,12 @@ export class CreateDocumentDto {
   title: string;
 
   @ApiProperty({
-    description: 'The document type',
+    description: 'The document description',
     required: true,
   })
-  @IsDefined()
-  @IsEnum(DocumentType)
-  type: DocumentType;
+  @IsOptional()
+  @IsString()
+  description?: string;
 
   @ApiProperty({
     description: 'The document url',
@@ -26,5 +31,37 @@ export class CreateDocumentDto {
   @IsDefined()
   @IsString()
   @IsUrl()
-  url: string;
+  publicUrl: string;
+
+  @ApiProperty({
+    description: 'The document size',
+    required: true,
+  })
+  @IsDefined()
+  @IsNumber()
+  size: number;
+
+  @ApiProperty({
+    description: 'The document mimetype',
+    required: true,
+  })
+  @IsDefined()
+  @IsString()
+  mimetype: string;
+
+  @ApiProperty({
+    description: 'The document name',
+    required: true,
+  })
+  @IsDefined()
+  @IsString()
+  filename: string;
+
+  @IsDefined()
+  @IsString()
+  originalname: string;
+
+  @IsDefined()
+  @IsString()
+  encoding: string;
 }

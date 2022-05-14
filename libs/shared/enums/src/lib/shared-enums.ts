@@ -26,6 +26,13 @@ export enum Status {
   LOADING = 'loading',
   SUCCESS = 'success',
   ERROR = 'error',
+  DELETED = 'deleted',
+  PUBLISHED = 'published',
+}
+
+export enum LANGUAGE {
+  FR = 'fr',
+  EN = 'en',
 }
 
 export enum FIREBASE_ERRORS {

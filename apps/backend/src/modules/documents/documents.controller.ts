@@ -26,6 +26,14 @@ export class DocumentsController {
     return this.documentsService.create(createDocumentDto);
   }
 
+  @Post('bulk')
+  @ApiOkResponse({ type: [CreateDocumentDto], isArray: true })
+  bulkCreate(
+    @Body() createDocumentDtos: CreateDocumentDto[]
+  ): Promise<Document[]> {
+    return this.documentsService.bulkCreate(createDocumentDtos);
+  }
+
   @Get()
   @ApiOkResponse({ type: CreateDocumentDto, isArray: true })
   findAll(): Promise<Document[]> {
