@@ -23,7 +23,7 @@ const {
 } = getServerlessEnvVariables(service);
 
 const TASK_DEFINITION_NAME = 'hls-service-task-definition';
-const S3_BUCKET_NAME = `${service}uploads`;
+const S3_BUCKET_NAME = `prepasn-assets`;
 const CONTAINER_NAME = 'hls-service-container';
 const CLUSTER_NAME = 'hls-service-cluster';
 
