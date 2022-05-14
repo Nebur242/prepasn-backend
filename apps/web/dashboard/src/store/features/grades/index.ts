@@ -29,14 +29,15 @@ export const gradesApi = createApi({
     }),
     findAllGrades: build.query<Grade[], void>({
       query: () => ({ url: '/grades', method: 'GET' }),
-      providesTags: (result = [], error, arg) => {
+      providesTags: (result, _error, _arg) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const final: any[] = [
           {
             type: 'Grades',
           },
         ];
-        const other = result.map((grade) => ({ type: 'Grades', id: grade.id }));
+        const other =
+          result?.map((grade) => ({ type: 'Grades', id: grade.id })) || [];
         return [...final, ...other];
       },
     }),
@@ -55,7 +56,7 @@ export const gradesApi = createApi({
         data: rest,
       }),
       invalidatesTags: (_result, _error, arg) => [
-        { type: 'Grades', id: arg.id as number },
+        { type: 'Grades', id: arg.id },
       ],
     }),
     deleteGrade: build.mutation<Grade, number>({

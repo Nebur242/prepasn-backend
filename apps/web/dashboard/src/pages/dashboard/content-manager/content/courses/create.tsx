@@ -36,7 +36,7 @@ const CreateCourse = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      message.success('La section a été crée avec succès');
+      message.success('Le cours a été crée avec succès');
       form.resetFields();
     }
 

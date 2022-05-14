@@ -21,12 +21,26 @@ export const initialState: CoursesInitialState = {
 export const coursesApi = createApi({
   reducerPath: 'coursesApi',
   baseQuery: axiosBaseQuery(),
+  tagTypes: ['Courses'],
   endpoints: (build) => ({
     findOneCourse: build.query<Course, string>({
       query: (id: string) => ({ url: `/courses/${id}`, method: 'GET' }),
     }),
     findAllCourses: build.query<Course[], void>({
       query: () => ({ url: '/courses', method: 'GET' }),
+      providesTags: (result, _error, _arg) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const final: any[] = [
+          {
+            type: 'Courses',
+          },
+        ];
+        return [
+          ...final,
+          ...(result?.map((course) => ({ type: 'Courses', id: course.id })) ||
+            []),
+        ];
+      },
     }),
     createCourse: build.mutation<Course, Omit<Course, 'id'>>({
       query: (course: Omit<Course, 'id'>) => ({
@@ -34,20 +48,24 @@ export const coursesApi = createApi({
         method: 'POST',
         data: course,
       }),
+      invalidatesTags: ['Courses'],
     }),
     updateCourse: build.mutation<Course, Course>({
       query: (course: Course) => ({
         url: `/courses/${course.id}`,
-        method: 'PUT',
+        method: 'PATCH',
         data: course,
       }),
+      invalidatesTags: (_result, _error, arg) => [
+        { type: 'Courses', id: arg.id },
+      ],
     }),
-    deleteCourse: build.mutation<Course, Course>({
-      query: (course: Course) => ({
-        url: `/courses/${course.id}`,
+    deleteCourse: build.mutation<Course, number>({
+      query: (id: number) => ({
+        url: `/courses/${id}`,
         method: 'DELETE',
-        data: course,
       }),
+      invalidatesTags: (_result, _error, arg) => [{ type: 'Courses', id: arg }],
     }),
   }),
 });
