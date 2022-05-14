@@ -10,6 +10,8 @@ import { VpcPlugin } from '@prepa-sn/sls/plugins';
 const service = 'hls';
 const buildDir = getBuildDir(service);
 
+const videoExtensions = ['.mp4', '.avi', '.webm'];
+
 const {
   FFMPEG_IMAGE_REPO_NAME,
   AWS_ECR_REGISTRY_ID,
@@ -79,11 +81,10 @@ const serverlessConfig: Serverless = {
           s3: {
             bucket: S3_BUCKET_NAME,
             event: 's3:ObjectCreated:*',
-            rules: [
-              {
-                prefix: 'videos/uploads/',
-              },
-            ],
+            rules: videoExtensions.map((extension) => ({
+              prefix: 'videos/uploads/',
+              suffix: extension,
+            })),
           },
         },
       ],
