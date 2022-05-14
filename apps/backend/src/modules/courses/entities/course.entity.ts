@@ -19,12 +19,10 @@ export class Course extends BaseContent {
   @JoinTable()
   grades: Grade[];
 
-  @Column({ nullable: true, default: null })
   @OneToMany(() => Chapter, (chapter: Chapter) => chapter.course)
   @JoinColumn()
   chapters?: Chapter[];
 
-  @Column({ nullable: true, default: null })
   @ManyToMany(() => Document)
   @JoinTable()
   documents?: Document[];
