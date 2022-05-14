@@ -14,7 +14,7 @@ export class CreateCourseDto extends CreateBaseContentDto {
   @IsDefined()
   @ArrayNotEmpty()
   @Type(() => Grade)
-  grades: Grade[];
+  grades: Grade['id'][];
 
   @ApiProperty({
     description: 'The array of grades id',

@@ -44,7 +44,15 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
             Relations
           </Title>
           <Divider />
-          <Form.Item label="Grades" name="grades">
+          <Form.Item
+            rules={
+              [
+                { required: true, message: 'Please select a grade' }
+              ]
+            }
+            label="Grades"
+            name="grades"
+          >
             <Select
               mode="multiple"
               allowClear
@@ -78,7 +86,7 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
               }
               onSelect={(documents: Document[]) => {
                 form.setFieldsValue({
-                  image: documents[0]?.id,
+                  image: documents[0] || null,
                 });
               }}
             />
@@ -93,7 +101,7 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
               }
               onSelect={(documents: Document[]) => {
                 form.setFieldsValue({
-                  video: documents[0]?.id,
+                  video: documents[0] || null,
                 });
               }}
             />
@@ -119,7 +127,7 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
       <Form.Item label="Documents" name="documents">
         <AppUpload
           multiple={true}
-          selectedDocuments={initialValues?.image ? [initialValues?.image] : []}
+          selectedDocuments={initialValues?.documents ? initialValues?.documents : []}
           onSelect={(documents: Document[]) => {
             form.setFieldsValue({
               documents,
