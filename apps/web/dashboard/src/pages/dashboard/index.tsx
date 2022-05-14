@@ -18,7 +18,7 @@ import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import { NavLink, Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Icon from '../../components/Icon';
-import logo from '../../assets/images/logo.png';
+import logo from '../../../public/images/logo.png';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store';
 import { logoutUser } from '../../store/features/auth';

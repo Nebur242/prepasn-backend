@@ -6,8 +6,6 @@
     "postinstall": "patch-package",
     "prepare": "husky install",
     "nx": "nx",
-    "backend:start": "yarn start backend",
-    "dashboard:start": "yarn start web-dashboard",
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test",
