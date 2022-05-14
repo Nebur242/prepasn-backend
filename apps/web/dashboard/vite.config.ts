@@ -18,4 +18,8 @@ export default defineConfig({
       },
     },
   },
+  define: {
+    // TODO: check the behaviour on production builds
+    'process.env': process.env,
+  },
 });
