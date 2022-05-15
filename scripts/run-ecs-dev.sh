@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-S3_BUCKET_NAME="hlsuploads"
+S3_BUCKET_NAME="prepasn-assets"
 S3_VIDEO_NAME="video-input.mp4"
 S3_VIDEO_PREFIX="videos/uploads"
 S3_URL=$(aws s3 presign s3://$S3_BUCKET_NAME/$S3_VIDEO_PREFIX/$S3_VIDEO_NAME)

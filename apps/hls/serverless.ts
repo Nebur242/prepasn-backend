@@ -10,6 +10,8 @@ import { VpcPlugin } from '@prepa-sn/sls/plugins';
 const service = 'hls';
 const buildDir = getBuildDir(service);
 
+const videoExtensions = ['.mp4', '.avi', '.webm'];
+
 const {
   FFMPEG_IMAGE_REPO_NAME,
   AWS_ECR_REGISTRY_ID,
@@ -23,7 +25,7 @@ const {
 } = getServerlessEnvVariables(service);
 
 const TASK_DEFINITION_NAME = 'hls-service-task-definition';
-const S3_BUCKET_NAME = `${service}uploads`;
+const S3_BUCKET_NAME = `prepasn-assets`;
 const CONTAINER_NAME = 'hls-service-container';
 const CLUSTER_NAME = 'hls-service-cluster';
 
@@ -79,11 +81,10 @@ const serverlessConfig: Serverless = {
           s3: {
             bucket: S3_BUCKET_NAME,
             event: 's3:ObjectCreated:*',
-            rules: [
-              {
-                prefix: 'videos/uploads/',
-              },
-            ],
+            rules: videoExtensions.map((extension) => ({
+              prefix: 'videos/uploads/',
+              suffix: extension,
+            })),
           },
         },
       ],
