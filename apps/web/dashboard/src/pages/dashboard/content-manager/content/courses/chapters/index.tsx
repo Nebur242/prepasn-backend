@@ -12,141 +12,135 @@ import { useNavigate, useParams } from 'react-router-dom';
 const { confirm } = Modal;
 
 const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: Chapter[]) => {
-        console.log(
-            `selectedRowKeys: ${selectedRowKeys}`,
-            'selectedRows: ',
-            selectedRows
-        );
-    },
-    getCheckboxProps: (_record: Chapter) => ({}),
+  onChange: (selectedRowKeys: React.Key[], selectedRows: Chapter[]) => {
+    console.log(
+      `selectedRowKeys: ${selectedRowKeys}`,
+      'selectedRows: ',
+      selectedRows
+    );
+  },
+  getCheckboxProps: (_record: Chapter) => ({}),
 };
 
 const Chapters = () => {
-    const { courseId } = useParams<{ courseId: string }>();
-    const navigate = useNavigate();
+  const { courseId } = useParams<{ courseId: string }>();
+  const navigate = useNavigate();
 
-    const { data, isLoading, refetch } = useFindOneCourseQuery(courseId as string);
+  const { data, isLoading, refetch } = useFindOneCourseQuery(
+    courseId as string
+  );
 
-    const [
-        deleteChapter,
-        {
-            isSuccess,
-            isError,
-        }
-    ] = useDeleteChapterMutation();
+  const [deleteChapter, { isSuccess, isError }] = useDeleteChapterMutation();
 
-    const showConfirm = (confirmation: IConfirmation<Chapter>) => {
-        const { title, content, onCancel, onOk } = confirmation;
-        confirm({
-            title,
-            icon: <Icon type="ExclamationCircleOutlined" />,
-            content,
-            okButtonProps: {
-                danger: true,
-            },
-            onCancel,
-            onOk,
-        });
-    };
+  const showConfirm = (confirmation: IConfirmation<Chapter>) => {
+    const { title, content, onCancel, onOk } = confirmation;
+    confirm({
+      title,
+      icon: <Icon type="ExclamationCircleOutlined" />,
+      content,
+      okButtonProps: {
+        danger: true,
+      },
+      onCancel,
+      onOk,
+    });
+  };
 
+  const columns = [
+    {
+      title: 'Titre',
+      dataIndex: 'title',
+      render: (text: string, chapter: Chapter) => (
+        <Button onClick={() => navigate(`update/${chapter.id}`)} type="link">
+          {text}
+        </Button>
+      ),
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      render: (tag: string) => (
+        <Tag color="green" key={tag}>
+          {tag}
+        </Tag>
+      ),
+    },
 
-    const columns = [
-        {
-            title: 'Titre',
-            dataIndex: 'title',
-            render: (text: string, chapter: Chapter) => (
-                <Button onClick={() => navigate(`update/${chapter.id}`)} type="link">
-                    {text}
-                </Button>
-            ),
-        },
-        {
-            title: 'Status',
-            dataIndex: 'status',
-            render: (tag: string) => (
-                <Tag color="green" key={tag}>
-                    {tag}
-                </Tag>
-            ),
-        },
+    {
+      title: 'Course',
+      render: () => <span>{data?.title}</span>,
+    },
 
-        {
-            title: 'Course',
-            render: () => <span>{data?.title}</span>
-        },
+    {
+      title: 'Created At',
+      dataIndex: 'createdAt',
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (_: string, chapter: Chapter) => (
+        <Space size="middle">
+          <Button
+            type="primary"
+            ghost
+            icon={<Icon type="EditOutlined" />}
+            onClick={() => navigate(`update/${chapter.id}`)}
+          />
+          <Button
+            type="primary"
+            ghost
+            danger
+            icon={<Icon type="DeleteOutlined" />}
+            onClick={() =>
+              showConfirm({
+                title: chapter.title,
+                content: 'Voulez-vous vraiment supprimer cette section ?',
+                data: chapter,
+                onCancel: () => console.log('cancel'),
+                onOk: () => deleteChapter(chapter.id),
+              } as IConfirmation<Chapter>)
+            }
+          />
+        </Space>
+      ),
+    },
+  ];
 
-        {
-            title: 'Created At',
-            dataIndex: 'createdAt',
-        },
-        {
-            title: 'Action',
-            key: 'action',
-            render: (_: string, chapter: Chapter) => (
-                <Space size="middle">
-                    <Button
-                        type="primary"
-                        ghost
-                        icon={<Icon type="EditOutlined" />}
-                        onClick={() => navigate(`update/${chapter.id}`)}
-                    />
-                    <Button
-                        type="primary"
-                        ghost
-                        danger
-                        icon={<Icon type="DeleteOutlined" />}
-                        onClick={() =>
-                            showConfirm({
-                                title: chapter.title,
-                                content: 'Voulez-vous vraiment supprimer cette section ?',
-                                data: chapter,
-                                onCancel: () => console.log('cancel'),
-                                onOk: () => deleteChapter(chapter.id),
-                            } as IConfirmation<Chapter>)
-                        }
-                    />
-                </Space>
-            ),
-        },
-    ];
+  useEffect(() => {
+    if (isSuccess) {
+      message.success('Chapitre supprimé avec succès');
+    }
 
-    useEffect(() => {
-        if (isSuccess) {
-            message.success("Chapitre supprimé avec succès");
-        }
+    if (isError) {
+      message.error('Une erreur est survenue');
+    }
+  }, [isError, isSuccess]);
 
-        if (isError) {
-            message.error("Une erreur est survenue");
-        }
-    }, [isError, isSuccess]);
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
-
-    useEffect(() => {
-        refetch();
-    }, [refetch]);
-
-    return (
-        <ContentSectionWrapper
-            title={`Chapters : Course ${data?.title ? data.title : ''}`}
-            description="All Chapters"
-            createButtonText="Add a new chapter"
-            onCreate={() => navigate('create')}
-        >
-            <Table
-                rowSelection={{
-                    type: 'checkbox',
-                    ...rowSelection,
-                }}
-                loading={isLoading}
-                columns={columns}
-                dataSource={data?.chapters?.map((chapter: Chapter) => ({
-                    ...chapter,
-                    key: chapter.id,
-                }))}
-            />
-        </ContentSectionWrapper>
-    );
+  return (
+    <ContentSectionWrapper
+      title={`Chapters : Course ${data?.title ? data.title : ''}`}
+      description="All Chapters"
+      createButtonText="Add a new chapter"
+      onCreate={() => navigate('create')}
+    >
+      <Table
+        rowSelection={{
+          type: 'checkbox',
+          ...rowSelection,
+        }}
+        loading={isLoading}
+        columns={columns}
+        dataSource={data?.chapters?.map((chapter: Chapter) => ({
+          ...chapter,
+          key: chapter.id,
+        }))}
+      />
+    </ContentSectionWrapper>
+  );
 };
 
 export default Chapters;

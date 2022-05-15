@@ -1,11 +1,10 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Course } from '@prepa-sn/shared/interfaces';
-import { Form, message, } from 'antd';
+import { Form, message } from 'antd';
 import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
 import { useCreateCourseMutation } from 'apps/web/dashboard/src/store/features/courses';
 import { useEffect } from 'react';
 import CreateAndUpdate from './create-update';
-
 
 const CreateCourse = () => {
   const [form] = Form.useForm();
@@ -37,7 +36,6 @@ const CreateCourse = () => {
 
   return (
     <div>
-
       <ContentSectionWrapper
         title={`Create a course`}
         description="Course ID"

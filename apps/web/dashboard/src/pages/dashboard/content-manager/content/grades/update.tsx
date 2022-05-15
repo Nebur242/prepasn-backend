@@ -1,12 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Grade } from '@prepa-sn/shared/interfaces';
-import {
-  Form,
-  message,
-  Row,
-  Spin,
-} from 'antd';
+import { Form, message, Row, Spin } from 'antd';
 import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
 import {
   useFindOneGradeQuery,
@@ -15,7 +10,6 @@ import {
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import CreateAndUpdate from './create-update';
-
 
 const UpdateGrade = () => {
   const { id } = useParams<{ id: string }>();
@@ -81,7 +75,6 @@ const UpdateGrade = () => {
     >
       <CreateAndUpdate initialValues={data} form={form} onFinish={onFinish} />
     </ContentSectionWrapper>
-
   );
 };
 

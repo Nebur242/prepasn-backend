@@ -4,7 +4,10 @@ import { Button, Space, Table, Tag, Modal, message } from 'antd';
 import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.interface';
 import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
 import Icon from 'apps/web/dashboard/src/components/Icon';
-import { useDeleteCourseMutation, useFindAllCoursesQuery } from 'apps/web/dashboard/src/store/features/courses';
+import {
+  useDeleteCourseMutation,
+  useFindAllCoursesQuery,
+} from 'apps/web/dashboard/src/store/features/courses';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -27,13 +30,7 @@ const Courses = () => {
   const { data: courses = [], isLoading: coursesLoading } =
     useFindAllCoursesQuery();
 
-  const [
-    deleteCourse,
-    {
-      isSuccess,
-      isError,
-    }
-  ] = useDeleteCourseMutation();
+  const [deleteCourse, { isSuccess, isError }] = useDeleteCourseMutation();
 
   const showConfirm = (confirmation: IConfirmation<Course>) => {
     const { title, content, onCancel, onOk } = confirmation;
@@ -113,17 +110,15 @@ const Courses = () => {
     },
   ];
 
-
   useEffect(() => {
     if (isSuccess) {
-      message.success("Grade supprimé avec succès");
+      message.success('Grade supprimé avec succès');
     }
 
     if (isError) {
-      message.error("Une erreur est survenue");
+      message.error('Une erreur est survenue');
     }
   }, [isError, isSuccess]);
-
 
   return (
     <ContentSectionWrapper

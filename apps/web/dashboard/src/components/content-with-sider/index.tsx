@@ -84,7 +84,7 @@ const ContentWithSider: FC<IContentWithSiderProps> = ({
               name="language"
               rules={[{ required: true, message: 'Language is required' }]}
             >
-              <Select placeholder="Langues" >
+              <Select placeholder="Langues">
                 {Object.values(LANGUAGE).map((lang: LANGUAGE) => (
                   <Option key={lang} value={lang}>
                     {lang}
@@ -92,11 +92,8 @@ const ContentWithSider: FC<IContentWithSiderProps> = ({
                 ))}
               </Select>
             </Form.Item>
-            <Form.Item
-              name="status"
-              label="Status"
-            >
-              <Select placeholder="Status" >
+            <Form.Item name="status" label="Status">
+              <Select placeholder="Status">
                 <Option value={Status.ACTIVE}>Active</Option>
                 <Option value={Status.DRAFT}>Draft</Option>
                 <Option value={Status.INACTIVE}>Inactive</Option>
