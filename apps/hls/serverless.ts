@@ -10,15 +10,7 @@ import { VpcPlugin } from '@prepa-sn/sls/plugins';
 const service = 'hls';
 const buildDir = getBuildDir(service);
 const hlsBucketSourcePath = 'videos/uploads/';
-const videoExtensions = [
-  '.mov',
-  '.mpg',
-  '.mpeg',
-  '.mp4',
-  '.wmv',
-  '.avi',
-  '.webm',
-];
+const videoExtensions = ['.mov', '.mpeg', '.mp4', '.avi', '.webm'];
 
 const {
   FFMPEG_IMAGE_REPO_NAME,
