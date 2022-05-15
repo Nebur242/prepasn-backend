@@ -4,64 +4,27 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/web:webpack",
+      "executor": "@wanews/nx-vite:build",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "compiler": "babel",
-        "outputPath": "dist/apps/web/dashboard",
-        "index": "apps/web/dashboard/src/index.html",
-        "baseHref": "/",
-        "main": "apps/web/dashboard/src/main.tsx",
-        "polyfills": "apps/web/dashboard/src/polyfills.ts",
-        "tsConfig": "apps/web/dashboard/tsconfig.app.json",
-        "assets": [
-          "apps/web/dashboard/src/favicon.ico",
-          "apps/web/dashboard/src/assets"
-        ],
-        "styles": [],
-        "scripts": [],
-        "webpackConfig": "@nrwl/react/plugins/webpack"
+        "outputPath": "apps/web/dashboard/dist"
       },
       "configurations": {
-        "development": {
-          "extractLicenses": false,
-          "optimization": false,
-          "sourceMap": true,
-          "vendorChunk": true
-        },
+        "development": {},
         "production": {
           "fileReplacements": [
             {
               "replace": "apps/web/dashboard/src/environments/environment.ts",
               "with": "apps/web/dashboard/src/environments/environment.prod.ts"
             }
-          ],
-          "optimization": true,
-          "outputHashing": "all",
-          "sourceMap": false,
-          "namedChunks": false,
-          "extractLicenses": true,
-          "vendorChunk": false
+          ]
         }
       }
     },
     "serve": {
-      "executor": "@nrwl/web:dev-server",
-      "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "web-dashboard:build",
-        "hmr": true
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "web-dashboard:build:development"
-        },
-        "production": {
-          "buildTarget": "web-dashboard:build:production",
-          "hmr": false
-        }
-      }
+      "executor": "@wanews/nx-vite:serve",
+      "options": {}
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",

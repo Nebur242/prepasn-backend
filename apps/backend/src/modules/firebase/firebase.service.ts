@@ -9,13 +9,12 @@ import { CatchFirebaseException } from './decorators/firebase-exception.decorato
 
 @Injectable()
 export class FirebaseService {
-  private readonly firebaseApp = null;
   constructor(
     private readonly httpService: HttpService,
     private readonly configService: ConfigService
   ) {
     if (getApps().length === 0) {
-      this.firebaseApp = initializeApp({
+      initializeApp({
         credential: cert(configService.get('config.firebase')),
       });
     }

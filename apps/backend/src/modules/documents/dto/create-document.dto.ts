@@ -22,7 +22,7 @@ export class CreateDocumentDto {
   })
   @IsOptional()
   @IsString()
-  description: string;
+  description?: string;
 
   @ApiProperty({
     description: 'The document url',
@@ -34,7 +34,7 @@ export class CreateDocumentDto {
   publicUrl: string;
 
   @ApiProperty({
-    description: 'The document url',
+    description: 'The document size',
     required: true,
   })
   @IsDefined()
@@ -42,7 +42,7 @@ export class CreateDocumentDto {
   size: number;
 
   @ApiProperty({
-    description: 'The document url',
+    description: 'The document mimetype',
     required: true,
   })
   @IsDefined()
@@ -50,7 +50,7 @@ export class CreateDocumentDto {
   mimetype: string;
 
   @ApiProperty({
-    description: 'The document url',
+    description: 'The document name',
     required: true,
   })
   @IsDefined()

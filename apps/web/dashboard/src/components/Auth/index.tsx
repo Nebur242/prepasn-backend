@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect } from 'react'
+import { FC, ReactNode, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../store';
 import { authenticateUser } from '../../store/features/auth';
@@ -18,10 +18,9 @@ const Auth: FC<Props> = ({ children }) => {
   const fetchAllDocuments = usePrefetchDocuments('findAllDocuments');
   const fetchAllCourses = usePrefetchCourses('findAllCourses');
 
-
   useEffect(() => {
     dispatch(authenticateUser());
-  }, [dispatch])
+  }, [dispatch]);
 
   useEffect(() => {
     if (auth.isLoggedIn) {
@@ -29,10 +28,10 @@ const Auth: FC<Props> = ({ children }) => {
       fetchAllDocuments();
       fetchAllCourses();
     }
-  }, [auth, fetchAllGrades, fetchAllDocuments, fetchAllCourses])
+  }, [auth, fetchAllGrades, fetchAllDocuments, fetchAllCourses]);
 
   if (auth.loading) return <Loader />;
   return <> {children} </>;
-}
+};
 
 export default Auth;

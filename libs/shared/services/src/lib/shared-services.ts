@@ -15,9 +15,9 @@ export function getDatePath(date: Date): string {
   );
 }
 
-export const uploadFileToFirebase = async (
+export const uploadAsset = async (
   file: File
-): Promise<Partial<Document>> => {
+): Promise<Omit<Document, 'id'>> => {
   const id = uuidv4();
   const fileRef = ref(
     storage,
@@ -26,7 +26,7 @@ export const uploadFileToFirebase = async (
   const snapshot = await uploadBytes(fileRef, file);
   const publicUrl = await getDownloadURL(snapshot.ref);
   return {
-    mimetype: snapshot.metadata.contentType,
+    mimetype: snapshot.metadata.contentType || file.type,
     originalname: file.name,
     size: snapshot.metadata.size,
     encoding: snapshot.metadata.contentEncoding,
@@ -37,15 +37,11 @@ export const uploadFileToFirebase = async (
   };
 };
 
-export const uploadFilesToFirebase = (
-  files: File[]
-): Promise<Partial<Document>[]> => {
-  return Promise.all(files.map((file) => uploadFileToFirebase(file)));
+export const uploadAssets = (files: File[]): Promise<Partial<Document>[]> => {
+  return Promise.all(files.map((file) => uploadAsset(file)));
 };
 
-export const removeFileFromFirebase = async (
-  path: string
-): Promise<boolean> => {
+export const removeAsset = async (path: string): Promise<boolean> => {
   const desertRef = ref(storage, path);
   await deleteObject(desertRef);
   return true;

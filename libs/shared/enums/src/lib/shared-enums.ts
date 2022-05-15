@@ -43,7 +43,7 @@ export enum FIREBASE_ERRORS {
   USER_NOT_FOUND = 'auth/user-not-found',
 }
 
-export enum documentType {
+export enum DocumentType {
   DOCUMENT = 'document',
   IMAGE = 'image',
   VIDEO = 'video',

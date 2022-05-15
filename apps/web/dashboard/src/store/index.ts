@@ -23,8 +23,9 @@ export const store = configureStore({
       .concat(gradesApi.middleware)
       .concat(documentsApi.middleware)
       .concat(coursesApi.middleware)
-      .concat(chaptersApi.middleware),
-  devTools: process.env['NODE_ENV'] !== 'production',
+      .concat(chaptersApi.middleware)
+      .concat(coursesApi.middleware),
+  devTools: import.meta.env.DEV,
 });
 
 setupListeners(store.dispatch);

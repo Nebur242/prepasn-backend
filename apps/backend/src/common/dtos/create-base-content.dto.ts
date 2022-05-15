@@ -22,7 +22,7 @@ export class CreateBaseContentDto {
   description?: string;
 
   @ApiProperty({
-    description: 'The document id',
+    description: 'The image document id',
     required: true,
     type: Document,
   })
@@ -31,7 +31,7 @@ export class CreateBaseContentDto {
   image?: Document;
 
   @ApiProperty({
-    description: 'The document id',
+    description: 'The video document id',
     required: true,
     type: Document,
   })
