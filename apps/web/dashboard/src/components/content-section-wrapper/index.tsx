@@ -1,4 +1,4 @@
-import { Button, Col, Divider, Row, Typography } from 'antd';
+import { Button, ButtonProps, Col, Divider, Row, Typography } from 'antd';
 import { FC } from 'react';
 import Icon from '../Icon';
 
@@ -8,6 +8,7 @@ type Props = {
   description?: string;
   createButtonText?: string;
   onCreate?: () => void;
+  createButtonProps?: ButtonProps;
   className?: string;
   bodyClassName?: string;
   bodyStyle?: React.CSSProperties;
@@ -26,12 +27,14 @@ const ContentSectionWrapper: FC<Props> = ({
   bodyClassName,
   bodyStyle = {},
   onCreate,
+  createButtonProps = {},
 }) => {
   return (
     <div
       style={{
-        height: 'calc( 100vh - 94px )',
+        maxHeight: 'calc( 100vh - 94px )',
         overflowY: 'scroll',
+        paddingBottom: '100px',
         ...style,
       }}
       className={className}
@@ -43,6 +46,7 @@ const ContentSectionWrapper: FC<Props> = ({
         </Col>
         <Col>
           <Button
+            {...createButtonProps}
             onClick={onCreate}
             type="primary"
             icon={<Icon type="PlusOutlined" />}

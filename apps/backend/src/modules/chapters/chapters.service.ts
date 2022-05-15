@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { FindManyOptions } from 'typeorm';
-import { DocumentsService } from '../documents/documents.service';
+import { DeepPartial, FindManyOptions } from 'typeorm';
+import { CoursesService } from '../courses/courses.service';
 import { CreateChapterDto } from './dto/create-chapter.dto';
 import { UpdateChapterDto } from './dto/update-chapter.dto';
 import { Chapter } from './entities/chapter.entity';
@@ -10,18 +10,19 @@ import { ChaptersRepository } from './repositories/chapter.repository';
 export class ChaptersService {
   constructor(
     private readonly chaptersRepository: ChaptersRepository,
-    private readonly documentsService: DocumentsService
+    private readonly coursesService: CoursesService
   ) {}
 
+  createEntity(entityLike: DeepPartial<Chapter>): Chapter {
+    return this.chaptersRepository.create(entityLike);
+  }
+
   async create(createChapterDto: CreateChapterDto): Promise<Chapter> {
-    const chapter = this.chaptersRepository.create({
+    const chapter = this.createEntity({
       ...createChapterDto,
-      course: {
+      course: this.coursesService.createEntity({
         id: createChapterDto.course,
-      },
-      documents: createChapterDto.documents.map((id) =>
-        this.documentsService.createEntity({ id })
-      ),
+      }),
     });
     return this.chaptersRepository.save(chapter);
   }
@@ -32,7 +33,7 @@ export class ChaptersService {
 
   async findOne(id: number): Promise<Chapter> {
     const found = await this.chaptersRepository.findOne(id, {
-      relations: ['documents'],
+      relations: ['documents', 'image', 'video', 'course'],
     });
     if (!found) throw new NotFoundException(`Chapter with id ${id} not found`);
     return found;
@@ -43,22 +44,10 @@ export class ChaptersService {
     updateChapterDto: UpdateChapterDto
   ): Promise<Chapter> {
     const chapter: Chapter = await this.findOne(id);
-    let updatedChapter: Chapter = {
+    return this.chaptersRepository.save({
       ...chapter,
       ...updateChapterDto,
-
-      documents: chapter.documents,
-    };
-    if (updatedChapter.documents) {
-      updatedChapter = {
-        ...updatedChapter,
-        documents: updateChapterDto.documents.map((id) =>
-          this.documentsService.createEntity({ id })
-        ),
-      };
-    }
-    await this.chaptersRepository.update(id, updatedChapter);
-    return this.findOne(id);
+    });
   }
 
   async remove(id: number): Promise<Chapter> {

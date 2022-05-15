@@ -5,7 +5,6 @@ export default function ControllerWithApiTags(
   path: string,
   options: ControllerOptions = {}
 ) {
-  //uppercase first letter
   const ApiTagsTitle = path.charAt(0).toUpperCase() + path.slice(1);
   return applyDecorators(
     ApiTags(ApiTagsTitle),

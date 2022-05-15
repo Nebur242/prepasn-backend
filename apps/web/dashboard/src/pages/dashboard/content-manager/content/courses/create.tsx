@@ -1,21 +1,11 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Course } from '@prepa-sn/shared/interfaces';
-import {
-  Button,
-  Col,
-  Divider,
-  Form,
-  message,
-  Row,
-  Space,
-  Typography,
-} from 'antd';
-import Icon from 'apps/web/dashboard/src/components/Icon';
+import { Form, message, } from 'antd';
+import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
 import { useCreateCourseMutation } from 'apps/web/dashboard/src/store/features/courses';
 import { useEffect } from 'react';
 import CreateAndUpdate from './create-update';
 
-const { Title, Text } = Typography;
 
 const CreateCourse = () => {
   const [form] = Form.useForm();
@@ -47,26 +37,16 @@ const CreateCourse = () => {
 
   return (
     <div>
-      <Row justify="space-between">
-        <Col>
-          <Title level={4}>Create a course</Title>
-          <Text>Course ID </Text>
-        </Col>
-        <Col>
-          <Space>
-            <Button
-              loading={isLoading}
-              onClick={onFinish}
-              type="primary"
-              icon={<Icon type="PlusOutlined" />}
-            >
-              Save the course
-            </Button>
-          </Space>
-        </Col>
-      </Row>
-      <Divider />
-      <CreateAndUpdate form={form} onFinish={onFinish} />
+
+      <ContentSectionWrapper
+        title={`Create a course`}
+        description="Course ID"
+        createButtonText="Save the course"
+        onCreate={onFinish}
+        createButtonProps={{ loading: isLoading }}
+      >
+        <CreateAndUpdate form={form} onFinish={onFinish} />
+      </ContentSectionWrapper>
     </div>
   );
 };
