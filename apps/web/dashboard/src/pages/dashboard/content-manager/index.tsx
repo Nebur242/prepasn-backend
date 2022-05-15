@@ -44,7 +44,7 @@ const ContentManager = () => {
                 />
 
             </Col>
-            <Col span={20} style={{ padding: "0 2%", height: "calc( 100vh - 94px )", overflowY: "scroll" }}  >
+            <Col span={20} style={{ padding: "0 2%", maxHeight: "calc( 100vh - 94px )", overflowY: "hidden" }}  >
                 <Button onClick={goBack} style={{ paddingLeft: 0, marginBottom: 20 }} type="link" icon={<Icon type="ArrowLeftOutlined" />} >Back</Button>
                 <Outlet />
             </Col>

@@ -37,14 +37,21 @@ const UpdateCourses = lazy(
   () => import('../pages/dashboard/content-manager/content/courses/update')
 );
 
+//COURSES CHAPTERS
 const CourseChapters = lazy(
   () => import('../pages/dashboard/content-manager/content/courses/chapters')
 );
 
-//CHAPTERS
-const Chapters = lazy(
-  () => import('../pages/dashboard/content-manager/content/chapters')
+const CreateChapters = lazy(
+  () =>
+    import('../pages/dashboard/content-manager/content/courses/chapters/create')
 );
+
+const UpdateChapters = lazy(
+  () =>
+    import('../pages/dashboard/content-manager/content/courses/chapters/update')
+);
+
 export interface Route {
   path: string;
   name: string;
@@ -159,7 +166,7 @@ export const DASHBOARD: Route = {
           routes: [],
         },
         {
-          path: 'courses/:id/chapters',
+          path: 'courses/:courseId/chapters',
           name: 'course-chapters',
           access: ['admin'],
           isPublic: false,
@@ -167,11 +174,19 @@ export const DASHBOARD: Route = {
           routes: [],
         },
         {
-          path: 'chapters',
-          name: 'chapters',
+          path: 'courses/:courseId/chapters/create',
+          name: 'course-chapters',
           access: ['admin'],
           isPublic: false,
-          element: Chapters,
+          element: CreateChapters,
+          routes: [],
+        },
+        {
+          path: 'courses/:courseId/chapters/update/:id',
+          name: 'course-chapters',
+          access: ['admin'],
+          isPublic: false,
+          element: UpdateChapters,
           routes: [],
         },
       ],

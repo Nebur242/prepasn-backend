@@ -1,5 +1,5 @@
 import { BaseContent } from '@prepa-sn/backend/common/entities/base-content.entity';
-import { Entity, JoinColumn, JoinTable, ManyToMany, OneToMany } from 'typeorm';
+import { Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import { Chapter } from '@prepa-sn/backend/modules/chapters/entities/chapter.entity';
 import { Grade } from '@prepa-sn/backend/modules/grades/entities/grade.entity';
 import { Document } from '../../documents/entities/document.entity';
@@ -12,8 +12,7 @@ export class Course extends BaseContent {
   @JoinTable()
   grades: Grade[];
 
-  @OneToMany(() => Chapter, (chapter: Chapter) => chapter.course)
-  @JoinColumn()
+  @OneToMany(() => Chapter, (chapter) => chapter.course)
   chapters?: Chapter[];
 
   @ManyToMany(() => Document)

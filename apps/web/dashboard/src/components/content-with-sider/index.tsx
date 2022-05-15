@@ -10,6 +10,7 @@ import {
   Select,
   Divider,
 } from 'antd';
+import { Store } from 'antd/lib/form/interface';
 import { FC } from 'react';
 
 const { Title, Text } = Typography;
@@ -20,19 +21,26 @@ interface IContentWithSiderProps {
   form?: FormInstance;
   onFinish?: (values: unknown) => void;
   sidebarExtra?: React.ReactNode;
+  initialValues?: Store;
 }
 const ContentWithSider: FC<IContentWithSiderProps> = ({
   children,
   onFinish,
   form,
   sidebarExtra,
+  initialValues,
 }) => {
   return (
     <Form
-      validateTrigger={['onFinish']}
+      validateTrigger={['onChange']}
       form={form}
       layout="vertical"
       onFinish={onFinish}
+      initialValues={{
+        ...(initialValues || {}),
+        status: Status.ACTIVE,
+        language: LANGUAGE.FR,
+      }}
     >
       <Row gutter={10}>
         <Col span={17}>
@@ -75,9 +83,8 @@ const ContentWithSider: FC<IContentWithSiderProps> = ({
               label="Langue"
               name="language"
               rules={[{ required: true, message: 'Language is required' }]}
-              initialValue={LANGUAGE.FR}
             >
-              <Select placeholder="Langues" defaultValue={LANGUAGE.FR}>
+              <Select placeholder="Langues" >
                 {Object.values(LANGUAGE).map((lang: LANGUAGE) => (
                   <Option key={lang} value={lang}>
                     {lang}
@@ -88,9 +95,8 @@ const ContentWithSider: FC<IContentWithSiderProps> = ({
             <Form.Item
               name="status"
               label="Status"
-              initialValue={Status.ACTIVE}
             >
-              <Select placeholder="Status" defaultValue={Status.ACTIVE}>
+              <Select placeholder="Status" >
                 <Option value={Status.ACTIVE}>Active</Option>
                 <Option value={Status.DRAFT}>Draft</Option>
                 <Option value={Status.INACTIVE}>Inactive</Option>

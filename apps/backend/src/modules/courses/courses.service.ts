@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { FindManyOptions } from 'typeorm';
+import { DeepPartial, FindManyOptions } from 'typeorm';
 import { GradesService } from '../grades/grades.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
@@ -12,6 +12,10 @@ export class CoursesService {
     private readonly coursesRepository: CoursesRepository,
     private readonly gradesService: GradesService
   ) {}
+
+  createEntity(entityLike: DeepPartial<Course>): Course {
+    return this.coursesRepository.create(entityLike);
+  }
 
   async create(createCourseDto: CreateCourseDto): Promise<Course> {
     const course = this.coursesRepository.create({

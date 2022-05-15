@@ -1,12 +1,11 @@
+/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Course } from "@prepa-sn/shared/interfaces";
-import { Button, Col, Divider, Form, message, Row, Space, Spin, Typography } from "antd";
-import Icon from "apps/web/dashboard/src/components/Icon";
+import { Form, message, Row, Spin } from "antd";
+import ContentSectionWrapper from "apps/web/dashboard/src/components/content-section-wrapper";
 import { useFindOneCourseQuery, useUpdateCourseMutation } from "apps/web/dashboard/src/store/features/courses";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import CreateAndUpdate from "./create-update";
-
-const { Title, Text } = Typography;
 
 const UpdateCourse = () => {
   const { id } = useParams<{ id: string }>();
@@ -69,28 +68,15 @@ const UpdateCourse = () => {
       </Row>
     );
 
-  return <div>
-    <Row justify="space-between">
-      <Col>
-        <Title level={4}>Update the entry : {data?.title}</Title>
-        <Text>Course ID : {data?.id}</Text>
-      </Col>
-      <Col>
-        <Space>
-          <Button
-            loading={isUpdating}
-            onClick={onFinish}
-            type="primary"
-            icon={<Icon type="PlusOutlined" />}
-          >
-            Update the grade
-          </Button>
-        </Space>
-      </Col>
-    </Row>
-    <Divider />
+  return <ContentSectionWrapper
+    title={`Update the entry : ${data?.title}`}
+    description={`Course ID : ${data?.id}`}
+    createButtonText="Update the grade"
+    onCreate={onFinish}
+    createButtonProps={{ loading: isUpdating }}
+  >
     <CreateAndUpdate initialValues={data} form={form} onFinish={onFinish} />
-  </div>
+  </ContentSectionWrapper>
 };
 
 export default UpdateCourse;

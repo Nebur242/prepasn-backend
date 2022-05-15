@@ -3,12 +3,12 @@ import { ChaptersService } from './chapters.service';
 import { ChaptersController } from './chapters.controller';
 import { CoursesModule } from '../courses/courses.module';
 import { ChaptersRepository } from './repositories/chapter.repository';
-import { DocumentsModule } from '../documents/documents.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [CoursesModule, DocumentsModule],
+  imports: [TypeOrmModule.forFeature([ChaptersRepository]), CoursesModule],
   controllers: [ChaptersController],
-  providers: [ChaptersService, ChaptersRepository],
+  providers: [ChaptersService],
   exports: [ChaptersService],
 })
 export class ChaptersModule {}
