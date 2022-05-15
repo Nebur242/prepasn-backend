@@ -9,8 +9,16 @@ import { VpcPlugin } from '@prepa-sn/sls/plugins';
 
 const service = 'hls';
 const buildDir = getBuildDir(service);
-
-const videoExtensions = ['.mp4', '.avi', '.webm'];
+const hlsBucketSourcePath = 'videos/uploads/';
+const videoExtensions = [
+  '.mov',
+  '.mpg',
+  '.mpeg',
+  '.mp4',
+  '.wmv',
+  '.avi',
+  '.webm',
+];
 
 const {
   FFMPEG_IMAGE_REPO_NAME,
@@ -76,18 +84,20 @@ const serverlessConfig: Serverless = {
           ? {}
           : { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_DEFAULT_REGION }),
       },
-      events: [
-        {
-          s3: {
-            bucket: S3_BUCKET_NAME,
-            event: 's3:ObjectCreated:*',
-            rules: videoExtensions.map((extension) => ({
-              prefix: 'videos/uploads/',
+      events: videoExtensions.map((extension) => ({
+        s3: {
+          bucket: S3_BUCKET_NAME,
+          event: 's3:ObjectCreated:*',
+          rules: [
+            {
+              prefix: hlsBucketSourcePath,
+            },
+            {
               suffix: extension,
-            })),
-          },
+            },
+          ],
         },
-      ],
+      })),
     },
   },
   resources: {
