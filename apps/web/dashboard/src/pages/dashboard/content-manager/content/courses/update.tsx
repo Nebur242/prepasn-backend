@@ -1,11 +1,14 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
-import { Course } from "@prepa-sn/shared/interfaces";
-import { Form, message, Row, Spin } from "antd";
-import ContentSectionWrapper from "apps/web/dashboard/src/components/content-section-wrapper";
-import { useFindOneCourseQuery, useUpdateCourseMutation } from "apps/web/dashboard/src/store/features/courses";
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import CreateAndUpdate from "./create-update";
+import { Course } from '@prepa-sn/shared/interfaces';
+import { Form, message, Row, Spin } from 'antd';
+import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
+import {
+  useFindOneCourseQuery,
+  useUpdateCourseMutation,
+} from 'apps/web/dashboard/src/store/features/courses';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import CreateAndUpdate from './create-update';
 
 const UpdateCourse = () => {
   const { id } = useParams<{ id: string }>();
@@ -17,20 +20,16 @@ const UpdateCourse = () => {
     { isLoading: isUpdating, isSuccess: isUpdated, isError: hasError },
   ] = useUpdateCourseMutation();
 
-
-
   useEffect(() => {
     if (data) {
       form.setFieldsValue({
         ...data,
         image: data.image ? data.image?.id : null,
         video: data.video ? data.video?.id : null,
-        grades: data.grades.map(grade => grade.id),
+        grades: data.grades.map((grade) => grade.id),
       });
     }
   }, [data, form]);
-
-
 
   useEffect(() => {
     if (isUpdated) {
@@ -41,8 +40,6 @@ const UpdateCourse = () => {
       message.error('Une erreur est survenue');
     }
   }, [isUpdated, hasError, form]);
-
-
 
   const onFinish = async () => {
     try {
@@ -60,7 +57,6 @@ const UpdateCourse = () => {
     }
   };
 
-
   if (isLoading)
     return (
       <Row justify="center">
@@ -68,15 +64,17 @@ const UpdateCourse = () => {
       </Row>
     );
 
-  return <ContentSectionWrapper
-    title={`Update the entry : ${data?.title}`}
-    description={`Course ID : ${data?.id}`}
-    createButtonText="Update the grade"
-    onCreate={onFinish}
-    createButtonProps={{ loading: isUpdating }}
-  >
-    <CreateAndUpdate initialValues={data} form={form} onFinish={onFinish} />
-  </ContentSectionWrapper>
+  return (
+    <ContentSectionWrapper
+      title={`Update the entry : ${data?.title}`}
+      description={`Course ID : ${data?.id}`}
+      createButtonText="Update the grade"
+      onCreate={onFinish}
+      createButtonProps={{ loading: isUpdating }}
+    >
+      <CreateAndUpdate initialValues={data} form={form} onFinish={onFinish} />
+    </ContentSectionWrapper>
+  );
 };
 
 export default UpdateCourse;

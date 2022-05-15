@@ -45,11 +45,7 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
           </Title>
           <Divider />
           <Form.Item
-            rules={
-              [
-                { required: true, message: 'Please select a grade' }
-              ]
-            }
+            rules={[{ required: true, message: 'Please select a grade' }]}
             label="Grades"
             name="grades"
           >
@@ -127,7 +123,9 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
       <Form.Item label="Documents" name="documents">
         <AppUpload
           multiple={true}
-          selectedDocuments={initialValues?.documents ? initialValues?.documents : []}
+          selectedDocuments={
+            initialValues?.documents ? initialValues?.documents : []
+          }
           onSelect={(documents: Document[]) => {
             form.setFieldsValue({
               documents,
