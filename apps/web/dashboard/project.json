@@ -40,6 +40,9 @@
         "jestConfig": "apps/web/dashboard/jest.config.ts",
         "passWithNoTests": true
       }
+    },
+    "tsCheck": {
+      "executor": "./tools/executors/tsCheck:tsCheck"
     }
   },
   "tags": []
