@@ -28,7 +28,7 @@ const ContentWithSider: FC<IContentWithSiderProps> = ({
   onFinish,
   form,
   sidebarExtra,
-  initialValues,
+  initialValues = {},
 }) => {
   return (
     <Form
@@ -37,9 +37,9 @@ const ContentWithSider: FC<IContentWithSiderProps> = ({
       layout="vertical"
       onFinish={onFinish}
       initialValues={{
-        ...(initialValues || {}),
         status: Status.ACTIVE,
         language: LANGUAGE.FR,
+        ...initialValues,
       }}
     >
       <Row gutter={10}>

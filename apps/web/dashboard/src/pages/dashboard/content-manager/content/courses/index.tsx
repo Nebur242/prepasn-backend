@@ -1,9 +1,10 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Course } from '@prepa-sn/shared/interfaces';
-import { Button, Space, Table, Tag, Modal, message } from 'antd';
+import { Button, Space, Table, Tag, message } from 'antd';
 import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.interface';
 import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
 import Icon from 'apps/web/dashboard/src/components/Icon';
+import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
 import {
   useDeleteCourseMutation,
   useFindAllCoursesQuery,
@@ -11,7 +12,6 @@ import {
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const { confirm } = Modal;
 
 const rowSelection = {
   onChange: (selectedRowKeys: React.Key[], selectedRows: Course[]) => {
@@ -31,20 +31,6 @@ const Courses = () => {
     useFindAllCoursesQuery();
 
   const [deleteCourse, { isSuccess, isError }] = useDeleteCourseMutation();
-
-  const showConfirm = (confirmation: IConfirmation<Course>) => {
-    const { title, content, onCancel, onOk } = confirmation;
-    confirm({
-      title,
-      icon: <Icon type="ExclamationCircleOutlined" />,
-      content,
-      okButtonProps: {
-        danger: true,
-      },
-      onCancel,
-      onOk,
-    });
-  };
 
   const columns = [
     {
@@ -98,6 +84,7 @@ const Courses = () => {
             onClick={() =>
               showConfirm({
                 title: course.title,
+                icon: <Icon type="ExclamationCircleOutlined" />,
                 content: 'Voulez-vous vraiment supprimer cette section ?',
                 data: course,
                 onCancel: () => console.log('cancel'),

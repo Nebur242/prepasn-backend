@@ -4,6 +4,7 @@ import { Button, Space, Table, Tag, Modal, message } from 'antd';
 import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.interface';
 import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
 import Icon from 'apps/web/dashboard/src/components/Icon';
+import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
 import { useDeleteChapterMutation } from 'apps/web/dashboard/src/store/features/chapters';
 import { useFindOneCourseQuery } from 'apps/web/dashboard/src/store/features/courses';
 import { useEffect } from 'react';
@@ -32,19 +33,7 @@ const Chapters = () => {
 
   const [deleteChapter, { isSuccess, isError }] = useDeleteChapterMutation();
 
-  const showConfirm = (confirmation: IConfirmation<Chapter>) => {
-    const { title, content, onCancel, onOk } = confirmation;
-    confirm({
-      title,
-      icon: <Icon type="ExclamationCircleOutlined" />,
-      content,
-      okButtonProps: {
-        danger: true,
-      },
-      onCancel,
-      onOk,
-    });
-  };
+
 
   const columns = [
     {
@@ -94,6 +83,7 @@ const Chapters = () => {
             onClick={() =>
               showConfirm({
                 title: chapter.title,
+                icon: <Icon type="ExclamationCircleOutlined" />,
                 content: 'Voulez-vous vraiment supprimer cette section ?',
                 data: chapter,
                 onCancel: () => console.log('cancel'),

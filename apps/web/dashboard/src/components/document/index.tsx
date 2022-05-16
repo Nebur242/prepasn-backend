@@ -1,26 +1,12 @@
 import { Document } from '@prepa-sn/shared/interfaces';
-import { Button, Card, Checkbox, Image, Row, Modal, message } from 'antd';
+import { Button, Card, Checkbox, Image, Row, message } from 'antd';
 import { FC, useEffect } from 'react';
-import { IConfirmation } from '../../common/interfaces/common.interface';
+import { showConfirm } from '../../helpers/functions.helpers';
 import { useDeleteDocumentMutation } from '../../store/features/documents';
 import Icon from '../Icon';
 
 const { Meta } = Card;
-const { confirm } = Modal;
 
-const showConfirm = (confirmation: IConfirmation<Document>) => {
-  const { title, content, onCancel, onOk } = confirmation;
-  confirm({
-    title,
-    icon: <Icon type="ExclamationCircleOutlined" />,
-    content,
-    okButtonProps: {
-      danger: true,
-    },
-    onCancel,
-    onOk,
-  });
-};
 
 interface DocumentProps {
   document: Document;
@@ -36,12 +22,13 @@ const AppDocument: FC<DocumentProps> = ({
   const [deleteDocument, { isSuccess, isError, isLoading }] =
     useDeleteDocumentMutation();
 
-  const onDocumentDelete = (document: Document) => {
-    console.log('delete', document);
+  const onDocumentDelete = (doc: Document) => {
+    console.log('delete', doc);
     showConfirm({
       title: 'Supprimer un document',
-      content: `Voulez-vous supprimer le document ${document.title} ?`,
-      data: document,
+      icon: <Icon type="ExclamationCircleOutlined" />,
+      content: `Voulez-vous supprimer le document ${doc.title} ?`,
+      data: doc,
       onCancel: () => {
         console.log('cancel');
       },
@@ -51,12 +38,12 @@ const AppDocument: FC<DocumentProps> = ({
     });
   };
 
-  const onDocumentEdit = (document: Document) => {
-    console.log('edit', document);
+  const onDocumentEdit = (doc: Document) => {
+    console.log('edit', doc);
   };
 
-  const onDocumentSetting = (document: Document) => {
-    console.log('setting', document);
+  const onDocumentSetting = (doc: Document) => {
+    console.log('setting', doc);
   };
   useEffect(() => {
     if (isSuccess) {
