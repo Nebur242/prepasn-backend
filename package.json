@@ -143,9 +143,12 @@
     "vite-tsconfig-paths": "^3.4.1"
   },
   "lint-staged": {
-    "*.{js,ts,json,css}": [
-      "nx run-many --fix --all --parallel --target=lint",
-      "nx format:write"
+    "*.{ts,tsx}": [
+      "yarn ts:check"
+    ],
+    "*.{js,jsx,ts,tsx,json,md,css}": [
+      "nx affected:lint --fix --parallel --uncommitted",
+      "nx format:write --uncommitted"
     ]
   }
 }

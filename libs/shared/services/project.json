@@ -17,6 +17,9 @@
         "jestConfig": "libs/shared/services/jest.config.js",
         "passWithNoTests": true
       }
+    },
+    "tsCheck": {
+      "executor": "./tools/executors/tsCheck:tsCheck"
     }
   },
   "tags": []

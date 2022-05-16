@@ -47,6 +47,9 @@
         "jestConfig": "apps/backend/jest.config.js",
         "passWithNoTests": true
       }
+    },
+    "tsCheck": {
+      "executor": "./tools/executors/tsCheck:tsCheck"
     }
   },
   "tags": []
