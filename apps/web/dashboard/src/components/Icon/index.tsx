@@ -27,6 +27,8 @@ import {
   CloudUploadOutlined,
   TranslationOutlined,
   LogoutOutlined,
+  FolderOpenOutlined,
+  AreaChartOutlined
 } from '@ant-design/icons';
 
 export interface IIcons {
@@ -39,37 +41,39 @@ export interface IIcons {
 
 const Icon: FC<IIcons> = ({ type, ...rest }): JSX.Element | null => {
   if (!type) return null;
-  const getIcon = (type: string) =>
-    ({
-      QuestionOutlined: <QuestionOutlined {...rest} />,
-      DashboardOutlined: <DashboardOutlined {...rest} />,
-      SmileOutlined: <SmileOutlined {...rest} />,
-      FormOutlined: <FormOutlined {...rest} />,
-      TabletOutlined: <TabletOutlined {...rest} />,
-      ProfileOutlined: <ProfileOutlined {...rest} />,
-      CheckCircleOutlined: <CheckCircleOutlined {...rest} />,
-      WarningOutlined: <WarningOutlined {...rest} />,
-      UserOutlined: <UserOutlined {...rest} />,
-      HighlightOutlined: <HighlightOutlined {...rest} />,
-      CloseCircleOutlined: <CloseCircleOutlined {...rest} />,
-      TableOutlined: <TableOutlined {...rest} />,
-      HomeOutlined: <HomeOutlined {...rest} />,
-      InboxOutlined: <InboxOutlined {...rest} />,
-      SearchOutlined: <SearchOutlined {...rest} />,
-      ArrowLeftOutlined: <ArrowLeftOutlined {...rest} />,
-      PlusOutlined: <PlusOutlined {...rest} />,
-      CheckOutlined: <CheckOutlined {...rest} />,
-      EditOutlined: <EditOutlined {...rest} />,
-      DeleteOutlined: <DeleteOutlined {...rest} />,
-      SettingOutlined: <SettingOutlined {...rest} />,
-      EllipsisOutlined: <EllipsisOutlined {...rest} />,
-      ExclamationCircleOutlined: <ExclamationCircleOutlined {...rest} />,
-      FileTextOutlined: <FileTextOutlined {...rest} />,
-      CloudUploadOutlined: <CloudUploadOutlined {...rest} />,
-      TranslationOutlined: <TranslationOutlined {...rest} />,
-      LogoutOutlined: <LogoutOutlined {...rest} />,
-      default: null,
-    }[type]);
+  const getIcon = (iconName: string) =>
+  ({
+    QuestionOutlined: <QuestionOutlined {...rest} />,
+    DashboardOutlined: <DashboardOutlined {...rest} />,
+    SmileOutlined: <SmileOutlined {...rest} />,
+    FormOutlined: <FormOutlined {...rest} />,
+    TabletOutlined: <TabletOutlined {...rest} />,
+    ProfileOutlined: <ProfileOutlined {...rest} />,
+    CheckCircleOutlined: <CheckCircleOutlined {...rest} />,
+    WarningOutlined: <WarningOutlined {...rest} />,
+    UserOutlined: <UserOutlined {...rest} />,
+    HighlightOutlined: <HighlightOutlined {...rest} />,
+    CloseCircleOutlined: <CloseCircleOutlined {...rest} />,
+    TableOutlined: <TableOutlined {...rest} />,
+    HomeOutlined: <HomeOutlined {...rest} />,
+    InboxOutlined: <InboxOutlined {...rest} />,
+    SearchOutlined: <SearchOutlined {...rest} />,
+    ArrowLeftOutlined: <ArrowLeftOutlined {...rest} />,
+    PlusOutlined: <PlusOutlined {...rest} />,
+    CheckOutlined: <CheckOutlined {...rest} />,
+    EditOutlined: <EditOutlined {...rest} />,
+    DeleteOutlined: <DeleteOutlined {...rest} />,
+    SettingOutlined: <SettingOutlined {...rest} />,
+    EllipsisOutlined: <EllipsisOutlined {...rest} />,
+    ExclamationCircleOutlined: <ExclamationCircleOutlined {...rest} />,
+    FileTextOutlined: <FileTextOutlined {...rest} />,
+    CloudUploadOutlined: <CloudUploadOutlined {...rest} />,
+    TranslationOutlined: <TranslationOutlined {...rest} />,
+    LogoutOutlined: <LogoutOutlined {...rest} />,
+    FolderOpenOutlined: <FolderOpenOutlined {...rest} />,
+    AreaChartOutlined: <AreaChartOutlined {...rest} />,
+    default: null,
+  }[iconName]);
 
   return getIcon(type) || <QuestionOutlined {...rest} />;
 };

@@ -66,6 +66,7 @@ const UploadComponent: FC<DocumentsContentProps> = ({
         <div>
           {
             <Upload
+              listType="picture"
               onRemove={(file: UploadFile<Document>) => {
                 const newSelectedDocuments = selectedDocuments.filter(
                   (d) => `${d.id}` !== `${file.uid}`
@@ -75,12 +76,12 @@ const UploadComponent: FC<DocumentsContentProps> = ({
               }}
               defaultFileList={selectedDocuments.map(
                 (document: Document) =>
-                  ({
-                    url: document.publicUrl,
-                    uid: document.id,
-                    name: document.title,
-                    status: 'done',
-                  } as unknown as UploadFile<Document>)
+                ({
+                  url: document.publicUrl,
+                  uid: document.id,
+                  name: document.title,
+                  status: 'done',
+                } as unknown as UploadFile<Document>)
               )}
             />
           }

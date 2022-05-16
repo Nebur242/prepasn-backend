@@ -9,6 +9,7 @@ const ContentManagerHome = lazy(
 const Home = lazy(() => import('../pages/app/home.page'));
 const Login = lazy(() => import('../pages/auth/login.page'));
 const Dashboard = lazy(() => import('../pages/dashboard'));
+const statistics = lazy(() => import('../pages/dashboard/stats'));
 
 //MEDIA LIBRAY
 const MediaLibrary = lazy(() => import('../pages/dashboard/media-library'));
@@ -94,9 +95,18 @@ export const DASHBOARD: Route = {
       path: '',
       name: 'home',
       access: ['admin'],
-      icon: 'DashboardOutlined',
+      icon: 'HomeOutlined',
       isPublic: false,
       element: Welcome,
+      routes: [],
+    },
+    {
+      path: 'stats',
+      name: 'stats',
+      isPublic: false,
+      icon: 'AreaChartOutlined',
+      access: [],
+      element: statistics,
       routes: [],
     },
     {
@@ -195,7 +205,7 @@ export const DASHBOARD: Route = {
       path: 'uploads',
       name: 'media-library',
       access: ['admin'],
-      icon: 'DashboardOutlined',
+      icon: 'FolderOpenOutlined',
       isPublic: false,
       element: MediaLibrary,
       routes: [],

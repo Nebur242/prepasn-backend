@@ -20,11 +20,13 @@
   },
   "menu": {
     "home": "Accueil",
+    "stats": "Statistiques",
     "users": "Utilisateurs",
     "roles": "Rôles",
     "permissions": "Permissions",
     "settings": "Paramètres",
     "content-manager": "Content Manager",
-    "grades": "Sections"
+    "grades": "Sections",
+    "media-library": "Médias"
   }
 }
