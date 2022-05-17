@@ -9,6 +9,7 @@ const ContentManagerHome = lazy(
 const Home = lazy(() => import('../pages/app/home.page'));
 const Login = lazy(() => import('../pages/auth/login.page'));
 const Dashboard = lazy(() => import('../pages/dashboard'));
+const Profile = lazy(() => import('../pages/dashboard/profile'));
 
 //MEDIA LIBRAY
 const MediaLibrary = lazy(() => import('../pages/dashboard/media-library'));
@@ -198,6 +199,15 @@ export const DASHBOARD: Route = {
       icon: 'DashboardOutlined',
       isPublic: false,
       element: MediaLibrary,
+      routes: [],
+    },
+    {
+      path: 'profile',
+      name: 'profile',
+      access: ['admin'],
+      icon: 'UserOutlined',
+      isPublic: false,
+      element: Profile,
       routes: [],
     },
   ],
