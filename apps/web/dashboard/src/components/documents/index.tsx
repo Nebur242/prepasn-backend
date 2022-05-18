@@ -4,7 +4,6 @@ import {
   Button,
   Col,
   Divider,
-  Pagination,
   Row,
   Space,
   Spin,
@@ -53,11 +52,6 @@ const Documents: FC<DocumentsProps> = ({
 
   return (
     <div>
-      <Space>
-        <Button>Sort by</Button>
-        <Button>Filter by</Button>
-      </Space>
-      <Divider />
       <Row gutter={[10, 10]}>
         {documents.map((document: Document) => {
           return (
@@ -71,10 +65,7 @@ const Documents: FC<DocumentsProps> = ({
           );
         })}
       </Row>
-      <Divider />
-      <Row justify="end">
-        <Pagination defaultCurrent={1} total={documents.length} />
-      </Row>
+
     </div>
   );
 };

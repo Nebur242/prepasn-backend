@@ -88,7 +88,7 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
               }
               onSelect={(documents: Document[]) => {
                 form.setFieldsValue({
-                  image: documents[0] || null,
+                  video: documents[0] || null,
                 });
               }}
             />
