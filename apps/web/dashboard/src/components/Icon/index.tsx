@@ -27,6 +27,7 @@ import {
   CloudUploadOutlined,
   TranslationOutlined,
   LogoutOutlined,
+  CloseOutlined,
 } from '@ant-design/icons';
 
 export interface IIcons {
@@ -68,6 +69,7 @@ const Icon: FC<IIcons> = ({ type, ...rest }): JSX.Element | null => {
     CloudUploadOutlined: <CloudUploadOutlined {...rest} />,
     TranslationOutlined: <TranslationOutlined {...rest} />,
     LogoutOutlined: <LogoutOutlined {...rest} />,
+    CloseOutlined: <CloseOutlined {...rest} />,
     default: null,
   }[type]);
 
