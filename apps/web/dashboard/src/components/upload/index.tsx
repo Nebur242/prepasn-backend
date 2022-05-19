@@ -74,12 +74,12 @@ const UploadComponent: FC<DocumentsContentProps> = ({
               }}
               defaultFileList={selectedDocuments.map(
                 (document: Document) =>
-                  ({
-                    url: document.publicUrl,
-                    uid: document.id,
-                    name: document.title,
-                    status: 'done',
-                  } as unknown as UploadFile<Document>)
+                ({
+                  url: document.publicUrl,
+                  uid: document.id,
+                  name: document.title,
+                  status: 'done',
+                } as unknown as UploadFile<Document>)
               )}
             />
           }
@@ -144,6 +144,7 @@ const DocumentsContent: FC<DocumentsContentProps> = ({
       <Tabs defaultActiveKey="1">
         <TabPane tab="Browse" key="1">
           <MediaLibrary
+            columns={4}
             multiple={multiple}
             onDocumentsSelect={onSelect}
             selectedDocuments={selectedDocuments}

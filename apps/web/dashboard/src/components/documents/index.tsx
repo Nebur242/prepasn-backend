@@ -1,5 +1,5 @@
 import { Document } from '@prepa-sn/shared/interfaces';
-import { Alert, Button, Col, Divider, Row, Space, Spin } from 'antd';
+import { Alert, Col, Row, Spin } from 'antd';
 import { FC } from 'react';
 import AppDocument from '../document';
 
@@ -10,6 +10,7 @@ interface DocumentsProps {
   selectedDocuments?: Document[];
   multiple?: boolean;
   onDocumentsSelect?: (document: Document[]) => void;
+  columns?: number;
 }
 const Documents: FC<DocumentsProps> = ({
   documents,
@@ -18,6 +19,7 @@ const Documents: FC<DocumentsProps> = ({
   selectedDocuments = [],
   multiple = false,
   onDocumentsSelect,
+  columns = 4,
 }) => {
   if (loading) return <Spin />;
 
@@ -47,7 +49,7 @@ const Documents: FC<DocumentsProps> = ({
       <Row gutter={[10, 10]}>
         {documents.map((document: Document) => {
           return (
-            <Col span={6} key={document.id}>
+            <Col span={24 / columns} key={document.id}>
               <AppDocument
                 document={document}
                 checked={selectedDocuments?.some((d) => d.id === document.id)}
