@@ -107,7 +107,6 @@ const AppDocument: FC<DocumentProps> = ({
           <div
             style={{
               position: 'relative',
-              // height: '100px',
             }}
           >
             <Row
@@ -126,7 +125,6 @@ const AppDocument: FC<DocumentProps> = ({
                   onDocumentSelect && onDocumentSelect(document, e.target.checked)
                 }
               />
-              {/* <Button icon={<Icon type="EditOutlined" />} /> */}
             </Row>
 
             <div style={{
@@ -173,7 +171,7 @@ const AppDocument: FC<DocumentProps> = ({
           <Col span={8}>
             <Title style={{ marginBottom: 20 }} level={5}>Preview</Title>
             <div style={{
-              aspectRatio: 1,
+              aspectRatio: "1 / 1",
               border: "2px solid #ddd",
               borderRadius: 10,
               overflow: 'hidden'
