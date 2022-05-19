@@ -25,12 +25,14 @@ interface MediaLibraryProps {
   selectedDocuments?: Document[];
   multiple?: boolean;
   onDocumentsSelect?: (document: Document[]) => void;
+  columns?: number;
 }
 
 const MediaLibrary = ({
   onDocumentsSelect,
   selectedDocuments = [],
   multiple = true,
+  columns = 6,
 }: MediaLibraryProps) => {
   const [pagination, setPagination] = useState<IPaginationOptions>({
     page: 1 as number,
@@ -65,10 +67,9 @@ const MediaLibrary = ({
   return (
     <ContentSectionWrapper
       title="Media Library"
-      description={`${
-        (pagination.page as number) * (pagination.limit as number) -
+      description={`${(pagination.page as number) * (pagination.limit as number) -
         ((pagination.limit as number) - data.items.length)
-      } assets`}
+        } assets`}
       createButtonText="Add new assets"
       onCreate={openModal}
       style={{
@@ -119,6 +120,7 @@ const MediaLibrary = ({
           documents={data.items}
           loading={isLoading}
           error={error}
+          columns={columns}
         />
       </Spin>
       <Divider />
