@@ -9,7 +9,7 @@
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test",
-    "lint": "nx run-many --all --target=lint --configuration=check && nx format:check"
+    "lint": "nx run-many --all --target=lint --configuration=check"
   },
   "engines": {
     "node": "^12.13.0 || ^14.15.0 || >=16.0.0"

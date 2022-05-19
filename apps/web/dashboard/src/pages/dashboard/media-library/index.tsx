@@ -21,7 +21,7 @@ const MediaLibrary = ({
 }: MediaLibraryProps) => {
   const [pagination, setPagination] = useState<IPaginationOptions>({
     page: 1 as number,
-    limit: 5 as number,
+    limit: 10 as number,
   });
   const [selected, setSelected] = useState<Document[]>(onDocumentsSelect ? selectedDocuments : []);
 
