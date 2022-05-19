@@ -33,8 +33,6 @@ const Chapters = () => {
 
   const [deleteChapter, { isSuccess, isError }] = useDeleteChapterMutation();
 
-
-
   const columns = [
     {
       title: 'Titre',

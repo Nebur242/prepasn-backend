@@ -1,12 +1,25 @@
-import { Alert, Button, Col, Divider, Modal, Pagination, Row, Space, Spin } from 'antd';
-import { IPaginationLinks, IPaginationMeta, IPaginationOptions } from 'nestjs-typeorm-paginate';
+import {
+  Alert,
+  Button,
+  Col,
+  Divider,
+  Modal,
+  Pagination,
+  Row,
+  Space,
+  Spin,
+} from 'antd';
+import {
+  IPaginationLinks,
+  IPaginationMeta,
+  IPaginationOptions,
+} from 'nestjs-typeorm-paginate';
 import { useState } from 'react';
 import ContentSectionWrapper from '../../../components/content-section-wrapper';
 import AppDocuments from '../../../components/documents';
 import AppUploadDocuments from '../../../components/uploadFiles';
 import { useFindAllDocumentsQuery } from '../../../store/features/documents';
 import { Document } from '@prepa-sn/shared/interfaces';
-
 
 interface MediaLibraryProps {
   selectedDocuments?: Document[];
@@ -23,7 +36,9 @@ const MediaLibrary = ({
     page: 1 as number,
     limit: 10 as number,
   });
-  const [selected, setSelected] = useState<Document[]>(onDocumentsSelect ? selectedDocuments : []);
+  const [selected, setSelected] = useState<Document[]>(
+    onDocumentsSelect ? selectedDocuments : []
+  );
 
   const {
     isLoading,
@@ -33,7 +48,7 @@ const MediaLibrary = ({
       meta: {} as IPaginationMeta,
       links: {} as IPaginationLinks,
     },
-    error
+    error,
   } = useFindAllDocumentsQuery(pagination);
 
   const [isVisible, setIsVisible] = useState(false);
@@ -45,12 +60,15 @@ const MediaLibrary = ({
       onDocumentsSelect(documents);
     }
     setSelected(documents);
-  }
+  };
 
   return (
     <ContentSectionWrapper
       title="Media Library"
-      description={`${((pagination.page as number) * (pagination.limit as number)) - (pagination.limit as number - data.items.length)} assets`}
+      description={`${
+        (pagination.page as number) * (pagination.limit as number) -
+        ((pagination.limit as number) - data.items.length)
+      } assets`}
       createButtonText="Add new assets"
       onCreate={openModal}
       style={{
@@ -62,36 +80,38 @@ const MediaLibrary = ({
         <Button>Filter by</Button>
       </Space>
       <Divider />
-      {
-        selected.length > 0 && (
-          <>
-            <Row>
-              <Col span={10}>
-                <Alert
-                  showIcon
-                  message="Selected assets"
-                  description={`${selected.length} assets ready to be deleted !!`}
-                  type="error"
-                  action={
-                    <Space direction="vertical">
-                      <Button size="small" type="primary">
-                        Accept
-                      </Button>
-                      <Button onClick={() => setSelected([])} size="small" danger type="ghost">
-                        Decline
-                      </Button>
-                    </Space>
-                  }
-                />
-              </Col>
-            </Row>
-            <Divider />
-          </>
-        )
-      }
+      {selected.length > 0 && (
+        <>
+          <Row>
+            <Col span={10}>
+              <Alert
+                showIcon
+                message="Selected assets"
+                description={`${selected.length} assets ready to be deleted !!`}
+                type="error"
+                action={
+                  <Space direction="vertical">
+                    <Button size="small" type="primary">
+                      Accept
+                    </Button>
+                    <Button
+                      onClick={() => setSelected([])}
+                      size="small"
+                      danger
+                      type="ghost"
+                    >
+                      Decline
+                    </Button>
+                  </Space>
+                }
+              />
+            </Col>
+          </Row>
+          <Divider />
+        </>
+      )}
 
-
-      <Spin tip='Loading...' spinning={isFetching}>
+      <Spin tip="Loading..." spinning={isFetching}>
         <AppDocuments
           multiple={multiple}
           onDocumentsSelect={onSelected}
@@ -102,8 +122,8 @@ const MediaLibrary = ({
         />
       </Spin>
       <Divider />
-      {data.items.length > 0 &&
-        <Row justify='end'>
+      {data.items.length > 0 && (
+        <Row justify="end">
           <Pagination
             defaultPageSize={pagination.limit as number}
             defaultCurrent={data.meta.currentPage}
@@ -113,11 +133,11 @@ const MediaLibrary = ({
                 ...pagination,
                 page: page,
                 limit: pageSize,
-              })
+              });
             }}
           />
         </Row>
-      }
+      )}
       <Modal
         width="50vw"
         footer={null}

@@ -1,13 +1,5 @@
 import { Document } from '@prepa-sn/shared/interfaces';
-import {
-  Alert,
-  Button,
-  Col,
-  Divider,
-  Row,
-  Space,
-  Spin,
-} from 'antd';
+import { Alert, Button, Col, Divider, Row, Space, Spin } from 'antd';
 import { FC } from 'react';
 import AppDocument from '../document';
 
@@ -65,7 +57,6 @@ const Documents: FC<DocumentsProps> = ({
           );
         })}
       </Row>
-
     </div>
   );
 };

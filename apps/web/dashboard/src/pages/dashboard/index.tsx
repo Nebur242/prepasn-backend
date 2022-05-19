@@ -57,10 +57,16 @@ const Dashboard = () => {
     <div>
       <Button
         onClick={() => navigate('/admin/profile')}
-        icon={<Icon type='UserOutlined' />}
+        icon={<Icon type="UserOutlined" />}
         style={{
           marginBottom: '10px',
-        }} ghost block type="primary">Profile</Button>
+        }}
+        ghost
+        block
+        type="primary"
+      >
+        Profile
+      </Button>
 
       <Popconfirm
         placement="bottomRight"

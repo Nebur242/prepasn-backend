@@ -74,12 +74,12 @@ const UploadComponent: FC<DocumentsContentProps> = ({
               }}
               defaultFileList={selectedDocuments.map(
                 (document: Document) =>
-                ({
-                  url: document.publicUrl,
-                  uid: document.id,
-                  name: document.title,
-                  status: 'done',
-                } as unknown as UploadFile<Document>)
+                  ({
+                    url: document.publicUrl,
+                    uid: document.id,
+                    name: document.title,
+                    status: 'done',
+                  } as unknown as UploadFile<Document>)
               )}
             />
           }
@@ -91,20 +91,13 @@ const UploadComponent: FC<DocumentsContentProps> = ({
         visible={showDocumentsMoal}
         title="Select your media"
         onCancel={closeDocumentsMoal}
-
         bodyStyle={{
           maxHeight: '80vh',
           overflowY: 'scroll',
         }}
-
         footer={
           <Row justify="space-between">
-            <Button
-              onClick={closeDocumentsMoal}
-              type="primary"
-              ghost
-              danger
-            >
+            <Button onClick={closeDocumentsMoal} type="primary" ghost danger>
               Cancel
             </Button>
             <Button
@@ -126,7 +119,6 @@ const UploadComponent: FC<DocumentsContentProps> = ({
           onSelect={(documents: Document[]) => setSelectedDocuments(documents)}
           selectedDocuments={selectedDocuments}
         />
-
       </Modal>
       <Modal
         footer={null}
@@ -147,35 +139,35 @@ const DocumentsContent: FC<DocumentsContentProps> = ({
   onSelect,
   selectedDocuments,
 }) => {
-
   return (
     <div>
       <Tabs defaultActiveKey="1">
         <TabPane tab="Browse" key="1">
-          <MediaLibrary multiple={multiple} onDocumentsSelect={onSelect} selectedDocuments={selectedDocuments} />
+          <MediaLibrary
+            multiple={multiple}
+            onDocumentsSelect={onSelect}
+            selectedDocuments={selectedDocuments}
+          />
         </TabPane>
         <TabPane tab="Selected files" key="2">
-          {selectedDocuments.length < 1 && <Result
-            status="404"
-            title="404"
-            subTitle="Sorry, Nothing selected"
-          />
-          }
-          {
-            selectedDocuments.length > 0 && <Row gutter={[10, 10]}>
+          {selectedDocuments.length < 1 && (
+            <Result
+              status="404"
+              title="404"
+              subTitle="Sorry, Nothing selected"
+            />
+          )}
+          {selectedDocuments.length > 0 && (
+            <Row gutter={[10, 10]}>
               {selectedDocuments.map((document: Document) => {
                 return (
                   <Col span={6} key={document.id}>
-                    <AppDocument
-                      document={document}
-                      checked={true}
-                    />
+                    <AppDocument document={document} checked={true} />
                   </Col>
                 );
               })}
             </Row>
-          }
-
+          )}
         </TabPane>
       </Tabs>
     </div>
