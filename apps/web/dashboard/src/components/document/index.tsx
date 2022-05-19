@@ -11,11 +11,14 @@ import {
   Typography,
   Divider,
   Form,
-  Input
+  Input,
 } from 'antd';
 import { FC, useEffect, useState } from 'react';
 import { showConfirm } from '../../helpers/functions.helpers';
-import { useDeleteDocumentMutation, useUpdateDocumentMutation } from '../../store/features/documents';
+import {
+  useDeleteDocumentMutation,
+  useUpdateDocumentMutation,
+} from '../../store/features/documents';
 import Icon from '../Icon';
 
 const { Meta } = Card;
@@ -37,8 +40,10 @@ const AppDocument: FC<DocumentProps> = ({
   const [deleteDocument, { isSuccess, isError, isLoading }] =
     useDeleteDocumentMutation();
 
-  const [updateDocument, { isSuccess: hasUpdated, isError: updateFailed, isLoading: isUpdating }] =
-    useUpdateDocumentMutation();
+  const [
+    updateDocument,
+    { isSuccess: hasUpdated, isError: updateFailed, isLoading: isUpdating },
+  ] = useUpdateDocumentMutation();
 
   const onDocumentDelete = (doc: Document) => {
     showConfirm({
@@ -63,14 +68,13 @@ const AppDocument: FC<DocumentProps> = ({
     console.log('setting', doc);
   };
 
-
   const edit = (values: Partial<Document>) => {
     if (!form.isFieldsTouched()) return message.warn('Nothing changed');
     updateDocument({
       ...values,
       id: document.id,
     });
-  }
+  };
 
   useEffect(() => {
     if (isSuccess) {
@@ -122,15 +126,18 @@ const AppDocument: FC<DocumentProps> = ({
               <Checkbox
                 checked={checked}
                 onChange={(e) =>
-                  onDocumentSelect && onDocumentSelect(document, e.target.checked)
+                  onDocumentSelect &&
+                  onDocumentSelect(document, e.target.checked)
                 }
               />
             </Row>
 
-            <div style={{
-              height: '120px',
-              overflow: 'hidden',
-            }}>
+            <div
+              style={{
+                height: '120px',
+                overflow: 'hidden',
+              }}
+            >
               <AppFileReader document={document} />
             </div>
           </div>
@@ -158,24 +165,48 @@ const AppDocument: FC<DocumentProps> = ({
       </Card>
       <Modal
         title={`Editer les informations`}
-        width={'60vw'} visible={isVisible}
+        width={'60vw'}
+        visible={isVisible}
         onCancel={() => setIsVisible(false)}
         footer={
           <Row justify="space-between">
-            <Button loading={isLoading} onClick={() => onDocumentDelete(document)} icon={<Icon type='DeleteOutlined' />} size='large' type='primary' danger ghost>Supprimer le document</Button>
-            <Button disabled={isLoading} onClick={() => setIsVisible(false)} icon={<Icon type='CloseCircleOutlined' />} size='large' type='primary' ghost>Fermer le document</Button>
+            <Button
+              loading={isLoading}
+              onClick={() => onDocumentDelete(document)}
+              icon={<Icon type="DeleteOutlined" />}
+              size="large"
+              type="primary"
+              danger
+              ghost
+            >
+              Supprimer le document
+            </Button>
+            <Button
+              disabled={isLoading}
+              onClick={() => setIsVisible(false)}
+              icon={<Icon type="CloseCircleOutlined" />}
+              size="large"
+              type="primary"
+              ghost
+            >
+              Fermer le document
+            </Button>
           </Row>
         }
       >
         <Row gutter={20}>
           <Col span={8}>
-            <Title style={{ marginBottom: 20 }} level={5}>Preview</Title>
-            <div style={{
-              aspectRatio: "1 / 1",
-              border: "2px solid #ddd",
-              borderRadius: 10,
-              overflow: 'hidden'
-            }}>
+            <Title style={{ marginBottom: 20 }} level={5}>
+              Preview
+            </Title>
+            <div
+              style={{
+                aspectRatio: '1 / 1',
+                border: '2px solid #ddd',
+                borderRadius: 10,
+                overflow: 'hidden',
+              }}
+            >
               <AppFileReader document={document} />
             </div>
             <Divider />
@@ -185,29 +216,47 @@ const AppDocument: FC<DocumentProps> = ({
             <Paragraph>Size : {document.size}</Paragraph>
             {/* <Paragraph>CreatedAt : {`${document.createdAt}`}</Paragraph>
             <Paragraph>UpdateddAt : {`${document.updatedAt}`}</Paragraph> */}
-
           </Col>
           <Col span={16}>
-            <Form onFinish={edit} layout='vertical' form={form} style={{ marginTop: 40 }}>
-              <Form.Item name='title' label='Titre'
-                rules={[{ required: true, message: 'Veuillez entrer un titre' }]}
+            <Form
+              onFinish={edit}
+              layout="vertical"
+              form={form}
+              style={{ marginTop: 40 }}
+            >
+              <Form.Item
+                name="title"
+                label="Titre"
+                rules={[
+                  { required: true, message: 'Veuillez entrer un titre' },
+                ]}
               >
-                <Input size='large' placeholder='Titre' />
+                <Input size="large" placeholder="Titre" />
               </Form.Item>
-              <Form.Item name="description" label='Descriptiont' >
-                <Input.TextArea rows={6} size='large' placeholder='Description' />
+              <Form.Item name="description" label="Descriptiont">
+                <Input.TextArea
+                  rows={6}
+                  size="large"
+                  placeholder="Description"
+                />
               </Form.Item>
-              <Form.Item name='publicUrl' label='Lien public' rules={[{ required: true, message: 'Veuillez entrer un titre' }]}>
-                <Input disabled size='large' placeholder='Lien public' />
+              <Form.Item
+                name="publicUrl"
+                label="Lien public"
+                rules={[
+                  { required: true, message: 'Veuillez entrer un titre' },
+                ]}
+              >
+                <Input disabled size="large" placeholder="Lien public" />
               </Form.Item>
               <Form.Item>
                 <Button
                   loading={isUpdating}
-                  htmlType='submit'
-                  icon={<Icon type='EditOutlined' />}
+                  htmlType="submit"
+                  icon={<Icon type="EditOutlined" />}
                   block
-                  type='primary'
-                  size='large'
+                  type="primary"
+                  size="large"
                 >
                   Mettre à jour
                 </Button>
