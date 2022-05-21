@@ -71,7 +71,7 @@ interface IUploadFileReaderProps {
 const AppFileReader: FC<IUploadFileReaderProps> = ({ type, url }) => {
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const videoMimeType = /video\/(mp4|avi)/i;
-  const audioMimeType = /audio\/(mp3|wav)/i;
+  const audioMimeType = /audio\/(mp3|wav|mpeg)/i;
   const documentMimeType =
     /application\/(pdf|doc|docx|vnd.openxmlformats-officedocument.wordprocessingml.document)/i;
 

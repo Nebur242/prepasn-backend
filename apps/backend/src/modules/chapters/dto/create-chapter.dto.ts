@@ -12,7 +12,7 @@ export class CreateChapterDto extends CreateBaseContentDto {
     type: Number,
   })
   @IsNumber()
-  course!: Course['id'];
+  course: Course['id'];
 
   @ApiProperty({
     description: 'The array of documents id',
