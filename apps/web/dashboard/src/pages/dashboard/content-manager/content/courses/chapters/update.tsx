@@ -14,7 +14,7 @@ const UpdateChapter = () => {
   const [form] = Form.useForm();
 
   const { id } = useParams<{ id: string }>();
-  const { data, isLoading } = useFindOneChapterQuery(id as string);
+  const { data, isLoading } = useFindOneChapterQuery(id);
 
   const [updateChapter, { isLoading: isUpdating, isSuccess, isError }] =
     useUpdateChapterMutation();

@@ -14,7 +14,7 @@ const CreateChapter = () => {
     useCreateChapterMutation();
 
   const { courseId } = useParams<{ courseId: string }>();
-  const { data: course } = useFindOneCourseQuery(courseId as string);
+  const { data: course } = useFindOneCourseQuery(courseId);
 
   const onFinish = async () => {
     try {

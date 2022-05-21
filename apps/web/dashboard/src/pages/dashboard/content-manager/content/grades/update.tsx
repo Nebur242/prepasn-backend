@@ -14,7 +14,7 @@ import CreateAndUpdate from './create-update';
 const UpdateGrade = () => {
   const { id } = useParams<{ id: string }>();
   const [form] = Form.useForm();
-  const { data, isLoading } = useFindOneGradeQuery(id as string);
+  const { data, isLoading } = useFindOneGradeQuery(id);
 
   const [
     updateGrade,

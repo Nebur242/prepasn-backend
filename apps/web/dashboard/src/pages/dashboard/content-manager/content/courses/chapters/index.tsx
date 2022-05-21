@@ -25,9 +25,7 @@ const Chapters = () => {
   const { courseId } = useParams<{ courseId: string }>();
   const navigate = useNavigate();
 
-  const { data, isLoading, refetch } = useFindOneCourseQuery(
-    courseId as string
-  );
+  const { data, isLoading, refetch } = useFindOneCourseQuery(courseId);
 
   const [deleteChapter, { isSuccess, isError }] = useDeleteChapterMutation();
 

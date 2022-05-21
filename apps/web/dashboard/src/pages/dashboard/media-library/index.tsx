@@ -9,11 +9,7 @@ import {
   Space,
   Spin,
 } from 'antd';
-import {
-  IPaginationLinks,
-  IPaginationMeta,
-  IPaginationOptions,
-} from 'nestjs-typeorm-paginate';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate/dist/interfaces';
 import { useState } from 'react';
 import ContentSectionWrapper from '../../../components/content-section-wrapper';
 import AppDocuments from '../../../components/documents';
@@ -35,8 +31,8 @@ const MediaLibrary = ({
   columns = 6,
 }: MediaLibraryProps) => {
   const [pagination, setPagination] = useState<IPaginationOptions>({
-    page: 1 as number,
-    limit: 10 as number,
+    page: 1,
+    limit: 10,
   });
   const [selected, setSelected] = useState<Document[]>(
     onDocumentsSelect ? selectedDocuments : []
@@ -46,9 +42,9 @@ const MediaLibrary = ({
     isLoading,
     isFetching,
     data = {
-      items: [] as Document[],
-      meta: {} as IPaginationMeta,
-      links: {} as IPaginationLinks,
+      items: [],
+      meta: {},
+      links: {},
     },
     error,
   } = useFindAllDocumentsQuery(pagination);
