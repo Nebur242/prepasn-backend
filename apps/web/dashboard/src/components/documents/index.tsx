@@ -1,5 +1,5 @@
 import { Document } from '@prepa-sn/shared/interfaces';
-import { Alert, Card, Col, Row, Spin } from 'antd';
+import { Alert, Card, Col, Row } from 'antd';
 import { FC } from 'react';
 import AppDocument from '../document';
 
@@ -21,17 +21,16 @@ const Documents: FC<DocumentsProps> = ({
   onDocumentsSelect,
   columns = 4,
 }) => {
-  if (loading) return (
-    <Row gutter={[10, 10]}>
-      {
-        [...new Array(10)].map((_, index) => (
+  if (loading)
+    return (
+      <Row gutter={[10, 10]}>
+        {[...new Array(10)].map((_, index) => (
           <Col key={index} span={24 / columns}>
             <Card loading />
           </Col>
-        ))
-      }
-    </Row>
-  );
+        ))}
+      </Row>
+    );
 
   if (error) return <Alert message="Error" type="error" />;
 
