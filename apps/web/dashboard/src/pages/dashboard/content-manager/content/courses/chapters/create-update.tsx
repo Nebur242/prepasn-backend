@@ -33,9 +33,8 @@ const CreateUpdate: FC<ICreateAndUpdateProps> = ({
   initialValues,
 }) => {
   const { courseId } = useParams<{ courseId: string }>();
-  const { isLoading: courseLoading, data: course } = useFindOneCourseQuery(
-    courseId as string
-  );
+  const { isLoading: courseLoading, data: course } =
+    useFindOneCourseQuery(courseId);
 
   return (
     <ContentWithSider

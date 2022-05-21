@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 import ContentScroll from '../../../components/content-scroll';
 import Icon from '../../../components/Icon';
 
-const { Title, Paragraph, Text } = Typography;
+const { Title, Paragraph } = Typography;
 
 const Profile = () => {
   const [activeTabKey, setActiveTabKey] = useState('informations');
