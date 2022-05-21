@@ -27,6 +27,10 @@ import {
   CloudUploadOutlined,
   TranslationOutlined,
   LogoutOutlined,
+  CloseOutlined,
+  PlayCircleOutlined,
+  PauseCircleOutlined,
+  EyeOutlined,
 } from '@ant-design/icons';
 
 export interface IIcons {
@@ -38,7 +42,8 @@ export interface IIcons {
 }
 
 const Icon: FC<IIcons> = ({ type, ...rest }): JSX.Element | null => {
-  if (!type) return null;
+  if (!type) return <QuestionOutlined {...rest} />;
+
   const getIcon = (type: string) =>
     ({
       QuestionOutlined: <QuestionOutlined {...rest} />,
@@ -68,6 +73,10 @@ const Icon: FC<IIcons> = ({ type, ...rest }): JSX.Element | null => {
       CloudUploadOutlined: <CloudUploadOutlined {...rest} />,
       TranslationOutlined: <TranslationOutlined {...rest} />,
       LogoutOutlined: <LogoutOutlined {...rest} />,
+      CloseOutlined: <CloseOutlined {...rest} />,
+      PlayCircleOutlined: <PlayCircleOutlined {...rest} />,
+      PauseCircleOutlined: <PauseCircleOutlined {...rest} />,
+      EyeOutlined: <EyeOutlined {...rest} />,
       default: null,
     }[type]);
 

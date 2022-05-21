@@ -9,6 +9,7 @@ const ContentManagerHome = lazy(
 const Home = lazy(() => import('../pages/app/home.page'));
 const Login = lazy(() => import('../pages/auth/login.page'));
 const Dashboard = lazy(() => import('../pages/dashboard'));
+const Profile = lazy(() => import('../pages/dashboard/profile'));
 
 //MEDIA LIBRAY
 const MediaLibrary = lazy(() => import('../pages/dashboard/media-library'));
@@ -29,10 +30,29 @@ const Courses = lazy(
   () => import('../pages/dashboard/content-manager/content/courses')
 );
 
-//CHAPTERS
-const Chapters = lazy(
-  () => import('../pages/dashboard/content-manager/content/chapters')
+const CreateCourses = lazy(
+  () => import('../pages/dashboard/content-manager/content/courses/create')
 );
+
+const UpdateCourses = lazy(
+  () => import('../pages/dashboard/content-manager/content/courses/update')
+);
+
+//COURSES CHAPTERS
+const CourseChapters = lazy(
+  () => import('../pages/dashboard/content-manager/content/courses/chapters')
+);
+
+const CreateChapters = lazy(
+  () =>
+    import('../pages/dashboard/content-manager/content/courses/chapters/create')
+);
+
+const UpdateChapters = lazy(
+  () =>
+    import('../pages/dashboard/content-manager/content/courses/chapters/update')
+);
+
 export interface Route {
   path: string;
   name: string;
@@ -131,11 +151,43 @@ export const DASHBOARD: Route = {
           routes: [],
         },
         {
-          path: 'chapters',
-          name: 'chapters',
+          path: 'courses/create',
+          name: 'create-course',
           access: ['admin'],
           isPublic: false,
-          element: Chapters,
+          element: CreateCourses,
+          routes: [],
+        },
+        {
+          path: 'courses/update/:id',
+          name: 'update-course',
+          access: ['admin'],
+          isPublic: false,
+          element: UpdateCourses,
+          routes: [],
+        },
+        {
+          path: 'courses/:courseId/chapters',
+          name: 'course-chapters',
+          access: ['admin'],
+          isPublic: false,
+          element: CourseChapters,
+          routes: [],
+        },
+        {
+          path: 'courses/:courseId/chapters/create',
+          name: 'course-chapters',
+          access: ['admin'],
+          isPublic: false,
+          element: CreateChapters,
+          routes: [],
+        },
+        {
+          path: 'courses/:courseId/chapters/update/:id',
+          name: 'course-chapters',
+          access: ['admin'],
+          isPublic: false,
+          element: UpdateChapters,
           routes: [],
         },
       ],
@@ -147,6 +199,15 @@ export const DASHBOARD: Route = {
       icon: 'DashboardOutlined',
       isPublic: false,
       element: MediaLibrary,
+      routes: [],
+    },
+    {
+      path: 'profile',
+      name: 'profile',
+      access: ['admin'],
+      icon: 'UserOutlined',
+      isPublic: false,
+      element: Profile,
       routes: [],
     },
   ],

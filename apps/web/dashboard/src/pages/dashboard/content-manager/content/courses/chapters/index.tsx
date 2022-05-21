@@ -1,42 +1,40 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
-import { Course } from '@prepa-sn/shared/interfaces';
+import { Chapter } from '@prepa-sn/shared/interfaces';
 import { Button, Space, Table, Tag, message } from 'antd';
 import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.interface';
 import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
 import Icon from 'apps/web/dashboard/src/components/Icon';
 import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
-import {
-  useDeleteCourseMutation,
-  useFindAllCoursesQuery,
-} from 'apps/web/dashboard/src/store/features/courses';
+import { useDeleteChapterMutation } from 'apps/web/dashboard/src/store/features/chapters';
+import { useFindOneCourseQuery } from 'apps/web/dashboard/src/store/features/courses';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const rowSelection = {
-  onChange: (selectedRowKeys: React.Key[], selectedRows: Course[]) => {
+  onChange: (selectedRowKeys: React.Key[], selectedRows: Chapter[]) => {
     console.log(
       `selectedRowKeys: ${selectedRowKeys}`,
       'selectedRows: ',
       selectedRows
     );
   },
-  getCheckboxProps: (_record: Course) => ({}),
+  getCheckboxProps: (_record: Chapter) => ({}),
 };
 
-const Courses = () => {
+const Chapters = () => {
+  const { courseId } = useParams<{ courseId: string }>();
   const navigate = useNavigate();
 
-  const { data: courses = [], isLoading: coursesLoading } =
-    useFindAllCoursesQuery();
+  const { data, isLoading, refetch } = useFindOneCourseQuery(courseId);
 
-  const [deleteCourse, { isSuccess, isError }] = useDeleteCourseMutation();
+  const [deleteChapter, { isSuccess, isError }] = useDeleteChapterMutation();
 
   const columns = [
     {
       title: 'Titre',
       dataIndex: 'title',
-      render: (text: string, course: Course) => (
-        <Button onClick={() => navigate(`update/${course.id}`)} type="link">
+      render: (text: string, chapter: Chapter) => (
+        <Button onClick={() => navigate(`update/${chapter.id}`)} type="link">
           {text}
         </Button>
       ),
@@ -52,28 +50,24 @@ const Courses = () => {
     },
 
     {
+      title: 'Course',
+      render: () => <span>{data?.title}</span>,
+    },
+
+    {
       title: 'Created At',
       dataIndex: 'createdAt',
     },
     {
-      title: 'Chapters',
-      dataIndex: 'createdAt',
-      render: (_text: undefined, course: Course) => (
-        <Button onClick={() => navigate(`${course.id}/chapters`)} type="link">
-          Chapters
-        </Button>
-      ),
-    },
-    {
       title: 'Action',
       key: 'action',
-      render: (_: string, course: Course) => (
+      render: (_: string, chapter: Chapter) => (
         <Space size="middle">
           <Button
             type="primary"
             ghost
             icon={<Icon type="EditOutlined" />}
-            onClick={() => navigate(`update/${course.id}`)}
+            onClick={() => navigate(`update/${chapter.id}`)}
           />
           <Button
             type="primary"
@@ -82,13 +76,13 @@ const Courses = () => {
             icon={<Icon type="DeleteOutlined" />}
             onClick={() =>
               showConfirm({
-                title: course.title,
+                title: chapter.title,
                 icon: <Icon type="ExclamationCircleOutlined" />,
                 content: 'Voulez-vous vraiment supprimer cette section ?',
-                data: course,
+                data: chapter,
                 onCancel: () => console.log('cancel'),
-                onOk: () => deleteCourse(course.id),
-              } as IConfirmation<Course>)
+                onOk: () => deleteChapter(chapter.id),
+              } as IConfirmation<Chapter>)
             }
           />
         </Space>
@@ -98,7 +92,7 @@ const Courses = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      message.success('Grade supprimé avec succès');
+      message.success('Chapitre supprimé avec succès');
     }
 
     if (isError) {
@@ -106,11 +100,15 @@ const Courses = () => {
     }
   }, [isError, isSuccess]);
 
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
+
   return (
     <ContentSectionWrapper
-      title="Courses"
-      description="All courses"
-      createButtonText="Create a new course"
+      title={`Chapters : Course ${data?.title ? data.title : ''}`}
+      description="All Chapters"
+      createButtonText="Add a new chapter"
       onCreate={() => navigate('create')}
     >
       <Table
@@ -118,15 +116,15 @@ const Courses = () => {
           type: 'checkbox',
           ...rowSelection,
         }}
-        loading={coursesLoading}
+        loading={isLoading}
         columns={columns}
-        dataSource={courses.map((course: Course) => ({
-          ...course,
-          key: course.id,
+        dataSource={data?.chapters?.map((chapter: Chapter) => ({
+          ...chapter,
+          key: chapter.id,
         }))}
       />
     </ContentSectionWrapper>
   );
 };
 
-export default Courses;
+export default Chapters;

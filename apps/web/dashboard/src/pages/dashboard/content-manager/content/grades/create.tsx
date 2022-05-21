@@ -1,21 +1,10 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { useEffect } from 'react';
-import {
-  Button,
-  Col,
-  Divider,
-  Form,
-  Row,
-  Space,
-  Typography,
-  message,
-} from 'antd';
-import Icon from 'apps/web/dashboard/src/components/Icon';
+import { Form, message } from 'antd';
 import { useCreateGradeMutation } from 'apps/web/dashboard/src/store/features/grades';
 import CreateAndUpdate from './create-update';
 import { Grade } from '@prepa-sn/shared/interfaces';
-
-const { Title, Text } = Typography;
+import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
 
 const CreateGrade = () => {
   const [form] = Form.useForm();
@@ -46,28 +35,15 @@ const CreateGrade = () => {
   }, [isSuccess, isError, form]);
 
   return (
-    <div>
-      <Row justify="space-between">
-        <Col>
-          <Title level={4}>Create a grade</Title>
-          <Text>Grade ID </Text>
-        </Col>
-        <Col>
-          <Space>
-            <Button
-              loading={isLoading}
-              onClick={onFinish}
-              type="primary"
-              icon={<Icon type="PlusOutlined" />}
-            >
-              Save the grade
-            </Button>
-          </Space>
-        </Col>
-      </Row>
-      <Divider />
+    <ContentSectionWrapper
+      title="Create a grade"
+      description="Grade ID"
+      createButtonText="Save the grade"
+      onCreate={onFinish}
+      createButtonProps={{ loading: isLoading }}
+    >
       <CreateAndUpdate form={form} onFinish={onFinish} />
-    </div>
+    </ContentSectionWrapper>
   );
 };
 

@@ -5,8 +5,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   PrimaryGeneratedColumn,
-  OneToOne,
   JoinColumn,
+  ManyToOne,
 } from 'typeorm';
 
 export abstract class BaseContent {
@@ -25,11 +25,11 @@ export abstract class BaseContent {
   @Column({ type: 'enum', enum: LANGUAGE, default: LANGUAGE.FR })
   language: LANGUAGE.FR;
 
-  @OneToOne(() => Document)
+  @ManyToOne(() => Document)
   @JoinColumn()
   image?: Document | null;
 
-  @OneToOne(() => Document)
+  @ManyToOne(() => Document)
   @JoinColumn()
   video?: Document | null;
 

@@ -1,21 +1,22 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
+import { Chapter, Document } from '@prepa-sn/shared/interfaces';
 import {
   Card,
-  Col,
-  Form,
-  Input,
-  Row,
+  FormInstance,
   Typography,
   Select,
   Divider,
-  FormInstance,
+  Form,
+  Col,
+  Row,
+  Input,
 } from 'antd';
 import ContentWithSider from 'apps/web/dashboard/src/components/content-with-sider';
-import { useFindAllGradesQuery } from 'apps/web/dashboard/src/store/features/grades';
-import AppUpload from 'apps/web/dashboard/src/components/upload';
-import { Document, Grade } from '@prepa-sn/shared/interfaces';
-import { CKEditor } from 'ckeditor4-react';
+import { useFindOneCourseQuery } from 'apps/web/dashboard/src/store/features/courses';
 import { FC } from 'react';
+import { CKEditor } from 'ckeditor4-react';
+import AppUpload from 'apps/web/dashboard/src/components/upload';
+import { useParams } from 'react-router-dom';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -23,34 +24,40 @@ const { Option } = Select;
 interface ICreateAndUpdateProps {
   onFinish: () => Promise<void>;
   form: FormInstance;
-  initialValues?: Grade;
+  initialValues?: Chapter;
 }
 
-const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
+const CreateUpdate: FC<ICreateAndUpdateProps> = ({
   onFinish,
   form,
   initialValues,
 }) => {
-  const { data: grades = [], isLoading: gradesloading } =
-    useFindAllGradesQuery();
+  const { courseId } = useParams<{ courseId: string }>();
+  const { isLoading: courseLoading, data: course } =
+    useFindOneCourseQuery(courseId);
 
   return (
     <ContentWithSider
       form={form}
       onFinish={onFinish}
+      initialValues={initialValues}
       sidebarExtra={
         <Card>
           <Title style={{ margin: 0 }} level={4}>
             Relations
           </Title>
           <Divider />
-          <Form.Item label="Grades" name="parent">
-            <Select placeholder="Grades" loading={gradesloading}>
-              {grades.map((item) => (
-                <Option key={item.id} value={item.id}>
-                  {item.title}
+          <Form.Item
+            rules={[{ required: true, message: 'Course is required' }]}
+            label="Course"
+            name="course"
+          >
+            <Select placeholder="Courses" loading={courseLoading} allowClear>
+              {course && (
+                <Option key={course.id} value={course.id}>
+                  {course.title}
                 </Option>
-              ))}
+              )}
             </Select>
           </Form.Item>
         </Card>
@@ -110,8 +117,22 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
           }}
         />
       </Form.Item>
+
+      <Form.Item label="Documents" name="documents">
+        <AppUpload
+          multiple={true}
+          selectedDocuments={
+            initialValues?.documents ? initialValues?.documents : []
+          }
+          onSelect={(documents: Document[]) => {
+            form.setFieldsValue({
+              documents,
+            });
+          }}
+        />
+      </Form.Item>
     </ContentWithSider>
   );
 };
 
-export default CreateAndUpdate;
+export default CreateUpdate;

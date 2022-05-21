@@ -1,34 +1,32 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
-import { Grade } from '@prepa-sn/shared/interfaces';
+import { Chapter } from '@prepa-sn/shared/interfaces';
 import { Form, message, Row, Spin } from 'antd';
 import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
 import {
-  useFindOneGradeQuery,
-  useUpdateGradeMutation,
-} from 'apps/web/dashboard/src/store/features/grades';
+  useFindOneChapterQuery,
+  useUpdateChapterMutation,
+} from 'apps/web/dashboard/src/store/features/chapters';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import CreateAndUpdate from './create-update';
 
-const UpdateGrade = () => {
-  const { id } = useParams<{ id: string }>();
+const UpdateChapter = () => {
   const [form] = Form.useForm();
-  const { data, isLoading } = useFindOneGradeQuery(id);
 
-  const [
-    updateGrade,
-    { isLoading: isUpdating, isSuccess: isUpdated, isError: hasError },
-  ] = useUpdateGradeMutation();
+  const { id } = useParams<{ id: string }>();
+  const { data, isLoading } = useFindOneChapterQuery(id);
+
+  const [updateChapter, { isLoading: isUpdating, isSuccess, isError }] =
+    useUpdateChapterMutation();
 
   const onFinish = async () => {
     try {
       await form.validateFields();
-      const values: Grade = form.getFieldsValue();
+      const values: Chapter = form.getFieldsValue();
       if (data?.id) {
-        updateGrade({
+        updateChapter({
           ...values,
-          id: data?.id,
+          id: data.id,
         });
       }
     } catch (error) {
@@ -41,22 +39,15 @@ const UpdateGrade = () => {
     if (data) {
       form.setFieldsValue({
         ...data,
-        image: data.image ? data.image?.id : null,
-        video: data.video ? data.video?.id : null,
-        parent: data.parent ? data.parent?.id : null,
+        course: data.course?.id,
       });
     }
   }, [data, form]);
 
   useEffect(() => {
-    if (isUpdated) {
-      message.success('La section a été crée avec succès');
-    }
-
-    if (hasError) {
-      message.error('Une erreur est survenue');
-    }
-  }, [isUpdated, hasError, form]);
+    if (isSuccess) message.success('Le cours a été crée avec succès');
+    if (isError) message.error('Une erreur est survenue');
+  }, [isSuccess, isError, form]);
 
   if (isLoading)
     return (
@@ -67,9 +58,9 @@ const UpdateGrade = () => {
 
   return (
     <ContentSectionWrapper
-      title={`Update the entry : ${data?.title}`}
-      description={`Grade ID : ${data?.id}`}
-      createButtonText="Update the grade"
+      title={`Chapters`}
+      description="Update Chapter"
+      createButtonText="Update chapter"
       onCreate={onFinish}
       createButtonProps={{ loading: isUpdating }}
     >
@@ -78,4 +69,4 @@ const UpdateGrade = () => {
   );
 };
 
-export default UpdateGrade;
+export default UpdateChapter;

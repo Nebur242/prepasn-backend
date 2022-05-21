@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { FindManyOptions } from 'typeorm';
-import { DocumentsService } from '../documents/documents.service';
+import { DeepPartial, FindManyOptions } from 'typeorm';
 import { GradesService } from '../grades/grades.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
@@ -11,31 +10,20 @@ import { CoursesRepository } from './repositories/course.repository';
 export class CoursesService {
   constructor(
     private readonly coursesRepository: CoursesRepository,
-    private readonly gradesService: GradesService,
-    private readonly documentsService: DocumentsService
+    private readonly gradesService: GradesService
   ) {}
+
+  createEntity(entityLike: DeepPartial<Course>): Course {
+    return this.coursesRepository.create(entityLike);
+  }
 
   async create(createCourseDto: CreateCourseDto): Promise<Course> {
     const course = this.coursesRepository.create({
       ...createCourseDto,
-      image: createCourseDto.image
-        ? this.documentsService.createEntity({
-            id: createCourseDto.image,
-          })
-        : null,
-      video: createCourseDto.video
-        ? this.documentsService.createEntity({
-            id: createCourseDto.video,
-          })
-        : null,
-      grades: createCourseDto.grades.map((id) =>
-        this.gradesService.createEntity({ id })
-      ),
-      documents: createCourseDto.documents.map((id) =>
-        this.documentsService.createEntity({ id })
-      ),
+      grades: createCourseDto.grades.map((id) => {
+        return this.gradesService.createEntity({ id });
+      }),
     });
-
     return this.coursesRepository.save(course);
   }
 
@@ -47,7 +35,7 @@ export class CoursesService {
 
   async findOne(id: number): Promise<Course> {
     const course = await this.coursesRepository.findOne(id, {
-      relations: ['grades', 'documents'],
+      relations: ['image', 'video', 'grades', 'documents', 'chapters'],
     });
     if (!course) throw new NotFoundException(`Course with id ${id} not found`);
     return course;
@@ -55,43 +43,17 @@ export class CoursesService {
 
   async update(id: number, updateCourseDto: UpdateCourseDto): Promise<Course> {
     const course: Course = await this.findOne(id);
-
-    let updatedCourse: Course = {
+    return this.coursesRepository.save({
       ...course,
       ...updateCourseDto,
-      image: updateCourseDto.image
-        ? this.documentsService.createEntity({
-            id: updateCourseDto.image,
-          })
-        : null,
-      video: updateCourseDto.video
-        ? this.documentsService.createEntity({
-            id: updateCourseDto.video,
-          })
-        : null,
-      grades: course.grades,
-      documents: course.documents,
-    };
-
-    if (updateCourseDto.grades) {
-      updatedCourse = {
-        ...updatedCourse,
-        grades: updateCourseDto.grades.map((id) =>
-          this.gradesService.createEntity({ id })
-        ),
-      };
-    }
-
-    if (updateCourseDto.documents) {
-      updatedCourse = {
-        ...updatedCourse,
-        documents: updateCourseDto.documents.map((id) =>
-          this.documentsService.createEntity({ id })
-        ),
-      };
-    }
-
-    return this.coursesRepository.save(updatedCourse);
+      grades: updateCourseDto?.grades
+        ? updateCourseDto?.grades.map((gradeId) =>
+            this.gradesService.createEntity({
+              id: gradeId,
+            })
+          )
+        : course.grades,
+    });
   }
 
   async remove(id: number): Promise<Course> {

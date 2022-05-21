@@ -3,6 +3,7 @@ import { CreateBaseContentDto } from '@prepa-sn/backend/common/dtos/create-base-
 import { ArrayNotEmpty, IsNumber, IsOptional } from 'class-validator';
 import { Course } from '@prepa-sn/backend/modules/courses/entities/course.entity';
 import { Document } from '../../documents/entities/document.entity';
+import { Type } from 'class-transformer';
 
 export class CreateChapterDto extends CreateBaseContentDto {
   @ApiProperty({
@@ -14,12 +15,12 @@ export class CreateChapterDto extends CreateBaseContentDto {
   course: Course['id'];
 
   @ApiProperty({
-    description: 'The array of grades id',
+    description: 'The array of documents id',
     required: true,
     type: [Number],
   })
   @IsOptional()
   @ArrayNotEmpty()
-  @IsNumber({}, { each: true })
-  documents: Document['id'][];
+  @Type(() => Document)
+  documents?: Document[];
 }

@@ -8,6 +8,7 @@ import { axiosBaseQuery } from '../../../config/api.config';
 import { Omit } from '@reduxjs/toolkit/dist/tsHelpers';
 import { removeAsset, uploadAsset } from '@prepa-sn/shared/services';
 import { Document } from '@prepa-sn/shared/interfaces';
+import { Pagination, IPaginationOptions } from 'nestjs-typeorm-paginate';
 
 export interface DocumentsInitialState {
   loading: boolean;
@@ -31,20 +32,34 @@ export const documentsApi = createApi({
     findOneDocument: build.query<Document, string>({
       query: (id: string) => ({ url: `/documents/${id}`, method: 'GET' }),
     }),
-    findAllDocuments: build.query<Document[], void>({
-      query: () => ({ url: '/documents', method: 'GET' }),
-      providesTags: (result = [], _error, _arg) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const final: any[] = [
-          {
-            type: 'Documents',
-          },
-        ];
-        const other = result.map((document) => ({
-          type: 'Documents',
-          id: document.id,
-        }));
-        return [...final, ...other];
+    findAllDocuments: build.query<Pagination<Document>, IPaginationOptions>({
+      query: (
+        pagination: IPaginationOptions = {
+          page: 1,
+          limit: 10,
+        }
+      ) => {
+        const { page, limit } = pagination;
+        const params = new URLSearchParams({
+          page: `${page}`,
+          limit: `${limit}`,
+        }).toString();
+
+        return {
+          url: `/documents?${params}`,
+          method: 'GET',
+        };
+      },
+      providesTags: (result, _error, _arg) => {
+        return result
+          ? [
+              ...result.items.map(({ id }) => ({
+                type: 'Documents' as const,
+                id,
+              })),
+              { type: 'Documents', id: 'PARTIAL-LIST' },
+            ]
+          : [{ type: 'Documents', id: 'PARTIAL-LIST' }];
       },
     }),
     createDocument: build.mutation<Document, Omit<Document, 'id'>>({
@@ -55,7 +70,6 @@ export const documentsApi = createApi({
       }),
       invalidatesTags: ['Documents'],
     }),
-
     uploads: build.mutation<Document[], File[]>({
       async queryFn(files, _queryApi, _extraOptions, fetchWithBQ) {
         try {
@@ -84,16 +98,12 @@ export const documentsApi = createApi({
       },
       invalidatesTags: ['Documents'],
     }),
-
-    updateDocument: build.mutation<Document, Document>({
-      query: ({ id, ...rest }) => ({
+    updateDocument: build.mutation<Document, Partial<Document>>({
+      query: ({ id, ...updated }) => ({
         url: `/documents/${id}`,
         method: 'PATCH',
-        data: rest,
+        data: updated,
       }),
-      invalidatesTags: (result, error, arg) => [
-        { type: 'Documents', id: arg.id as number },
-      ],
     }),
     deleteDocument: build.mutation<Document, Document>({
       async queryFn(file, _queryApi, _extraOptions, fetchWithBQ) {
@@ -123,8 +133,9 @@ export const documentsApi = createApi({
           return { error: error as FetchBaseQueryError };
         }
       },
-      invalidatesTags: (result, error, arg) => [
-        { type: 'Documents', id: arg.id as number },
+      invalidatesTags: (_result, _error, document) => [
+        { type: 'Documents', id: document.id },
+        { type: 'Documents', id: 'PARTIAL-LIST' },
       ],
     }),
   }),

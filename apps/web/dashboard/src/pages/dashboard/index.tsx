@@ -15,7 +15,7 @@ import {
 } from 'antd';
 
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Icon from '../../components/Icon';
 import logo from '../../../public/images/logo.png';
@@ -39,11 +39,12 @@ const Dashboard = () => {
   const [theme] = React.useState<'dark' | 'light' | undefined>(undefined);
   const { t } = useTranslation();
   const dispatch: AppDispatch = useDispatch();
+  const navigate = useNavigate();
 
   const toggle = () => setCollapsed((prev) => !prev);
 
-  const setNestedMenu = (routes: Route[]): MenuItem[] => {
-    return routes.map((route: Route, index: number) => {
+  const setNestedMenu = (_routes: Route[]): MenuItem[] => {
+    return _routes.map((route: Route, index: number) => {
       return {
         key: index.toString(),
         icon: <Icon type={route?.icon} />,
@@ -54,6 +55,19 @@ const Dashboard = () => {
 
   const content = (
     <div>
+      <Button
+        onClick={() => navigate('/admin/profile')}
+        icon={<Icon type="UserOutlined" />}
+        style={{
+          marginBottom: '10px',
+        }}
+        ghost
+        block
+        type="primary"
+      >
+        Profile
+      </Button>
+
       <Popconfirm
         placement="bottomRight"
         title="Are you sure to log out ?"

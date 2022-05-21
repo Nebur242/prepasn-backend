@@ -1,17 +1,16 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Grade } from '@prepa-sn/shared/interfaces';
-import { Button, Space, Table, Tag, Modal, message } from 'antd';
+import { Button, Space, Table, Tag, message } from 'antd';
 import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.interface';
 import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
 import Icon from 'apps/web/dashboard/src/components/Icon';
+import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
 import {
   useDeleteGradeMutation,
   useFindAllGradesQuery,
 } from 'apps/web/dashboard/src/store/features/grades';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-const { confirm } = Modal;
 
 const rowSelection = {
   onChange: (selectedRowKeys: React.Key[], selectedRows: Grade[]) => {
@@ -41,20 +40,6 @@ const Grades = () => {
       message.error('Une erreur est survenue');
     }
   }, [isError, isSuccess]);
-
-  const showConfirm = (confirmation: IConfirmation<Grade>) => {
-    const { title, content, onCancel, onOk } = confirmation;
-    confirm({
-      title,
-      icon: <Icon type="ExclamationCircleOutlined" />,
-      content,
-      okButtonProps: {
-        danger: true,
-      },
-      onCancel,
-      onOk,
-    });
-  };
 
   const columns = [
     {
@@ -101,6 +86,7 @@ const Grades = () => {
             onClick={() =>
               showConfirm({
                 title: grade.title,
+                icon: <Icon type="ExclamationCircleOutlined" />,
                 content: 'Voulez-vous vraiment supprimer cette section ?',
                 data: grade,
                 onCancel: () => console.log('cancel'),
