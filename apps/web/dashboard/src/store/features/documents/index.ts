@@ -36,12 +36,20 @@ export const documentsApi = createApi({
       query: (
         pagination: IPaginationOptions = {
           page: 1,
-          limit: 5,
+          limit: 10,
         }
-      ) => ({
-        url: `/documents?page=${pagination.page}&limit=${pagination.limit}`,
-        method: 'GET',
-      }),
+      ) => {
+        const { page, limit } = pagination;
+        const params = new URLSearchParams({
+          page: `${page}`,
+          limit: `${limit}`,
+        }).toString();
+
+        return {
+          url: `/documents?${params}`,
+          method: 'GET',
+        };
+      },
       providesTags: (result, _error, _arg) => {
         return result
           ? [

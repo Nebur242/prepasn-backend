@@ -13,7 +13,8 @@ import {
   Form,
   Input,
 } from 'antd';
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
+
 import { showConfirm } from '../../helpers/functions.helpers';
 import {
   useDeleteDocumentMutation,
@@ -55,12 +56,13 @@ const AppDocument: FC<DocumentProps> = ({
         console.log('cancel');
       },
       onOk: () => {
-        deleteDocument(document);
+        deleteDocument(doc);
       },
     });
   };
 
   const onDocumentEdit = (doc: Document) => {
+    console.log('onDocumentEdit', doc);
     setIsVisible(true);
   };
 
@@ -270,12 +272,29 @@ const AppDocument: FC<DocumentProps> = ({
 };
 
 const AppFileReader: FC<{ document: Document }> = ({ document }) => {
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const media = useRef(null);
+
   const { publicUrl: url, mimetype } = document;
   const imageMimeType = /image\/(png|jpg|jpeg)/i;
   const videoMimeType = /video\/(mp4|avi)/i;
-  const audioMimeType = /audio\/(mp3|wav)/i;
+  const audioMimeType = /audio\/(mp3|wav|mpeg)/i;
   const documentMimeType =
     /application\/(pdf|doc|docx|vnd.openxmlformats-officedocument.wordprocessingml.document)/i;
+
+  useEffect(() => {
+    if (media.current) {
+      if (!isVisible) {
+        setIsPlaying(false);
+        media.current.pause();
+      }
+      if (isVisible) {
+        setIsPlaying(true);
+        media.current.play();
+      }
+    }
+  }, [media, isVisible])
 
   if (mimetype.match(imageMimeType)) {
     return (
@@ -294,16 +313,99 @@ const AppFileReader: FC<{ document: Document }> = ({ document }) => {
   if (mimetype.match(documentMimeType)) {
     return (
       <Row align="middle" justify="center" style={{ height: 100 }}>
-        <Icon width={'30px'} height={'30px'} type="FileTextOutlined" />
+        <Button onClick={() => setIsVisible(true)} shape='circle' type='primary' icon={<Icon width={'30px'} height={'30px'} type="EyeOutlined" />} />
+        <Modal
+          title={document.title}
+          visible={isVisible}
+          onCancel={() => setIsVisible(false)}
+          footer={null}
+        >
+          <p style={{ maxWidth: "100%", overflow: 'hidden' }}>
+            document : <Button type='link' href={url} target="_blank">{url}</Button>
+          </p>
+        </Modal>
       </Row>
     );
   }
 
   if (mimetype.match(videoMimeType))
-    return <p style={{ height: 100 }}>video</p>;
+    return (
+      <div
+        style={{
+          position: 'relative',
+        }}
+      >
+        <Row align="middle" justify="center" style={{ height: 100 }}>
+          <video style={{ width: "100%" }} src={url} autoPlay={false}></video>
+          <Button
+            onClick={() => setIsVisible(true)}
+            shape='circle'
+            type='primary'
+            style={{
+              position: 'absolute',
+            }}
+            icon={
+              isPlaying ?
+                <Icon type='PauseCircleOutlined' /> :
+                <Icon type='PlayCircleOutlined' />
+            } />
+        </Row>
+        <Modal
+          title={document.title}
+          visible={isVisible}
+          onCancel={() => setIsVisible(false)}
+          footer={null}
+        >
+          <video
+            ref={media}
+            onPause={() => setIsPlaying(false)}
+            onPlaying={() => setIsPlaying(true)}
+            muted={false}
+            controls
+            style={{ width: "100%" }}
+            src={url}
+            autoPlay={true}
+          />
+        </Modal>
+      </div>
+    )
 
   if (mimetype.match(audioMimeType))
-    return <p style={{ height: 100 }}>audio</p>;
+    return <div
+      style={{
+        position: 'relative',
+      }}
+    >
+      <Row align="middle" justify="center" style={{ height: 100 }}>
+        <Button
+          onClick={() => setIsVisible(true)}
+          shape='circle'
+          type='primary'
+          style={{
+            position: 'absolute',
+          }}
+          icon={isPlaying ?
+            <Icon type='PauseCircleOutlined' /> :
+            <Icon type='PlayCircleOutlined' />}
+        />
+      </Row>
+      <Modal
+        title={document.title}
+        visible={isVisible}
+        onCancel={() => setIsVisible(false)}
+        footer={null}
+      >
+        <audio
+          ref={media}
+          onPause={() => setIsPlaying(false)}
+          onPlaying={() => setIsPlaying(true)}
+          muted={false}
+          controls
+          style={{ width: "100%" }}
+          src={url}
+          autoPlay={true} />
+      </Modal>
+    </div>;
 
   return <p style={{ height: 100 }}>unknown</p>;
 };
