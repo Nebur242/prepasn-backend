@@ -294,7 +294,7 @@ const AppFileReader: FC<{ document: Document }> = ({ document }) => {
         media.current.play();
       }
     }
-  }, [media, isVisible])
+  }, [media, isVisible]);
 
   if (mimetype.match(imageMimeType)) {
     return (
@@ -313,15 +313,23 @@ const AppFileReader: FC<{ document: Document }> = ({ document }) => {
   if (mimetype.match(documentMimeType)) {
     return (
       <Row align="middle" justify="center" style={{ height: 100 }}>
-        <Button onClick={() => setIsVisible(true)} shape='circle' type='primary' icon={<Icon width={'30px'} height={'30px'} type="EyeOutlined" />} />
+        <Button
+          onClick={() => setIsVisible(true)}
+          shape="circle"
+          type="primary"
+          icon={<Icon width={'30px'} height={'30px'} type="EyeOutlined" />}
+        />
         <Modal
           title={document.title}
           visible={isVisible}
           onCancel={() => setIsVisible(false)}
           footer={null}
         >
-          <p style={{ maxWidth: "100%", overflow: 'hidden' }}>
-            document : <Button type='link' href={url} target="_blank">{url}</Button>
+          <p style={{ maxWidth: '100%', overflow: 'hidden' }}>
+            document :{' '}
+            <Button type="link" href={url} target="_blank">
+              {url}
+            </Button>
           </p>
         </Modal>
       </Row>
@@ -336,19 +344,22 @@ const AppFileReader: FC<{ document: Document }> = ({ document }) => {
         }}
       >
         <Row align="middle" justify="center" style={{ height: 100 }}>
-          <video style={{ width: "100%" }} src={url} autoPlay={false}></video>
+          <video style={{ width: '100%' }} src={url} autoPlay={false}></video>
           <Button
             onClick={() => setIsVisible(true)}
-            shape='circle'
-            type='primary'
+            shape="circle"
+            type="primary"
             style={{
               position: 'absolute',
             }}
             icon={
-              isPlaying ?
-                <Icon type='PauseCircleOutlined' /> :
-                <Icon type='PlayCircleOutlined' />
-            } />
+              isPlaying ? (
+                <Icon type="PauseCircleOutlined" />
+              ) : (
+                <Icon type="PlayCircleOutlined" />
+              )
+            }
+          />
         </Row>
         <Modal
           title={document.title}
@@ -362,50 +373,57 @@ const AppFileReader: FC<{ document: Document }> = ({ document }) => {
             onPlaying={() => setIsPlaying(true)}
             muted={false}
             controls
-            style={{ width: "100%" }}
+            style={{ width: '100%' }}
             src={url}
             autoPlay={true}
           />
         </Modal>
       </div>
-    )
+    );
 
   if (mimetype.match(audioMimeType))
-    return <div
-      style={{
-        position: 'relative',
-      }}
-    >
-      <Row align="middle" justify="center" style={{ height: 100 }}>
-        <Button
-          onClick={() => setIsVisible(true)}
-          shape='circle'
-          type='primary'
-          style={{
-            position: 'absolute',
-          }}
-          icon={isPlaying ?
-            <Icon type='PauseCircleOutlined' /> :
-            <Icon type='PlayCircleOutlined' />}
-        />
-      </Row>
-      <Modal
-        title={document.title}
-        visible={isVisible}
-        onCancel={() => setIsVisible(false)}
-        footer={null}
+    return (
+      <div
+        style={{
+          position: 'relative',
+        }}
       >
-        <audio
-          ref={media}
-          onPause={() => setIsPlaying(false)}
-          onPlaying={() => setIsPlaying(true)}
-          muted={false}
-          controls
-          style={{ width: "100%" }}
-          src={url}
-          autoPlay={true} />
-      </Modal>
-    </div>;
+        <Row align="middle" justify="center" style={{ height: 100 }}>
+          <Button
+            onClick={() => setIsVisible(true)}
+            shape="circle"
+            type="primary"
+            style={{
+              position: 'absolute',
+            }}
+            icon={
+              isPlaying ? (
+                <Icon type="PauseCircleOutlined" />
+              ) : (
+                <Icon type="PlayCircleOutlined" />
+              )
+            }
+          />
+        </Row>
+        <Modal
+          title={document.title}
+          visible={isVisible}
+          onCancel={() => setIsVisible(false)}
+          footer={null}
+        >
+          <audio
+            ref={media}
+            onPause={() => setIsPlaying(false)}
+            onPlaying={() => setIsPlaying(true)}
+            muted={false}
+            controls
+            style={{ width: '100%' }}
+            src={url}
+            autoPlay={true}
+          />
+        </Modal>
+      </div>
+    );
 
   return <p style={{ height: 100 }}>unknown</p>;
 };
