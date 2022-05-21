@@ -12,7 +12,7 @@ const service = 'backend';
 const environmentVariables = validate(getServerlessEnvVariables(service));
 const buildDir = getBuildDir(service);
 
-const serverlessConfig: Serverless = {
+const serverlessConfig: Serverless | unknown = {
   service,
   provider: {
     name: 'aws',

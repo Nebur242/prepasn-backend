@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import styled from 'styled-components';
 import Icon from '../Icon';
-import { Button, Modal, Row, Tabs, Upload, Divider, Col, Result } from 'antd';
+import { Button, Modal, Row, Tabs, Upload, Col, Result } from 'antd';
 import { UploadFile } from 'antd/lib/upload/interface';
 import AppUploadDocuments from '../uploadFiles';
 import { Document } from '@prepa-sn/shared/interfaces';

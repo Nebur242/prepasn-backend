@@ -1,5 +1,5 @@
 import { Document } from '@prepa-sn/shared/interfaces';
-import { Alert, Card, Col, Row, Spin } from 'antd';
+import { Alert, Card, Col, Row } from 'antd';
 import { FC } from 'react';
 import AppDocument from '../document';
 
