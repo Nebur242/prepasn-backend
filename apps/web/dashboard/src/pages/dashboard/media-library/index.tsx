@@ -9,7 +9,7 @@ import {
   Space,
   Spin,
 } from 'antd';
-import { IPaginationOptions } from 'nestjs-typeorm-paginate/dist/interfaces';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { useState } from 'react';
 import ContentSectionWrapper from '../../../components/content-section-wrapper';
 import AppDocuments from '../../../components/documents';

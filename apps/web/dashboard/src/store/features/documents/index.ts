@@ -8,8 +8,7 @@ import { axiosBaseQuery } from '../../../config/api.config';
 import { Omit } from '@reduxjs/toolkit/dist/tsHelpers';
 import { removeAsset, uploadAsset } from '@prepa-sn/shared/services';
 import { Document } from '@prepa-sn/shared/interfaces';
-import { Pagination } from 'nestjs-typeorm-paginate';
-import { IPaginationOptions } from 'nestjs-typeorm-paginate/dist/interfaces';
+import { Pagination, IPaginationOptions } from 'nestjs-typeorm-paginate';
 
 export interface DocumentsInitialState {
   loading: boolean;
