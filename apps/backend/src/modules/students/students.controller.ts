@@ -9,7 +9,7 @@ import {
 import { Student } from './entities/student.entity';
 import { StudentsService } from './students.service';
 import { Role } from '@prepa-sn/shared/enums';
-import { Authenticated, Roles } from '../auth/roles-auth.guard';
+import { Admin, Authenticated, Roles } from '../auth/roles-auth.guard';
 import { JwtClaims } from '@prepa-sn/backend/common/types/claims.type';
 
 @Controller('students')
@@ -19,7 +19,7 @@ export class StudentsController {
 
   @Get('/all')
   @ApiOkResponse({ type: StudentDto, isArray: true })
-  @Roles(Role.ADMIN)
+  @Admin()
   getAllStudents(): Promise<Student[]> {
     return this.studentsService.getAllStudents();
   }

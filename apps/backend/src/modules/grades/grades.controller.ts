@@ -11,8 +11,7 @@ import { GradesService } from './grades.service';
 import { CreateGradeDto } from './dto/create-grade.dto';
 import { UpdateGradeDto } from './dto/update-grade.dto';
 import { ApiOkResponse } from '@nestjs/swagger';
-import { Authenticated, Roles } from '../auth/roles-auth.guard';
-import { Role } from '@prepa-sn/shared/enums';
+import { Admin, Authenticated } from '../auth/roles-auth.guard';
 import { Grade } from './entities/grade.entity';
 import Controller from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
 
@@ -21,7 +20,7 @@ export class GradesController {
   constructor(private readonly gradesService: GradesService) {}
 
   @Post()
-  @Roles(Role.ADMIN)
+  @Admin()
   @ApiOkResponse({ type: Grade, isArray: false })
   create(@Body() createGradeDto: CreateGradeDto): Promise<Grade> {
     return this.gradesService.create(createGradeDto);
@@ -42,7 +41,7 @@ export class GradesController {
   }
 
   @Patch(':id')
-  @Roles(Role.ADMIN)
+  @Admin()
   @ApiOkResponse({ type: Grade, isArray: false })
   update(
     @Param('id', ParseIntPipe) id: number,
@@ -52,7 +51,7 @@ export class GradesController {
   }
 
   @Delete(':id')
-  @Roles(Role.ADMIN)
+  @Admin()
   @ApiOkResponse({ type: Grade, isArray: false })
   remove(@Param('id', ParseIntPipe) id: number): Promise<Grade> {
     return this.gradesService.remove(id);

@@ -41,7 +41,7 @@ export class DocumentsController {
   @ApiOkResponse({ type: CreateDocumentDto, isArray: true })
   findAll(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page,
-    @Query('limit', new DefaultValuePipe(5), ParseIntPipe) limit
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit
   ): Promise<Pagination<Document>> {
     return this.documentsService.paginate({
       page,

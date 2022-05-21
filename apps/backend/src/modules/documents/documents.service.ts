@@ -58,7 +58,7 @@ export class DocumentsService {
     return document;
   }
 
-  async paginate(options: IPaginationOptions): Promise<Pagination<Document>> {
+  paginate(options: IPaginationOptions): Promise<Pagination<Document>> {
     return paginate<Document>(this.documentsRepository, options);
   }
 }

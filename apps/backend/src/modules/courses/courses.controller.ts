@@ -8,8 +8,7 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { ApiBody, ApiOkResponse } from '@nestjs/swagger';
-import { Role } from '@prepa-sn/shared/enums';
-import { Authenticated, Roles } from '../auth/roles-auth.guard';
+import { Admin, Authenticated } from '../auth/roles-auth.guard';
 import { CoursesService } from './courses.service';
 import { CourseDto } from './dto/course.dto';
 import { CreateCourseDto } from './dto/create-course.dto';
@@ -22,7 +21,7 @@ export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
 
   @Post()
-  @Roles(Role.ADMIN)
+  @Admin()
   @ApiOkResponse({ type: CourseDto, isArray: false })
   @ApiBody({ type: CreateCourseDto })
   create(@Body() createCourseDto: CreateCourseDto): Promise<Course> {
@@ -44,7 +43,7 @@ export class CoursesController {
   }
 
   @Patch(':id')
-  @Roles(Role.ADMIN)
+  @Admin()
   @ApiOkResponse({ type: CourseDto, isArray: false })
   @ApiBody({ type: CreateCourseDto })
   update(
@@ -55,7 +54,7 @@ export class CoursesController {
   }
 
   @Delete(':id')
-  @Roles(Role.ADMIN)
+  @Admin()
   @ApiOkResponse({ type: Course, isArray: false })
   remove(@Param('id', ParseIntPipe) id: number): Promise<Course> {
     return this.coursesService.remove(id);

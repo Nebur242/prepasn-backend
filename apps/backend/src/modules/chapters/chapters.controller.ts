@@ -8,8 +8,7 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
-import { Role } from '@prepa-sn/shared/enums';
-import { Authenticated, Roles } from '../auth/roles-auth.guard';
+import { Admin, Authenticated } from '../auth/roles-auth.guard';
 import { ChaptersService } from './chapters.service';
 import { CreateChapterDto } from './dto/create-chapter.dto';
 import { UpdateChapterDto } from './dto/update-chapter.dto';
@@ -21,7 +20,7 @@ export class ChaptersController {
   constructor(private readonly chaptersService: ChaptersService) {}
 
   @Post()
-  @Roles(Role.ADMIN)
+  @Admin()
   @ApiOkResponse({ type: Chapter, isArray: false })
   create(@Body() createChapterDto: CreateChapterDto): Promise<Chapter> {
     return this.chaptersService.create(createChapterDto);
@@ -42,7 +41,7 @@ export class ChaptersController {
   }
 
   @Patch(':id')
-  @Roles(Role.ADMIN)
+  @Admin()
   @ApiOkResponse({ type: Chapter, isArray: false })
   update(
     @Param('id', ParseIntPipe) id: number,
@@ -52,7 +51,7 @@ export class ChaptersController {
   }
 
   @Delete(':id')
-  @Roles(Role.ADMIN)
+  @Admin()
   @ApiOkResponse({ type: Chapter, isArray: false })
   remove(@Param('id', ParseIntPipe) id: number): Promise<Chapter> {
     return this.chaptersService.remove(id);
