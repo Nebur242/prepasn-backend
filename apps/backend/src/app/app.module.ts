@@ -9,6 +9,7 @@ import { GradesModule } from '../modules/grades/grades.module';
 import { CoursesModule } from '../modules/courses/courses.module';
 import { DocumentsModule } from '../modules/documents/documents.module';
 import { ChaptersModule } from '../modules/chapters/chapters.module';
+import { ClassroomsModule } from '../modules/classrooms/classrooms.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { ChaptersModule } from '../modules/chapters/chapters.module';
     CoursesModule,
     DocumentsModule,
     ChaptersModule,
+    ClassroomsModule,
   ],
   controllers: [],
   providers: [],

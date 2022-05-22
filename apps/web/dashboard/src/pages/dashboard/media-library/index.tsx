@@ -35,8 +35,8 @@ const MediaLibrary = ({
   columns = 6,
 }: MediaLibraryProps) => {
   const [pagination, setPagination] = useState<IPaginationOptions>({
-    page: 1 as number,
-    limit: 10 as number,
+    page: 1,
+    limit: 10,
   });
   const [selected, setSelected] = useState<Document[]>(
     onDocumentsSelect ? selectedDocuments : []
@@ -67,10 +67,9 @@ const MediaLibrary = ({
   return (
     <ContentSectionWrapper
       title="Media Library"
-      description={`${
-        (pagination.page as number) * (pagination.limit as number) -
+      description={`${(pagination.page as number) * (pagination.limit as number) -
         ((pagination.limit as number) - data.items.length)
-      } assets`}
+        } assets`}
       createButtonText="Add new assets"
       onCreate={openModal}
       style={{
@@ -82,7 +81,7 @@ const MediaLibrary = ({
         <Button>Filter by</Button>
       </Space>
       <Divider />
-      {selected.length > 0 && (
+      {selected.length > 0 && !onDocumentsSelect && (
         <>
           <Row>
             <Col span={10}>
@@ -131,6 +130,9 @@ const MediaLibrary = ({
             defaultPageSize={pagination.limit as number}
             defaultCurrent={data.meta.currentPage}
             total={data.meta.totalItems}
+            showPrevNextJumpers
+            showSizeChanger
+            showQuickJumper
             onChange={(page, pageSize) => {
               setPagination({
                 ...pagination,

@@ -12,6 +12,7 @@ import {
 } from 'antd';
 import { Store } from 'antd/lib/form/interface';
 import { FC } from 'react';
+import { useSelector } from 'react-redux';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -22,6 +23,8 @@ interface IContentWithSiderProps {
   onFinish?: (values: unknown) => void;
   sidebarExtra?: React.ReactNode;
   initialValues?: Store;
+  createdAt: string;
+  updatedAt: string;
 }
 const ContentWithSider: FC<IContentWithSiderProps> = ({
   children,
@@ -29,7 +32,11 @@ const ContentWithSider: FC<IContentWithSiderProps> = ({
   form,
   sidebarExtra,
   initialValues = {},
+  createdAt,
+  updatedAt,
 }) => {
+  const { infos: user } = useSelector((state: RootState) => state.user);
+
   return (
     <Form
       validateTrigger={['onChange']}
@@ -60,22 +67,22 @@ const ContentWithSider: FC<IContentWithSiderProps> = ({
             <Divider />
             <Row justify="space-between">
               <Title level={5}>Created </Title>
-              <Text>Now </Text>
+              <Text>{createdAt}</Text>
             </Row>
 
             <Row justify="space-between">
               <Title level={5}>By </Title>
-              <Text>Now </Text>
+              <Text>{user.email} </Text>
             </Row>
 
             <Row justify="space-between">
               <Title level={5}>Last updated </Title>
-              <Text>Now </Text>
+              <Text>{updatedAt}</Text>
             </Row>
 
             <Row justify="space-between">
               <Title level={5}>By </Title>
-              <Text>Now </Text>
+              <Text>{user.email}</Text>
             </Row>
 
             <Divider />

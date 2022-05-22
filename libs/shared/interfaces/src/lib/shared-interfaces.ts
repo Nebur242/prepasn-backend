@@ -60,3 +60,6 @@ export interface Chapter extends BaseContent {
   course: Course;
   documents: Document[];
 }
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface Classroom extends BaseContent {}

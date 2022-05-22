@@ -1,5 +1,15 @@
 import { lazy } from 'react';
 
+export interface Route {
+  path: string;
+  name: string;
+  element: React.LazyExoticComponent<() => JSX.Element>;
+  isPublic: boolean;
+  icon?: string | null;
+  access: string[];
+  routes: Route[];
+}
+
 const Welcome = lazy(() => import('../pages/app/welcome.page'));
 const ContentManager = lazy(() => import('../pages/dashboard/content-manager'));
 const ContentManagerHome = lazy(
@@ -53,15 +63,18 @@ const UpdateChapters = lazy(
     import('../pages/dashboard/content-manager/content/courses/chapters/update')
 );
 
-export interface Route {
-  path: string;
-  name: string;
-  element: React.LazyExoticComponent<() => JSX.Element>;
-  isPublic: boolean;
-  icon?: string | null;
-  access: string[];
-  routes: Route[];
-}
+//CLASSROOMS
+const Classrooms = lazy(
+  () => import('../pages/dashboard/content-manager/content/classrooms')
+);
+
+const CreateClassroom = lazy(
+  () => import('../pages/dashboard/content-manager/content/classrooms/create')
+);
+
+const UpdateClassroom = lazy(
+  () => import('../pages/dashboard/content-manager/content/classrooms/update')
+);
 
 export const HOME: Route = {
   path: '/',
@@ -148,6 +161,32 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: Courses,
+          routes: [],
+        },
+        {
+          path: 'classrooms',
+          name: 'classrooms',
+          access: ['admin'],
+          isPublic: false,
+          element: Classrooms,
+          routes: [],
+        },
+        {
+          path: 'classrooms/create',
+          name: 'create-classroom',
+          access: ['admin'],
+          icon: 'DashboardOutlined',
+          isPublic: false,
+          element: CreateClassroom,
+          routes: [],
+        },
+        {
+          path: 'classrooms/update/:id',
+          name: 'update-classroom',
+          access: ['admin'],
+          icon: 'DashboardOutlined',
+          isPublic: false,
+          element: UpdateClassroom,
           routes: [],
         },
         {

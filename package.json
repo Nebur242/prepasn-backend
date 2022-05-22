@@ -45,6 +45,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "core-js": "^3.6.5",
+    "dayjs": "^1.11.2",
     "firebase": "^9.6.11",
     "firebase-admin": "^10.0.2",
     "fluent-ffmpeg": "^2.1.2",

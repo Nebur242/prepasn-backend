@@ -19,6 +19,11 @@ const ContentManager = () => {
       icon: null,
       label: <NavLink to="courses">Courses</NavLink>,
     },
+    {
+      key: '3',
+      icon: null,
+      label: <NavLink to="classrooms">Classes</NavLink>,
+    },
   ];
   return (
     <Row>

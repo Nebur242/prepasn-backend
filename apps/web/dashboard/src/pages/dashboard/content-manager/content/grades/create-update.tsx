@@ -16,6 +16,7 @@ import AppUpload from 'apps/web/dashboard/src/components/upload';
 import { Document, Grade } from '@prepa-sn/shared/interfaces';
 import { CKEditor } from 'ckeditor4-react';
 import { FC } from 'react';
+import dayjs from 'dayjs';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -38,6 +39,8 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
     <ContentWithSider
       form={form}
       onFinish={onFinish}
+      createdAt={dayjs(initialValues?.createdAt).format('DD/MM/YYYY:HH:mm:ss')}
+      updatedAt={dayjs(initialValues?.updatedAt).format('DD/MM/YYYY:HH:mm:ss')}
       sidebarExtra={
         <Card>
           <Title style={{ margin: 0 }} level={4}>

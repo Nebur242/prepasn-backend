@@ -34,7 +34,9 @@ export class ClassroomsService {
   }
 
   async findOne(id: number): Promise<Classroom> {
-    const classroom = await this.classroomsRepository.findOne(id);
+    const classroom = await this.classroomsRepository.findOne(id, {
+      relations: ['image', 'video'],
+    });
     if (!classroom)
       throw new NotFoundException(`Classroom with id ${id} not found`);
     return classroom;
