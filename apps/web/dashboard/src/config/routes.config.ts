@@ -3,7 +3,7 @@ import { lazy } from 'react';
 export interface Route {
   path: string;
   name: string;
-  element: React.LazyExoticComponent<() => JSX.Element>;
+  element: React.LazyExoticComponent<(T: unknown) => JSX.Element>;
   isPublic: boolean;
   icon?: string | null;
   access: string[];

@@ -26,6 +26,7 @@ interface IContentWithSiderProps {
   createdAt: string;
   updatedAt: string;
 }
+
 const ContentWithSider: FC<IContentWithSiderProps> = ({
   children,
   onFinish,
