@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Get, Patch, Post } from '@nestjs/common';
+import { ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { Claims } from '@prepa-sn/backend/common/decorators/get-user.decorator';
 import {
   CreateStudentDto,
@@ -11,9 +11,9 @@ import { StudentsService } from './students.service';
 import { Role } from '@prepa-sn/shared/enums';
 import { Admin, Authenticated, Roles } from '../auth/roles-auth.guard';
 import { JwtClaims } from '@prepa-sn/backend/common/types/claims.type';
+import ControllerWithApiTags from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
 
-@Controller('students')
-@ApiTags('Students')
+@ControllerWithApiTags('students')
 export class StudentsController {
   constructor(private readonly studentsService: StudentsService) {}
 

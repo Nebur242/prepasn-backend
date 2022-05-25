@@ -10,7 +10,6 @@ import {
   IsPhoneNumber,
   IsString,
 } from 'class-validator';
-import { Student } from '../entities/student.entity';
 
 export class CreateStudentDto {
   @ApiProperty()
@@ -36,7 +35,7 @@ export class CreateStudentDto {
   phone: string;
 }
 
-export class StudentDto extends CreateStudentDto implements Student {
+export class StudentDto extends CreateStudentDto {
   @ApiProperty()
   @IsNumber()
   id: number;

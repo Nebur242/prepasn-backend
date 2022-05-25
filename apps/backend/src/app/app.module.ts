@@ -10,6 +10,7 @@ import { CoursesModule } from '../modules/courses/courses.module';
 import { DocumentsModule } from '../modules/documents/documents.module';
 import { ChaptersModule } from '../modules/chapters/chapters.module';
 import { ClassroomsModule } from '../modules/classrooms/classrooms.module';
+import { InstructorsModule } from '../modules/instructors/instructors.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ClassroomsModule } from '../modules/classrooms/classrooms.module';
         configService.get('config.typeorm'),
     }),
     StudentsModule,
+    InstructorsModule,
     AuthModule,
     TestHelpersModule,
     GradesModule,
