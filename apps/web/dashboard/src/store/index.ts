@@ -8,6 +8,8 @@ import { coursesApi } from './features/courses';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import { chaptersApi } from './features/chapters';
 
+const isDev = import.meta.env.DEV;
+
 export const store = configureStore({
   reducer: {
     auth,
@@ -19,13 +21,13 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
-      .concat(logger)
       .concat(gradesApi.middleware)
       .concat(documentsApi.middleware)
       .concat(coursesApi.middleware)
       .concat(chaptersApi.middleware)
-      .concat(coursesApi.middleware),
-  devTools: import.meta.env.DEV,
+      .concat(coursesApi.middleware)
+      .concat(isDev ? logger : null),
+  devTools: isDev,
 });
 
 setupListeners(store.dispatch);
