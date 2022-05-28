@@ -16,18 +16,31 @@ import { Pagination } from 'nestjs-typeorm-paginate';
 import { Instructor } from './entities/instructor.entity';
 import { UpdateUserStatusDto } from '@prepa-sn/backend/common/dtos/update-user-status.dto';
 import ControllerWithApiTags from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
-import { Admin, Authenticated } from '../auth/roles-auth.guard';
+import { Admin } from '../auth/roles-auth.guard';
 import { ApiOkResponse } from '@nestjs/swagger';
+import { FirebaseService } from '../firebase/firebase.service';
+import { Role } from '@prepa-sn/shared/enums';
 
 @ControllerWithApiTags('instructors')
 export class InstructorsController {
-  constructor(private readonly instructorsService: InstructorsService) {}
+  constructor(
+    private readonly instructorsService: InstructorsService,
+    private readonly firebaseService: FirebaseService
+  ) {}
 
   @Post()
-  @Authenticated()
+  @Admin()
   @ApiOkResponse({ type: Instructor })
-  create(@Body() createInstructorDto: CreateInstructorDto) {
-    return this.instructorsService.create(createInstructorDto);
+  async create(@Body() createInstructorDto: CreateInstructorDto) {
+    const createdUser = await this.firebaseService.createUser(
+      createInstructorDto.email,
+      createInstructorDto.password
+    );
+    await this.firebaseService.setRoles(createdUser.uid, [Role.INSTRUCTOR]);
+    return this.instructorsService.create({
+      ...createInstructorDto,
+      uid: createdUser.uid,
+    });
   }
 
   @Get()
@@ -45,14 +58,14 @@ export class InstructorsController {
   }
 
   @Get(':id')
-  @Authenticated()
+  @Admin()
   @ApiOkResponse({ type: Instructor })
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.instructorsService.findOne(id);
   }
 
   @Patch(':id')
-  @Authenticated()
+  @Admin()
   @ApiOkResponse({ type: Instructor })
   update(
     @Param('id', ParseIntPipe) id: number,

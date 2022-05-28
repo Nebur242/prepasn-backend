@@ -3,36 +3,23 @@ import { PartialType } from '@nestjs/mapped-types';
 
 import {
   IsDate,
-  IsDateString,
+  IsDefined,
   IsEmail,
   IsNumber,
-  IsOptional,
   IsPhoneNumber,
   IsString,
 } from 'class-validator';
+import { CreateUserDto } from '@prepa-sn/backend/common/dtos/create-user.dto';
 
-export class CreateStudentDto {
+export class CreateStudentDto extends PartialType(CreateUserDto) {
   @ApiProperty()
-  @IsString()
-  firstName: string;
-
-  @ApiProperty()
-  @IsString()
-  lastName: string;
-
-  @ApiProperty()
-  @IsDateString()
-  birthDate: Date;
-
-  @ApiProperty()
-  @IsOptional()
+  @IsDefined()
   @IsEmail()
-  @IsOptional()
-  email?: string;
+  override email: string;
 
   @ApiProperty()
-  @IsPhoneNumber()
-  phone: string;
+  @IsDefined()
+  password: string;
 }
 
 export class StudentDto extends CreateStudentDto {

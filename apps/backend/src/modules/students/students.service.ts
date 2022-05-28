@@ -5,6 +5,12 @@ import { FirebaseService } from '../firebase/firebase.service';
 import { CreateStudentDto, UpdateStudentDto } from './dtos/students.dto';
 import { Student } from './entities/student.entity';
 import { StudentsRepository } from './repositories/student.repository';
+import { FindManyOptions } from 'typeorm';
+import {
+  IPaginationOptions,
+  paginate,
+  Pagination,
+} from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class StudentsService {
@@ -13,8 +19,12 @@ export class StudentsService {
     private readonly firebaseService: FirebaseService
   ) {}
 
-  getAllStudents(): Promise<Student[]> {
-    return this.studentsRepository.find();
+  getAllStudents(filter: FindManyOptions<Student> = {}): Promise<Student[]> {
+    return this.studentsRepository.find(filter);
+  }
+
+  paginate(options: IPaginationOptions): Promise<Pagination<Student>> {
+    return paginate<Student>(this.studentsRepository, options);
   }
 
   async createStudent(
@@ -28,6 +38,11 @@ export class StudentsService {
       email: createStudentDto.email || claims.email,
       phone: createStudentDto.phone || claims.phone_number,
     });
+    return this.studentsRepository.save(student);
+  }
+
+  create(createStudentDto: CreateStudentDto) {
+    const student = this.studentsRepository.create(createStudentDto);
     return this.studentsRepository.save(student);
   }
 
