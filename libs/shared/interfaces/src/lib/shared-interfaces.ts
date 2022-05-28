@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-interface */
 import { Status } from '@prepa-sn/shared/enums';
 
 export interface FirebaseConfig {
@@ -12,6 +13,23 @@ export interface FirebaseConfig {
   authProviderX509CertUrl: string;
   clientC509CertUrl: string;
 }
+
+export interface User {
+  id: number;
+  uid: string;
+  firstName: string;
+  lastName: string;
+  birthDate?: Date;
+  email?: string;
+  phone: string;
+  status: Status;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface Student extends User {}
+
+export interface Instructor extends User {}
 
 export interface Document {
   id: number;

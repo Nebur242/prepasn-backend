@@ -8,6 +8,8 @@ import { coursesApi } from './features/courses';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import { chaptersApi } from './features/chapters';
 import { classroomsApi } from './features/classrooms';
+import { studentsApi } from './features/students';
+import { instructorsApi } from './features/instructors';
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +20,8 @@ export const store = configureStore({
     [coursesApi.reducerPath]: coursesApi.reducer,
     [chaptersApi.reducerPath]: chaptersApi.reducer,
     [classroomsApi.reducerPath]: classroomsApi.reducer,
+    [studentsApi.reducerPath]: studentsApi.reducer,
+    [instructorsApi.reducerPath]: instructorsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -27,7 +31,10 @@ export const store = configureStore({
       .concat(coursesApi.middleware)
       .concat(chaptersApi.middleware)
       .concat(coursesApi.middleware)
-      .concat(classroomsApi.middleware),
+      .concat(classroomsApi.middleware)
+      .concat(studentsApi.middleware)
+      .concat(instructorsApi.middleware),
+
   devTools: import.meta.env.DEV,
 });
 
