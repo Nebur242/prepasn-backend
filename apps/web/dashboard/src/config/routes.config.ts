@@ -76,6 +76,21 @@ const UpdateClassroom = lazy(
   () => import('../pages/dashboard/content-manager/content/classrooms/update')
 );
 
+// USERS MANAGER
+const UsersManager = lazy(() => import('../pages/dashboard/users-manager'));
+
+const UsersMangagerHome = lazy(
+  () => import('../pages/dashboard/users-manager/home')
+);
+
+const Students = lazy(
+  () => import('../pages/dashboard/users-manager/content/students')
+);
+
+const Instructors = lazy(
+  () => import('../pages/dashboard/users-manager/content/instructors')
+);
+
 export const HOME: Route = {
   path: '/',
   name: 'home',
@@ -227,6 +242,40 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: UpdateChapters,
+          routes: [],
+        },
+      ],
+    },
+    {
+      path: 'users-manager',
+      name: 'users-manager',
+      access: ['admin'],
+      isPublic: false,
+      icon: 'InboxOutlined',
+      element: UsersManager,
+      routes: [
+        {
+          path: '',
+          name: 'users-manager-home',
+          access: ['admin'],
+          isPublic: false,
+          element: UsersMangagerHome,
+          routes: [],
+        },
+        {
+          path: 'students',
+          name: 'students',
+          access: ['admin'],
+          isPublic: false,
+          element: Students,
+          routes: [],
+        },
+        {
+          path: 'instructors',
+          name: 'instructors',
+          access: ['admin'],
+          isPublic: false,
+          element: Instructors,
           routes: [],
         },
       ],
