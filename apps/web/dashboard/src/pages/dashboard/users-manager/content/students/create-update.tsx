@@ -1,9 +1,10 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { FC } from 'react';
 import { Student } from '@prepa-sn/shared/interfaces';
-import { Col, Form, FormInstance, Row, Input, DatePicker, Button } from 'antd';
+import { Col, Form, FormInstance, Row, Input } from 'antd';
 import ContentWithSider from 'apps/web/dashboard/src/components/content-with-sider';
 import dayjs from 'dayjs';
+import DatePicker from 'apps/web/dashboard/src/components/DatePicker';
 
 interface ICreateAndUpdateProps {
   onFinish: () => Promise<void>;

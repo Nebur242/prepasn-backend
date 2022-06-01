@@ -1,6 +1,6 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Student } from '@prepa-sn/shared/interfaces';
-import { Button, Space, Table, Tag } from 'antd';
+import { Button, message, Space, Table, Tag } from 'antd';
 import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.interface';
 import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
 import Icon from 'apps/web/dashboard/src/components/Icon';
@@ -15,7 +15,7 @@ import {
   IPaginationMeta,
   IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Students = () => {
@@ -40,7 +40,7 @@ const Students = () => {
 
   const [
     deleteStudent,
-    { isLoading: isDeleting, isSuccess: isDeleted, isError: hasError },
+    { isSuccess: isDeleted, isError: hasError },
   ] = useDeleteStudentMutation();
 
   const columns = [
@@ -98,6 +98,15 @@ const Students = () => {
       ),
     },
   ];
+
+  useEffect(() => {
+    if (isDeleted) {
+      message.success('L\'étudiant a été supprimé avec succès');
+    }
+    if (hasError) {
+      message.error('Une erreur est survenue lors de la suppression');
+    }
+  }, [isDeleted, hasError])
 
   return (
     <ContentSectionWrapper

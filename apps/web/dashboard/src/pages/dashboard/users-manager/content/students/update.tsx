@@ -6,7 +6,7 @@ import {
   useFindOneStudentQuery,
   useUpdateStudentMutation,
 } from 'apps/web/dashboard/src/store/features/students';
-import dayjs from 'dayjs';
+// import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import CreateAndUpdate from './create-update';
@@ -48,11 +48,11 @@ const UpdateStudent = () => {
 
   useEffect(() => {
     if (data) {
-      console.log(typeof dayjs(data.birthDate).format());
+      // console.log(typeof dayjs(data.birthDate).format());
       form.setFieldsValue({
         firstName: data.firstName,
         lastName: data.lastName,
-        // birthDate: dayjs(data.birthDate).format(),
+        // birthDate: dayjs(data.birthDate),
         email: data.email,
         phone: data.phone,
         status: data.status,
