@@ -1,8 +1,5 @@
-
 const UpdateInstructor = () => {
-    return (
-        <div>UpdateInstructor</div>
-    )
-}
+  return <div>UpdateInstructor</div>;
+};
 
 export default UpdateInstructor;
