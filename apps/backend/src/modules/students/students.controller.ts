@@ -1,7 +1,9 @@
 import {
   Body,
   DefaultValuePipe,
+  Delete,
   Get,
+  Param,
   ParseIntPipe,
   Patch,
   Post,
@@ -76,20 +78,27 @@ export class StudentsController {
     });
   }
 
-  @Patch()
+  @Patch(':uid')
   @ApiOkResponse({ type: StudentDto })
-  @Roles(Role.STUDENT)
+  @Roles(Role.STUDENT, Role.ADMIN)
   updateStudent(
-    @Claims('uid') uid: string,
+    @Param('uid') uid: string,
     @Body() updateStudentDto: UpdateStudentDto
   ): Promise<Student> {
     return this.studentsService.update(uid, updateStudentDto);
   }
 
-  @Get()
+  @Get(':uid')
   @ApiOkResponse({ type: StudentDto })
-  @Roles(Role.STUDENT)
-  findOne(@Claims('uid') uid: string): Promise<Student> {
+  @Roles(Role.STUDENT, Role.ADMIN)
+  findOne(@Param('uid') uid: string): Promise<Student> {
     return this.studentsService.findOne(uid);
+  }
+
+  @Delete(':uid')
+  @ApiOkResponse({ type: StudentDto })
+  @Roles(Role.ADMIN)
+  remove(@Param('uid') uid: string): Promise<Student> {
+    return this.studentsService.removeUser(uid);
   }
 }

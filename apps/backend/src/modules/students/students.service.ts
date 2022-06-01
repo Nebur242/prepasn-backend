@@ -51,7 +51,10 @@ export class StudentsService {
     updateStudentDto: UpdateStudentDto
   ): Promise<Student> {
     const student = await this.findOne(uid);
-    await this.studentsRepository.update(student.id, updateStudentDto);
+    await this.studentsRepository.save({
+      ...student,
+      ...updateStudentDto,
+    });
     return this.findOne(uid);
   }
 
@@ -59,6 +62,13 @@ export class StudentsService {
     const student: Student = await this.studentsRepository.findOne({ uid });
     if (!student)
       throw new NotFoundException(`Student with uid ${uid} not found`);
+    return student;
+  }
+
+  async removeUser(uid: string) {
+    const student: Student = await this.studentsRepository.findOne({ uid });
+    await this.firebaseService.removeUser(student.uid);
+    await this.studentsRepository.remove(student);
     return student;
   }
 }

@@ -1,10 +1,11 @@
+/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Student } from '@prepa-sn/shared/interfaces';
 import { Button, Space, Table, Tag } from 'antd';
 import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.interface';
 import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper'
 import Icon from 'apps/web/dashboard/src/components/Icon';
 import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
-import { useFindAllStudentsQuery } from 'apps/web/dashboard/src/store/features/students';
+import { useDeleteStudentMutation, useFindAllStudentsQuery } from 'apps/web/dashboard/src/store/features/students';
 import dayjs from 'dayjs';
 import { IPaginationLinks, IPaginationMeta, IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { useState } from 'react';
@@ -29,6 +30,12 @@ const Students = () => {
     } = useFindAllStudentsQuery({
         ...pagination,
     });
+
+    const [deleteStudent, {
+        isLoading: isDeleting,
+        isSuccess: isDeleted,
+        isError: hasError,
+    }] = useDeleteStudentMutation();
 
     const columns = [
         {
@@ -63,7 +70,7 @@ const Students = () => {
                         type="primary"
                         ghost
                         icon={<Icon type="EditOutlined" />}
-                        onClick={() => navigate(`update/${student.id}`)}
+                        onClick={() => navigate(`update/${student.uid}`)}
                     />
                     <Button
                         type="primary"
@@ -77,7 +84,7 @@ const Students = () => {
                                 content: 'Voulez-vous vraiment supprimer cette section ?',
                                 data: student,
                                 onCancel: () => console.log('cancel'),
-                                onOk: () => console.log('ok'),
+                                onOk: () => deleteStudent({ uid: student.uid }),
                             } as IConfirmation<Student>)
                         }
                     />

@@ -1,5 +1,33 @@
-import { lazy } from 'react';
-
+import {
+  Welcome,
+  Home,
+  Login,
+  Dashboard,
+  Profile,
+  MediaLibrary,
+  Grades,
+  CreateGrade,
+  UpdateGrade,
+  Courses,
+  CreateCourses,
+  UpdateCourses,
+  CourseChapters,
+  CreateChapters,
+  UpdateChapters,
+  Classrooms,
+  CreateClassroom,
+  UpdateClassroom,
+  ContentManager,
+  ContentManagerHome,
+  UsersManager,
+  UsersMangagerHome,
+  Students,
+  CreateStudent,
+  UpdateStudent,
+  Instructors,
+  CreateInstructor,
+  UpdateInstructor,
+} from '../pages';
 export interface Route {
   path: string;
   name: string;
@@ -9,87 +37,6 @@ export interface Route {
   access: string[];
   routes: Route[];
 }
-
-const Welcome = lazy(() => import('../pages/app/welcome.page'));
-const ContentManager = lazy(() => import('../pages/dashboard/content-manager'));
-const ContentManagerHome = lazy(
-  () => import('../pages/dashboard/content-manager/home.page')
-);
-
-const Home = lazy(() => import('../pages/app/home.page'));
-const Login = lazy(() => import('../pages/auth/login.page'));
-const Dashboard = lazy(() => import('../pages/dashboard'));
-const Profile = lazy(() => import('../pages/dashboard/profile'));
-
-//MEDIA LIBRAY
-const MediaLibrary = lazy(() => import('../pages/dashboard/media-library'));
-
-//GRADES
-const Grades = lazy(
-  () => import('../pages/dashboard/content-manager/content/grades')
-);
-const CreateGrade = lazy(
-  () => import('../pages/dashboard/content-manager/content/grades/create')
-);
-const UpdateGrade = lazy(
-  () => import('../pages/dashboard/content-manager/content/grades/update')
-);
-
-//COURSES
-const Courses = lazy(
-  () => import('../pages/dashboard/content-manager/content/courses')
-);
-
-const CreateCourses = lazy(
-  () => import('../pages/dashboard/content-manager/content/courses/create')
-);
-
-const UpdateCourses = lazy(
-  () => import('../pages/dashboard/content-manager/content/courses/update')
-);
-
-//COURSES CHAPTERS
-const CourseChapters = lazy(
-  () => import('../pages/dashboard/content-manager/content/courses/chapters')
-);
-
-const CreateChapters = lazy(
-  () =>
-    import('../pages/dashboard/content-manager/content/courses/chapters/create')
-);
-
-const UpdateChapters = lazy(
-  () =>
-    import('../pages/dashboard/content-manager/content/courses/chapters/update')
-);
-
-//CLASSROOMS
-const Classrooms = lazy(
-  () => import('../pages/dashboard/content-manager/content/classrooms')
-);
-
-const CreateClassroom = lazy(
-  () => import('../pages/dashboard/content-manager/content/classrooms/create')
-);
-
-const UpdateClassroom = lazy(
-  () => import('../pages/dashboard/content-manager/content/classrooms/update')
-);
-
-// USERS MANAGER
-const UsersManager = lazy(() => import('../pages/dashboard/users-manager'));
-
-const UsersMangagerHome = lazy(
-  () => import('../pages/dashboard/users-manager/home')
-);
-
-const Students = lazy(
-  () => import('../pages/dashboard/users-manager/content/students')
-);
-
-const Instructors = lazy(
-  () => import('../pages/dashboard/users-manager/content/instructors')
-);
 
 export const HOME: Route = {
   path: '/',
@@ -271,11 +218,43 @@ export const DASHBOARD: Route = {
           routes: [],
         },
         {
+          path: 'students/create',
+          name: 'create-student',
+          access: ['admin'],
+          isPublic: false,
+          element: CreateStudent,
+          routes: [],
+        },
+        {
+          path: 'students/update/:id',
+          name: 'update-student',
+          access: ['admin'],
+          isPublic: false,
+          element: UpdateStudent,
+          routes: [],
+        },
+        {
           path: 'instructors',
           name: 'instructors',
           access: ['admin'],
           isPublic: false,
           element: Instructors,
+          routes: [],
+        },
+        {
+          path: 'instructors/create',
+          name: 'create-instructor',
+          access: ['admin'],
+          isPublic: false,
+          element: CreateInstructor,
+          routes: [],
+        },
+        {
+          path: 'instructors/update/:id',
+          name: 'create-instructor',
+          access: ['admin'],
+          isPublic: false,
+          element: UpdateInstructor,
           routes: [],
         },
       ],

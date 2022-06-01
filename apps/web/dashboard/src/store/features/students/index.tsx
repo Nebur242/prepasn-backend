@@ -56,6 +56,22 @@ export const studentsApi = createApi({
                     : [{ type: TAG_TYPE, id: 'PARTIAL-LIST' }];
             },
         }),
+        findOneStudent: builder.query<Student, { id: string }>({
+            query: ({ id }) => ({
+                url: `${BASE_PATH}/${id}`,
+                method: 'GET',
+            }),
+            providesTags: (result, _error, _arg) => {
+                return result
+                    ? [
+                        {
+                            type: TAG_TYPE,
+                            id: result.id,
+                        },
+                    ]
+                    : [];
+            },
+        }),
         createStudent: builder.mutation<Student, Omit<Student, 'id'>>({
             query: (student: Omit<Student, 'id'>) => ({
                 url: BASE_PATH,
@@ -65,11 +81,18 @@ export const studentsApi = createApi({
             invalidatesTags: [TAG_TYPE],
         }),
         updateStudent: builder.mutation<Document, Partial<Student>>({
-            query: ({ id, ...updated }) => ({
-                url: `${BASE_PATH}/${id}`,
+            query: ({ uid, ...updated }) => ({
+                url: `${BASE_PATH}/${uid}`,
                 method: 'PATCH',
                 data: updated,
             }),
+        }),
+        deleteStudent: builder.mutation<Document, { uid: string }>({
+            query: ({ uid }) => ({
+                url: `${BASE_PATH}/${uid}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: [TAG_TYPE],
         }),
     })
 })
@@ -78,6 +101,8 @@ export const {
     useCreateStudentMutation,
     useFindAllStudentsQuery,
     useUpdateStudentMutation,
+    useFindOneStudentQuery,
+    useDeleteStudentMutation
 } = studentsApi
 
 

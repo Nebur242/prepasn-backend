@@ -68,4 +68,9 @@ export class FirebaseService {
       user.customClaims?.roles?.includes(Role.STUDENT)
     );
   }
+
+  @CatchFirebaseException()
+  async removeUser(uid: string) {
+    await getAuth().deleteUser(uid);
+  }
 }
