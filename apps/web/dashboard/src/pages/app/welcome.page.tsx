@@ -21,8 +21,8 @@ const Welcome = () => {
         <Title level={2}>Welcome 👋</Title>
         <Paragraph>
           We hope you are making progress on your project! Feel free to read the
-          latest news about Strapi. We are giving our best to improve the product
-          based on your feedback.
+          latest news about Strapi. We are giving our best to improve the
+          product based on your feedback.
         </Paragraph>
         <Link href="https://ant.design" target="_blank">
           See more on the blog <SelectOutlined />
