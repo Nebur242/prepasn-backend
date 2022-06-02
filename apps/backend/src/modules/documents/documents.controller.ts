@@ -6,9 +6,12 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  Query,
+  DefaultValuePipe,
 } from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
 import Controller from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
+import { Pagination } from 'nestjs-typeorm-paginate';
 import { Authenticated } from '../auth/roles-auth.guard';
 import { DocumentsService } from './documents.service';
 import { CreateDocumentDto } from './dto/create-document.dto';
@@ -36,8 +39,15 @@ export class DocumentsController {
 
   @Get()
   @ApiOkResponse({ type: CreateDocumentDto, isArray: true })
-  findAll(): Promise<Document[]> {
-    return this.documentsService.findAll();
+  findAll(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit
+  ): Promise<Pagination<Document>> {
+    return this.documentsService.paginate({
+      page,
+      limit,
+      route: '/documents',
+    });
   }
 
   @Get(':id')

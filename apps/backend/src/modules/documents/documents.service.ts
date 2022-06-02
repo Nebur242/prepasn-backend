@@ -5,6 +5,12 @@ import { UpdateDocumentDto } from './dto/update-document.dto';
 import { Document } from './entities/document.entity';
 import { DocumentsRepository } from './repositories/document.repository';
 
+import {
+  paginate,
+  Pagination,
+  IPaginationOptions,
+} from 'nestjs-typeorm-paginate';
+
 @Injectable()
 export class DocumentsService {
   constructor(private readonly documentsRepository: DocumentsRepository) {}
@@ -50,5 +56,9 @@ export class DocumentsService {
     const document = await this.findOne(id);
     await this.documentsRepository.delete(document.id);
     return document;
+  }
+
+  paginate(options: IPaginationOptions): Promise<Pagination<Document>> {
+    return paginate<Document>(this.documentsRepository, options);
   }
 }

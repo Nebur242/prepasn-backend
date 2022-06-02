@@ -1,6 +1,6 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Chapter } from '@prepa-sn/shared/interfaces';
-import { Button, Space, Table, Tag, Modal, message } from 'antd';
+import { Button, Space, Table, Tag, message } from 'antd';
 import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.interface';
 import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
 import Icon from 'apps/web/dashboard/src/components/Icon';
@@ -9,8 +9,6 @@ import { useDeleteChapterMutation } from 'apps/web/dashboard/src/store/features/
 import { useFindOneCourseQuery } from 'apps/web/dashboard/src/store/features/courses';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-
-const { confirm } = Modal;
 
 const rowSelection = {
   onChange: (selectedRowKeys: React.Key[], selectedRows: Chapter[]) => {
@@ -27,13 +25,9 @@ const Chapters = () => {
   const { courseId } = useParams<{ courseId: string }>();
   const navigate = useNavigate();
 
-  const { data, isLoading, refetch } = useFindOneCourseQuery(
-    courseId as string
-  );
+  const { data, isLoading, refetch } = useFindOneCourseQuery(courseId);
 
   const [deleteChapter, { isSuccess, isError }] = useDeleteChapterMutation();
-
-
 
   const columns = [
     {

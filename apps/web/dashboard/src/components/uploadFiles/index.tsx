@@ -12,10 +12,7 @@ import {
 } from 'antd';
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
 import { FC, useEffect, useState } from 'react';
-import {
-  useFindAllDocumentsQuery,
-  useUploadsMutation,
-} from '../../store/features/documents';
+import { useUploadsMutation } from '../../store/features/documents';
 import Icon from '../Icon';
 import AppUploadFile from '../uploadFile';
 
@@ -33,8 +30,6 @@ const AppUploadDocuments: FC = () => {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [showUpload, setShowUpload] = useState<boolean>(true);
   const [uploads, { isLoading, isSuccess }] = useUploadsMutation();
-
-  const { refetch } = useFindAllDocumentsQuery();
 
   const handleUploadChange = (uploadChangeParam: UploadChangeParam) => {
     console.log(uploadChangeParam);
@@ -76,10 +71,9 @@ const AppUploadDocuments: FC = () => {
   useEffect(() => {
     if (isSuccess) {
       setFileList([]);
-      refetch();
       message.success('Uploaded successfully');
     }
-  }, [isSuccess, refetch]);
+  }, [isSuccess]);
 
   return (
     <div>

@@ -1,14 +1,5 @@
 import { Document } from '@prepa-sn/shared/interfaces';
-import {
-  Alert,
-  Button,
-  Col,
-  Divider,
-  Pagination,
-  Row,
-  Space,
-  Spin,
-} from 'antd';
+import { Alert, Card, Col, Row } from 'antd';
 import { FC } from 'react';
 import AppDocument from '../document';
 
@@ -19,6 +10,7 @@ interface DocumentsProps {
   selectedDocuments?: Document[];
   multiple?: boolean;
   onDocumentsSelect?: (document: Document[]) => void;
+  columns?: number;
 }
 const Documents: FC<DocumentsProps> = ({
   documents,
@@ -27,8 +19,18 @@ const Documents: FC<DocumentsProps> = ({
   selectedDocuments = [],
   multiple = false,
   onDocumentsSelect,
+  columns = 4,
 }) => {
-  if (loading) return <Spin />;
+  if (loading)
+    return (
+      <Row gutter={[10, 10]}>
+        {[...new Array(10)].map((_, index) => (
+          <Col key={index} span={24 / columns}>
+            <Card loading />
+          </Col>
+        ))}
+      </Row>
+    );
 
   if (error) return <Alert message="Error" type="error" />;
 
@@ -53,15 +55,10 @@ const Documents: FC<DocumentsProps> = ({
 
   return (
     <div>
-      <Space>
-        <Button>Sort by</Button>
-        <Button>Filter by</Button>
-      </Space>
-      <Divider />
       <Row gutter={[10, 10]}>
         {documents.map((document: Document) => {
           return (
-            <Col span={6} key={document.id}>
+            <Col span={24 / columns} key={document.id}>
               <AppDocument
                 document={document}
                 checked={selectedDocuments?.some((d) => d.id === document.id)}
@@ -70,10 +67,6 @@ const Documents: FC<DocumentsProps> = ({
             </Col>
           );
         })}
-      </Row>
-      <Divider />
-      <Row justify="end">
-        <Pagination defaultCurrent={1} total={documents.length} />
       </Row>
     </div>
   );

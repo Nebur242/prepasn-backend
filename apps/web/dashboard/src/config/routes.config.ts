@@ -1,62 +1,38 @@
-import { lazy } from 'react';
-
-const Welcome = lazy(() => import('../pages/app/welcome.page'));
-const ContentManager = lazy(() => import('../pages/dashboard/content-manager'));
-const ContentManagerHome = lazy(
-  () => import('../pages/dashboard/content-manager/home.page')
-);
-
-const Home = lazy(() => import('../pages/app/home.page'));
-const Login = lazy(() => import('../pages/auth/login.page'));
-const Dashboard = lazy(() => import('../pages/dashboard'));
-const statistics = lazy(() => import('../pages/dashboard/stats'));
-
-//MEDIA LIBRAY
-const MediaLibrary = lazy(() => import('../pages/dashboard/media-library'));
-
-//GRADES
-const Grades = lazy(
-  () => import('../pages/dashboard/content-manager/content/grades')
-);
-const CreateGrade = lazy(
-  () => import('../pages/dashboard/content-manager/content/grades/create')
-);
-const UpdateGrade = lazy(
-  () => import('../pages/dashboard/content-manager/content/grades/update')
-);
-
-//COURSES
-const Courses = lazy(
-  () => import('../pages/dashboard/content-manager/content/courses')
-);
-
-const CreateCourses = lazy(
-  () => import('../pages/dashboard/content-manager/content/courses/create')
-);
-
-const UpdateCourses = lazy(
-  () => import('../pages/dashboard/content-manager/content/courses/update')
-);
-
-//COURSES CHAPTERS
-const CourseChapters = lazy(
-  () => import('../pages/dashboard/content-manager/content/courses/chapters')
-);
-
-const CreateChapters = lazy(
-  () =>
-    import('../pages/dashboard/content-manager/content/courses/chapters/create')
-);
-
-const UpdateChapters = lazy(
-  () =>
-    import('../pages/dashboard/content-manager/content/courses/chapters/update')
-);
-
+import {
+  Welcome,
+  Home,
+  Login,
+  Dashboard,
+  Profile,
+  MediaLibrary,
+  Grades,
+  CreateGrade,
+  UpdateGrade,
+  Courses,
+  CreateCourses,
+  UpdateCourses,
+  CourseChapters,
+  CreateChapters,
+  UpdateChapters,
+  Classrooms,
+  CreateClassroom,
+  UpdateClassroom,
+  ContentManager,
+  ContentManagerHome,
+  UsersManager,
+  UsersMangagerHome,
+  Students,
+  CreateStudent,
+  UpdateStudent,
+  Instructors,
+  CreateInstructor,
+  UpdateInstructor,
+  Stats,
+} from '../pages';
 export interface Route {
   path: string;
   name: string;
-  element: React.LazyExoticComponent<() => JSX.Element>;
+  element: React.LazyExoticComponent<(T: unknown) => JSX.Element>;
   isPublic: boolean;
   icon?: string | null;
   access: string[];
@@ -106,7 +82,7 @@ export const DASHBOARD: Route = {
       isPublic: false,
       icon: 'AreaChartOutlined',
       access: [],
-      element: statistics,
+      element: Stats,
       routes: [],
     },
     {
@@ -160,6 +136,32 @@ export const DASHBOARD: Route = {
           routes: [],
         },
         {
+          path: 'classrooms',
+          name: 'classrooms',
+          access: ['admin'],
+          isPublic: false,
+          element: Classrooms,
+          routes: [],
+        },
+        {
+          path: 'classrooms/create',
+          name: 'create-classroom',
+          access: ['admin'],
+          icon: 'DashboardOutlined',
+          isPublic: false,
+          element: CreateClassroom,
+          routes: [],
+        },
+        {
+          path: 'classrooms/update/:id',
+          name: 'update-classroom',
+          access: ['admin'],
+          icon: 'DashboardOutlined',
+          isPublic: false,
+          element: UpdateClassroom,
+          routes: [],
+        },
+        {
           path: 'courses/create',
           name: 'create-course',
           access: ['admin'],
@@ -202,12 +204,87 @@ export const DASHBOARD: Route = {
       ],
     },
     {
+      path: 'users-manager',
+      name: 'users-manager',
+      access: ['admin'],
+      isPublic: false,
+      icon: 'InboxOutlined',
+      element: UsersManager,
+      routes: [
+        {
+          path: '',
+          name: 'users-manager-home',
+          access: ['admin'],
+          isPublic: false,
+          element: UsersMangagerHome,
+          routes: [],
+        },
+        {
+          path: 'students',
+          name: 'students',
+          access: ['admin'],
+          isPublic: false,
+          element: Students,
+          routes: [],
+        },
+        {
+          path: 'students/create',
+          name: 'create-student',
+          access: ['admin'],
+          isPublic: false,
+          element: CreateStudent,
+          routes: [],
+        },
+        {
+          path: 'students/update/:id',
+          name: 'update-student',
+          access: ['admin'],
+          isPublic: false,
+          element: UpdateStudent,
+          routes: [],
+        },
+        {
+          path: 'instructors',
+          name: 'instructors',
+          access: ['admin'],
+          isPublic: false,
+          element: Instructors,
+          routes: [],
+        },
+        {
+          path: 'instructors/create',
+          name: 'create-instructor',
+          access: ['admin'],
+          isPublic: false,
+          element: CreateInstructor,
+          routes: [],
+        },
+        {
+          path: 'instructors/update/:id',
+          name: 'create-instructor',
+          access: ['admin'],
+          isPublic: false,
+          element: UpdateInstructor,
+          routes: [],
+        },
+      ],
+    },
+    {
       path: 'uploads',
       name: 'media-library',
       access: ['admin'],
       icon: 'FolderOpenOutlined',
       isPublic: false,
       element: MediaLibrary,
+      routes: [],
+    },
+    {
+      path: 'profile',
+      name: 'profile',
+      access: ['admin'],
+      icon: 'UserOutlined',
+      isPublic: false,
+      element: Profile,
       routes: [],
     },
   ],

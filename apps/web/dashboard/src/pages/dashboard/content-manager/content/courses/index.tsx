@@ -12,7 +12,6 @@ import {
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-
 const rowSelection = {
   onChange: (selectedRowKeys: React.Key[], selectedRows: Course[]) => {
     console.log(

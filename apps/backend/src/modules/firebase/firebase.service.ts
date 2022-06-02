@@ -55,4 +55,22 @@ export class FirebaseService {
         .pipe(map((response) => response.data))
     );
   }
+
+  @CatchFirebaseException()
+  getUsers(maxResults?: number, pageToken?: string) {
+    return getAuth().listUsers(maxResults, pageToken);
+  }
+
+  @CatchFirebaseException()
+  async getStudents(maxResults?: number, pageToken?: string) {
+    const users = await getAuth().listUsers(maxResults, pageToken);
+    return users.users.filter((user) =>
+      user.customClaims?.roles?.includes(Role.STUDENT)
+    );
+  }
+
+  @CatchFirebaseException()
+  async removeUser(uid: string) {
+    await getAuth().deleteUser(uid);
+  }
 }

@@ -52,6 +52,10 @@ export function Roles(...roles: Role[]) {
   );
 }
 
+export function Admin() {
+  return Roles(Role.ADMIN);
+}
+
 export function Authenticated() {
   return Roles(...Object.values(Role));
 }

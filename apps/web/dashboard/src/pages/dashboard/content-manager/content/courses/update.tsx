@@ -13,7 +13,7 @@ import CreateAndUpdate from './create-update';
 const UpdateCourse = () => {
   const { id } = useParams<{ id: string }>();
   const [form] = Form.useForm();
-  const { data, isLoading } = useFindOneCourseQuery(id as string);
+  const { data, isLoading } = useFindOneCourseQuery(id);
 
   const [
     updateCourse,

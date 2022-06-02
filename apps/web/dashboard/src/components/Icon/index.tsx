@@ -28,7 +28,12 @@ import {
   TranslationOutlined,
   LogoutOutlined,
   FolderOpenOutlined,
-  AreaChartOutlined
+  AreaChartOutlined,
+  CloseOutlined,
+  PlayCircleOutlined,
+  PauseCircleOutlined,
+  EyeOutlined,
+  InfoCircleOutlined
 } from '@ant-design/icons';
 
 export interface IIcons {
@@ -40,8 +45,9 @@ export interface IIcons {
 }
 
 const Icon: FC<IIcons> = ({ type, ...rest }): JSX.Element | null => {
-  if (!type) return null;
-  const getIcon = (iconName: string) =>
+  if (!type) return <QuestionOutlined {...rest} />;
+
+  const getIcon = (type: string) =>
   ({
     QuestionOutlined: <QuestionOutlined {...rest} />,
     DashboardOutlined: <DashboardOutlined {...rest} />,
@@ -70,10 +76,15 @@ const Icon: FC<IIcons> = ({ type, ...rest }): JSX.Element | null => {
     CloudUploadOutlined: <CloudUploadOutlined {...rest} />,
     TranslationOutlined: <TranslationOutlined {...rest} />,
     LogoutOutlined: <LogoutOutlined {...rest} />,
+    CloseOutlined: <CloseOutlined {...rest} />,
+    PlayCircleOutlined: <PlayCircleOutlined {...rest} />,
+    PauseCircleOutlined: <PauseCircleOutlined {...rest} />,
+    EyeOutlined: <EyeOutlined {...rest} />,
     FolderOpenOutlined: <FolderOpenOutlined {...rest} />,
     AreaChartOutlined: <AreaChartOutlined {...rest} />,
+    InfoCircleOutlined: <InfoCircleOutlined {...rest} />,
     default: null,
-  }[iconName]);
+  }[type]);
 
   return getIcon(type) || <QuestionOutlined {...rest} />;
 };

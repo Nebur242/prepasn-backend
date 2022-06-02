@@ -1,13 +1,12 @@
 import { FC, useState } from 'react';
 import styled from 'styled-components';
 import Icon from '../Icon';
-import { Button, Modal, Row, Tabs, Upload, Divider } from 'antd';
-// import { Document } from "../../common/interfaces/documents.interface";
+import { Button, Modal, Row, Tabs, Upload, Col, Result } from 'antd';
 import { UploadFile } from 'antd/lib/upload/interface';
-import { useFindAllDocumentsQuery } from '../../store/features/documents';
-import AppDocuments from '../documents';
 import AppUploadDocuments from '../uploadFiles';
 import { Document } from '@prepa-sn/shared/interfaces';
+import MediaLibrary from '../../pages/dashboard/media-library';
+import AppDocument from '../document';
 
 const { TabPane } = Tabs;
 
@@ -42,7 +41,6 @@ const UploadComponent: FC<DocumentsContentProps> = ({
   const openDocumentsMoal = () => setShowDocumentsMoal(true);
   const closeDocumentsMoal = () => setShowDocumentsMoal(false);
 
-  const openUploadMoal = () => setShowUploadsMoal(true);
   const closeUploadMoal = () => setShowUploadsMoal(false);
 
   return (
@@ -91,41 +89,36 @@ const UploadComponent: FC<DocumentsContentProps> = ({
         width="60vw"
         centered
         visible={showDocumentsMoal}
-        title="Add new assets"
+        title="Select your media"
         onCancel={closeDocumentsMoal}
-        footer={null}
+        bodyStyle={{
+          maxHeight: '80vh',
+          overflowY: 'scroll',
+        }}
+        footer={
+          <Row justify="space-between">
+            <Button onClick={closeDocumentsMoal} type="primary" ghost danger>
+              Cancel
+            </Button>
+            <Button
+              onClick={() => {
+                closeDocumentsMoal();
+                setHasSelected(true);
+                onSelect && onSelect(selectedDocuments);
+              }}
+              type="primary"
+              icon={<Icon type="PlusOutlined" />}
+            >
+              Select
+            </Button>
+          </Row>
+        }
       >
-        <Row justify="end">
-          <Button
-            onClick={openUploadMoal}
-            type="primary"
-            icon={<Icon type="PlusOutlined" />}
-          >
-            Add more assets
-          </Button>
-        </Row>
         <DocumentsContent
           multiple={multiple}
           onSelect={(documents: Document[]) => setSelectedDocuments(documents)}
           selectedDocuments={selectedDocuments}
         />
-        <Divider />
-        <Row justify="space-between">
-          <Button onClick={closeDocumentsMoal} type="primary" ghost danger>
-            Cancel
-          </Button>
-          <Button
-            onClick={() => {
-              closeDocumentsMoal();
-              setHasSelected(true);
-              onSelect && onSelect(selectedDocuments);
-            }}
-            type="primary"
-            icon={<Icon type="PlusOutlined" />}
-          >
-            Select
-          </Button>
-        </Row>
       </Modal>
       <Modal
         footer={null}
@@ -146,23 +139,36 @@ const DocumentsContent: FC<DocumentsContentProps> = ({
   onSelect,
   selectedDocuments,
 }) => {
-  const { data = [], isLoading, error } = useFindAllDocumentsQuery();
-
   return (
     <div>
       <Tabs defaultActiveKey="1">
         <TabPane tab="Browse" key="1">
-          <AppDocuments
+          <MediaLibrary
+            columns={4}
             multiple={multiple}
-            error={error}
-            documents={data}
-            loading={isLoading}
             onDocumentsSelect={onSelect}
             selectedDocuments={selectedDocuments}
           />
         </TabPane>
         <TabPane tab="Selected files" key="2">
-          Content of Tab Pane 2
+          {selectedDocuments.length < 1 && (
+            <Result
+              status="404"
+              title="404"
+              subTitle="Sorry, Nothing selected"
+            />
+          )}
+          {selectedDocuments.length > 0 && (
+            <Row gutter={[10, 10]}>
+              {selectedDocuments.map((document: Document) => {
+                return (
+                  <Col span={6} key={document.id}>
+                    <AppDocument document={document} checked={true} />
+                  </Col>
+                );
+              })}
+            </Row>
+          )}
         </TabPane>
       </Tabs>
     </div>

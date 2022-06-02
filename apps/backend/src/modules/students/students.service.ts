@@ -5,6 +5,12 @@ import { FirebaseService } from '../firebase/firebase.service';
 import { CreateStudentDto, UpdateStudentDto } from './dtos/students.dto';
 import { Student } from './entities/student.entity';
 import { StudentsRepository } from './repositories/student.repository';
+import { FindManyOptions } from 'typeorm';
+import {
+  IPaginationOptions,
+  paginate,
+  Pagination,
+} from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class StudentsService {
@@ -13,8 +19,12 @@ export class StudentsService {
     private readonly firebaseService: FirebaseService
   ) {}
 
-  getAllStudents(): Promise<Student[]> {
-    return this.studentsRepository.find();
+  getAllStudents(filter: FindManyOptions<Student> = {}): Promise<Student[]> {
+    return this.studentsRepository.find(filter);
+  }
+
+  paginate(options: IPaginationOptions): Promise<Pagination<Student>> {
+    return paginate<Student>(this.studentsRepository, options);
   }
 
   async createStudent(
@@ -31,12 +41,20 @@ export class StudentsService {
     return this.studentsRepository.save(student);
   }
 
+  create(createStudentDto: CreateStudentDto) {
+    const student = this.studentsRepository.create(createStudentDto);
+    return this.studentsRepository.save(student);
+  }
+
   async update(
     uid: string,
     updateStudentDto: UpdateStudentDto
   ): Promise<Student> {
     const student = await this.findOne(uid);
-    await this.studentsRepository.update(student.id, updateStudentDto);
+    await this.studentsRepository.save({
+      ...student,
+      ...updateStudentDto,
+    });
     return this.findOne(uid);
   }
 
@@ -44,6 +62,13 @@ export class StudentsService {
     const student: Student = await this.studentsRepository.findOne({ uid });
     if (!student)
       throw new NotFoundException(`Student with uid ${uid} not found`);
+    return student;
+  }
+
+  async removeUser(uid: string) {
+    const student: Student = await this.studentsRepository.findOne({ uid });
+    await this.firebaseService.removeUser(student.uid);
+    await this.studentsRepository.remove(student);
     return student;
   }
 }

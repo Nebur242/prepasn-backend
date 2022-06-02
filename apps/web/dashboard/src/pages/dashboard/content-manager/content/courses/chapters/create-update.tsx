@@ -17,6 +17,7 @@ import { FC } from 'react';
 import { CKEditor } from 'ckeditor4-react';
 import AppUpload from 'apps/web/dashboard/src/components/upload';
 import { useParams } from 'react-router-dom';
+import dayjs from 'dayjs';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -33,14 +34,15 @@ const CreateUpdate: FC<ICreateAndUpdateProps> = ({
   initialValues,
 }) => {
   const { courseId } = useParams<{ courseId: string }>();
-  const { isLoading: courseLoading, data: course } = useFindOneCourseQuery(
-    courseId as string
-  );
+  const { isLoading: courseLoading, data: course } =
+    useFindOneCourseQuery(courseId);
 
   return (
     <ContentWithSider
       form={form}
       onFinish={onFinish}
+      createdAt={dayjs(initialValues?.createdAt).format('DD/MM/YYYY:HH:mm:ss')}
+      updatedAt={dayjs(initialValues?.updatedAt).format('DD/MM/YYYY:HH:mm:ss')}
       initialValues={initialValues}
       sidebarExtra={
         <Card>

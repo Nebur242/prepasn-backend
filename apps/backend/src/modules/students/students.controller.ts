@@ -1,5 +1,15 @@
-import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  DefaultValuePipe,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
+import { ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { Claims } from '@prepa-sn/backend/common/decorators/get-user.decorator';
 import {
   CreateStudentDto,
@@ -9,22 +19,27 @@ import {
 import { Student } from './entities/student.entity';
 import { StudentsService } from './students.service';
 import { Role } from '@prepa-sn/shared/enums';
-import { Authenticated, Roles } from '../auth/roles-auth.guard';
+import { Admin, Authenticated, Roles } from '../auth/roles-auth.guard';
 import { JwtClaims } from '@prepa-sn/backend/common/types/claims.type';
+import ControllerWithApiTags from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
+import { FirebaseService } from '../firebase/firebase.service';
+import { Pagination } from 'nestjs-typeorm-paginate';
 
-@Controller('students')
-@ApiTags('Students')
+@ControllerWithApiTags('students')
 export class StudentsController {
-  constructor(private readonly studentsService: StudentsService) {}
+  constructor(
+    private readonly studentsService: StudentsService,
+    private readonly firebaseService: FirebaseService
+  ) {}
 
   @Get('/all')
   @ApiOkResponse({ type: StudentDto, isArray: true })
-  @Roles(Role.ADMIN)
+  @Admin()
   getAllStudents(): Promise<Student[]> {
     return this.studentsService.getAllStudents();
   }
 
-  @Post()
+  @Post('/create')
   @ApiCreatedResponse({ type: StudentDto })
   @Authenticated()
   createStudent(
@@ -34,20 +49,56 @@ export class StudentsController {
     return this.studentsService.createStudent(createStudentDto, claims);
   }
 
-  @Patch()
+  @Get()
+  @ApiOkResponse({ type: StudentDto, isArray: true })
+  @Admin()
+  findAll(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit
+  ): Promise<Pagination<Student>> {
+    return this.studentsService.paginate({
+      page,
+      limit,
+      route: '/students',
+    });
+  }
+
+  @Post()
+  @Admin()
   @ApiOkResponse({ type: StudentDto })
-  @Roles(Role.STUDENT)
+  async create(@Body() createInstructorDto: CreateStudentDto) {
+    const createdUser = await this.firebaseService.createUser(
+      createInstructorDto.email,
+      createInstructorDto.password
+    );
+    await this.firebaseService.setRoles(createdUser.uid, [Role.STUDENT]);
+    return this.studentsService.create({
+      ...createInstructorDto,
+      uid: createdUser.uid,
+    });
+  }
+
+  @Patch(':uid')
+  @ApiOkResponse({ type: StudentDto })
+  @Roles(Role.STUDENT, Role.ADMIN)
   updateStudent(
-    @Claims('uid') uid: string,
+    @Param('uid') uid: string,
     @Body() updateStudentDto: UpdateStudentDto
   ): Promise<Student> {
     return this.studentsService.update(uid, updateStudentDto);
   }
 
-  @Get()
+  @Get(':uid')
   @ApiOkResponse({ type: StudentDto })
-  @Roles(Role.STUDENT)
-  findOne(@Claims('uid') uid: string): Promise<Student> {
+  @Roles(Role.STUDENT, Role.ADMIN)
+  findOne(@Param('uid') uid: string): Promise<Student> {
     return this.studentsService.findOne(uid);
+  }
+
+  @Delete(':uid')
+  @ApiOkResponse({ type: StudentDto })
+  @Roles(Role.ADMIN)
+  remove(@Param('uid') uid: string): Promise<Student> {
+    return this.studentsService.removeUser(uid);
   }
 }
