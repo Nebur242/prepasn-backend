@@ -15,7 +15,11 @@ import {
   Badge,
 } from 'antd';
 
-import { MenuUnfoldOutlined, MenuFoldOutlined, BellOutlined } from '@ant-design/icons';
+import {
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+  BellOutlined,
+} from '@ant-design/icons';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Icon from '../../components/Icon';
@@ -42,7 +46,6 @@ const Dashboard = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user);
-
 
   const toggle = () => setCollapsed((prev) => !prev);
 
@@ -129,9 +132,9 @@ const Dashboard = () => {
             </Col>
             <Col>
               <Space>
-                <Button type='text' >
+                <Button type="text">
                   <div style={{ paddingTop: 20 }}>
-                    <Badge count={5} >
+                    <Badge count={5}>
                       <BellOutlined style={{ fontSize: 25 }} />
                     </Badge>
                   </div>
@@ -141,7 +144,15 @@ const Dashboard = () => {
                   content={content}
                   title="Paramètre"
                 >
-                  <Button type='text' icon={<Avatar style={{ marginRight: 10 }} src={`http://gravatar.com/avatar/${user.infos.uid}?d=identicon`} />}>
+                  <Button
+                    type="text"
+                    icon={
+                      <Avatar
+                        style={{ marginRight: 10 }}
+                        src={`http://gravatar.com/avatar/${user.infos.uid}?d=identicon`}
+                      />
+                    }
+                  >
                     {user.infos.email}
                   </Button>
                 </Popover>
