@@ -19,6 +19,7 @@ const { Title, Paragraph } = Typography;
 const Profile = () => {
   const [activeTabKey, setActiveTabKey] = useState('informations');
   const user = useSelector((state: RootState) => state.user);
+  // console.log(user);
 
   const tabListNoTitle = [
     {
