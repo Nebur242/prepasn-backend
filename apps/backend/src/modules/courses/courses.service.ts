@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { DeepPartial, FindManyOptions } from 'typeorm';
+import { CategoriesService } from '../categories/categories.service';
 import { GradesService } from '../grades/grades.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
@@ -10,7 +11,8 @@ import { CoursesRepository } from './repositories/course.repository';
 export class CoursesService {
   constructor(
     private readonly coursesRepository: CoursesRepository,
-    private readonly gradesService: GradesService
+    private readonly gradesService: GradesService,
+    private readonly categoriesService: CategoriesService
   ) {}
 
   createEntity(entityLike: DeepPartial<Course>): Course {
@@ -22,6 +24,9 @@ export class CoursesService {
       ...createCourseDto,
       grades: createCourseDto.grades.map((id) => {
         return this.gradesService.createEntity({ id });
+      }),
+      categories: createCourseDto.categories.map((id) => {
+        return this.categoriesService.createEntity({ id });
       }),
     });
     return this.coursesRepository.save(course);
@@ -53,6 +58,13 @@ export class CoursesService {
             })
           )
         : course.grades,
+      categories: updateCourseDto?.categories
+        ? updateCourseDto?.categories.map((categoryId) =>
+            this.gradesService.createEntity({
+              id: categoryId,
+            })
+          )
+        : course.categories,
     });
   }
 

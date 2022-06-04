@@ -13,7 +13,7 @@ export class Course extends BaseContent {
   @JoinTable()
   grades: Grade[];
 
-  @ManyToMany(() => Category, (grade) => grade.courses)
+  @ManyToMany(() => Category, (category) => category.courses)
   @JoinTable()
   categories: Category[];
 

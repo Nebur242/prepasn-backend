@@ -4,7 +4,7 @@ import {
   paginate,
   Pagination,
 } from 'nestjs-typeorm-paginate';
-import { FindManyOptions } from 'typeorm';
+import { DeepPartial, FindManyOptions } from 'typeorm';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
@@ -14,7 +14,7 @@ import { CategoriesRepository } from './repositories/category.repository';
 export class CategoriesService {
   constructor(private readonly categoriesRepository: CategoriesRepository) {}
 
-  createEntity(createCategoryDto: CreateCategoryDto) {
+  createEntity(createCategoryDto: DeepPartial<Category>) {
     return this.categoriesRepository.create(createCategoryDto);
   }
 
