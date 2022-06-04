@@ -1,3 +1,4 @@
+import { Category } from '@prepa-sn/backend/modules/categories/entities/category.entity';
 import { Chapter } from '@prepa-sn/backend/modules/chapters/entities/chapter.entity';
 import { Classroom } from '@prepa-sn/backend/modules/classrooms/entities/classroom.entity';
 import { Course } from '@prepa-sn/backend/modules/courses/entities/course.entity';
@@ -16,5 +17,14 @@ export default {
   ssl: process.env.DB_SSL?.toLowerCase() === 'true',
   logging: process.env.DB_LOGGING?.toLowerCase() === 'true',
   synchronize: process.env.DB_SYNC?.toLowerCase() === 'true',
-  entities: [Document, Student, Instructor, Grade, Course, Chapter, Classroom],
+  entities: [
+    Document,
+    Student,
+    Instructor,
+    Grade,
+    Course,
+    Chapter,
+    Classroom,
+    Category,
+  ],
 };
