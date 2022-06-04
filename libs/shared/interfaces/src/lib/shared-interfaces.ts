@@ -66,6 +66,7 @@ export interface Course extends BaseContent {
   grades: Grade[];
   chapters: Chapter[];
   documents: Document[];
+  categories: Category[];
 }
 
 export interface Grade extends BaseContent {
@@ -81,3 +82,6 @@ export interface Chapter extends BaseContent {
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Classroom extends BaseContent {}
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface Category extends BaseContent {}

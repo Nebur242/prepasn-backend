@@ -11,7 +11,7 @@ export interface ChaptersInitialState {
   chapters: Chapter[];
 }
 
-export const initialState: ChaptersInitialState = {
+const initialState: ChaptersInitialState = {
   loading: false,
   error: '',
   status: Status.PENDING,

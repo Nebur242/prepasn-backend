@@ -11,7 +11,7 @@ export interface CoursesInitialState {
   courses: Course[];
 }
 
-export const initialState: CoursesInitialState = {
+const initialState: CoursesInitialState = {
   loading: false,
   error: '',
   status: Status.PENDING,

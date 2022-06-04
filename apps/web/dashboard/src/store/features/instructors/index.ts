@@ -12,7 +12,7 @@ export interface InstructorsInitialState {
   instructors: Instructor[];
 }
 
-export const initialState: InstructorsInitialState = {
+const initialState: InstructorsInitialState = {
   loading: false,
   error: '',
   status: Status.PENDING,

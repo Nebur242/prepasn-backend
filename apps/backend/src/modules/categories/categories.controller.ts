@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import ControllerWithApiTags from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
 import { GetClaims } from '@prepa-sn/backend/common/decorators/get-decoded-token';
+import { Claims } from '@prepa-sn/backend/common/decorators/get-user.decorator';
 import { Admin, Authenticated } from '../auth/roles-auth.guard';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -23,7 +24,7 @@ export class CategoriesController {
   @Post()
   @Admin()
   create(
-    @GetClaims('uid') uid: string,
+    @Claims('uid') uid: string,
     @Body() createCategoryDto: CreateCategoryDto
   ) {
     return this.categoriesService.create({
@@ -55,7 +56,7 @@ export class CategoriesController {
   @Patch(':id')
   @Admin()
   update(
-    @GetClaims('uid') uid: string,
+    @Claims('uid') uid: string,
     @Param('id', ParseIntPipe) id: number,
     @Body() updateCategoryDto: UpdateCategoryDto
   ) {

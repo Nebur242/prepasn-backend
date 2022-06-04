@@ -96,3 +96,16 @@ export const UpdateInstructor = lazy(
 
 //STATS
 export const Stats = lazy(() => import('./dashboard/stats'));
+
+//CATEGORIES
+export const Categories = lazy(
+  () => import('./dashboard/content-manager/content/categories')
+);
+
+export const CreateCategory = lazy(
+  () => import('./dashboard/content-manager/content/categories/create')
+);
+
+export const UpdateCategory = lazy(
+  () => import('./dashboard/content-manager/content/categories/update')
+);

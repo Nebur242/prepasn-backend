@@ -28,6 +28,9 @@ import {
   CreateInstructor,
   UpdateInstructor,
   Stats,
+  Categories,
+  CreateCategory,
+  UpdateCategory,
 } from '../pages';
 export interface Route {
   path: string;
@@ -199,6 +202,30 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: UpdateChapters,
+          routes: [],
+        },
+        {
+          path: 'categories',
+          name: 'categories',
+          access: ['admin'],
+          isPublic: false,
+          element: Categories,
+          routes: [],
+        },
+        {
+          path: 'categories/create',
+          name: 'create-category',
+          access: ['admin'],
+          isPublic: false,
+          element: CreateCategory,
+          routes: [],
+        },
+        {
+          path: 'categories/update/:id',
+          name: 'update-category',
+          access: ['admin'],
+          isPublic: false,
+          element: UpdateCategory,
           routes: [],
         },
       ],

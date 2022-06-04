@@ -1,33 +1,36 @@
 import { Status } from '@prepa-sn/shared/enums';
-import { Student } from '@prepa-sn/shared/interfaces';
+import { Category } from '@prepa-sn/shared/interfaces';
 import { createSlice } from '@reduxjs/toolkit';
 import { createApi } from '@reduxjs/toolkit/dist/query/react';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import { axiosBaseQuery } from '../../../config/api.config';
 
-export interface StudentsInitialState {
+export interface CategoriesInitialState {
   loading: boolean;
   error: string;
   status: Status.PENDING | Status.SUCCESS | Status.ERROR;
-  students: Student[];
+  categories: Category[];
 }
 
-const initialState: StudentsInitialState = {
+const initialState: CategoriesInitialState = {
   loading: false,
   error: '',
   status: Status.PENDING,
-  students: [],
+  categories: [],
 };
 
-const BASE_PATH = `/students` as const;
-const TAG_TYPE = `Students` as const;
+const BASE_PATH = `/categories` as const;
+const TAG_TYPE = `Categories` as const;
 
-export const studentsApi = createApi({
-  reducerPath: 'studentsApi',
+export const categoriessApi = createApi({
+  reducerPath: 'categoriesApi',
   baseQuery: axiosBaseQuery(),
   tagTypes: [TAG_TYPE],
-  endpoints: (builder) => ({
-    findAllStudents: builder.query<Pagination<Student>, IPaginationOptions>({
+  endpoints: (build) => ({
+    findOneCategory: build.query<Category, string>({
+      query: (id: string) => ({ url: `${BASE_PATH}/${id}`, method: 'GET' }),
+    }),
+    findAllCategories: build.query<Pagination<Category>, IPaginationOptions>({
       query: (
         pagination: IPaginationOptions = {
           page: 1,
@@ -56,40 +59,25 @@ export const studentsApi = createApi({
           : [{ type: TAG_TYPE, id: 'PARTIAL-LIST' }];
       },
     }),
-    findOneStudent: builder.query<Student, { id: string }>({
-      query: ({ id }) => ({
-        url: `${BASE_PATH}/${id}`,
-        method: 'GET',
-      }),
-      providesTags: (result, _error, _arg) => {
-        return result
-          ? [
-              {
-                type: TAG_TYPE,
-                id: result.id,
-              },
-            ]
-          : [];
-      },
-    }),
-    createStudent: builder.mutation<Student, Omit<Student, 'id'>>({
-      query: (student: Omit<Student, 'id'>) => ({
+    createCategory: build.mutation<Category, Omit<Category, 'id'>>({
+      query: (Categories: Omit<Category, 'id'>) => ({
         url: BASE_PATH,
         method: 'POST',
-        data: student,
+        data: Categories,
       }),
       invalidatesTags: [TAG_TYPE],
     }),
-    updateStudent: builder.mutation<Document, Partial<Student>>({
-      query: ({ uid, ...updated }) => ({
-        url: `${BASE_PATH}/${uid}`,
+    updateCategory: build.mutation<Category, Category>({
+      query: (Categories: Category) => ({
+        url: `${BASE_PATH}/${Categories.id}`,
         method: 'PATCH',
-        data: updated,
+        data: Categories,
       }),
+      invalidatesTags: [TAG_TYPE],
     }),
-    deleteStudent: builder.mutation<Document, { uid: string }>({
-      query: ({ uid }) => ({
-        url: `${BASE_PATH}/${uid}`,
+    deleteCategory: build.mutation<Category, string>({
+      query: (id: string) => ({
+        url: `${BASE_PATH}/${id}`,
         method: 'DELETE',
       }),
       invalidatesTags: [TAG_TYPE],
@@ -98,19 +86,19 @@ export const studentsApi = createApi({
 });
 
 export const {
-  useCreateStudentMutation,
-  useFindAllStudentsQuery,
-  useUpdateStudentMutation,
-  useFindOneStudentQuery,
-  useDeleteStudentMutation,
-} = studentsApi;
+  useFindAllCategoriesQuery,
+  useFindOneCategoryQuery,
+  useCreateCategoryMutation,
+  useUpdateCategoryMutation,
+  useDeleteCategoryMutation,
+} = categoriessApi;
 
-const studentsSlice = createSlice({
-  name: 'students',
+const categoriesSlice = createSlice({
+  name: 'categories',
   initialState,
   reducers: {},
   extraReducers: {},
 });
 
-const { reducer } = studentsSlice;
+const { reducer } = categoriesSlice;
 export default reducer;

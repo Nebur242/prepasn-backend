@@ -12,7 +12,7 @@ export interface GradesInitialState {
   grades: Grade[];
 }
 
-export const initialState: GradesInitialState = {
+const initialState: GradesInitialState = {
   loading: false,
   error: '',
   status: Status.PENDING,
