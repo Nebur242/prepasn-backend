@@ -17,6 +17,7 @@ import { Admin, Authenticated } from '../auth/roles-auth.guard';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { Classroom } from './entities/classroom.entity';
 import { Pagination } from 'nestjs-typeorm-paginate';
+import { GetClaims } from '@prepa-sn/backend/common/decorators/get-decoded-token';
 
 @Controller('classrooms')
 export class ClassroomsController {
@@ -25,8 +26,15 @@ export class ClassroomsController {
   @Post()
   @Admin()
   @ApiOkResponse({ type: Classroom, isArray: false })
-  create(@Body() createClassroomDto: CreateClassroomDto) {
-    return this.classroomsService.create(createClassroomDto);
+  create(
+    @GetClaims('uid') uid: string,
+    @Body() createClassroomDto: CreateClassroomDto
+  ) {
+    return this.classroomsService.create({
+      ...createClassroomDto,
+      createdBy: uid,
+      updatedBy: uid,
+    });
   }
 
   @Get()
@@ -54,10 +62,14 @@ export class ClassroomsController {
   @Admin()
   @ApiOkResponse({ type: Classroom, isArray: false })
   update(
+    @GetClaims('uid') uid: string,
     @Param('id', ParseIntPipe) id: number,
     @Body() updateClassroomDto: UpdateClassroomDto
   ): Promise<Classroom> {
-    return this.classroomsService.update(id, updateClassroomDto);
+    return this.classroomsService.update(id, {
+      ...updateClassroomDto,
+      updatedBy: uid,
+    });
   }
 
   @Delete(':id')

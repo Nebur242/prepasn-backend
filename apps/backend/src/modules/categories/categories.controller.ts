@@ -10,6 +10,7 @@ import {
   Query,
 } from '@nestjs/common';
 import ControllerWithApiTags from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
+import { GetClaims } from '@prepa-sn/backend/common/decorators/get-decoded-token';
 import { Admin, Authenticated } from '../auth/roles-auth.guard';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -21,8 +22,15 @@ export class CategoriesController {
 
   @Post()
   @Admin()
-  create(@Body() createCategoryDto: CreateCategoryDto) {
-    return this.categoriesService.create(createCategoryDto);
+  create(
+    @GetClaims('uid') uid: string,
+    @Body() createCategoryDto: CreateCategoryDto
+  ) {
+    return this.categoriesService.create({
+      ...createCategoryDto,
+      createdBy: uid,
+      updatedBy: uid,
+    });
   }
 
   @Get()
@@ -47,15 +55,19 @@ export class CategoriesController {
   @Patch(':id')
   @Admin()
   update(
-    @Param('id') id: string,
+    @GetClaims('uid') uid: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateCategoryDto: UpdateCategoryDto
   ) {
-    return this.categoriesService.update(+id, updateCategoryDto);
+    return this.categoriesService.update(id, {
+      ...updateCategoryDto,
+      updatedBy: uid,
+    });
   }
 
   @Delete(':id')
   @Admin()
-  remove(@Param('id') id: string) {
-    return this.categoriesService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.categoriesService.remove(id);
   }
 }

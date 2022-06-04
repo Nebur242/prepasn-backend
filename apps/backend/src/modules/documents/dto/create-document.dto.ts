@@ -64,4 +64,12 @@ export class CreateDocumentDto {
   @IsDefined()
   @IsString()
   encoding: string;
+
+  @IsOptional()
+  @IsString()
+  createdBy: string;
+
+  @IsOptional()
+  @IsString()
+  updatedBy: string;
 }

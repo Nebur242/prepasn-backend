@@ -14,6 +14,7 @@ import { ApiOkResponse } from '@nestjs/swagger';
 import { Admin, Authenticated } from '../auth/roles-auth.guard';
 import { Grade } from './entities/grade.entity';
 import Controller from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
+import { GetClaims } from '@prepa-sn/backend/common/decorators/get-decoded-token';
 
 @Controller('grades')
 export class GradesController {
@@ -22,8 +23,15 @@ export class GradesController {
   @Post()
   @Admin()
   @ApiOkResponse({ type: Grade, isArray: false })
-  create(@Body() createGradeDto: CreateGradeDto): Promise<Grade> {
-    return this.gradesService.create(createGradeDto);
+  create(
+    @GetClaims('uid') uid: string,
+    @Body() createGradeDto: CreateGradeDto
+  ): Promise<Grade> {
+    return this.gradesService.create({
+      ...createGradeDto,
+      createdBy: uid,
+      updatedBy: uid,
+    });
   }
 
   @Get()
@@ -44,10 +52,14 @@ export class GradesController {
   @Admin()
   @ApiOkResponse({ type: Grade, isArray: false })
   update(
+    @GetClaims('uid') uid: string,
     @Param('id', ParseIntPipe) id: number,
     @Body() updateGradeDto: UpdateGradeDto
   ): Promise<Grade> {
-    return this.gradesService.update(id, updateGradeDto);
+    return this.gradesService.update(id, {
+      ...updateGradeDto,
+      updatedBy: uid,
+    });
   }
 
   @Delete(':id')
