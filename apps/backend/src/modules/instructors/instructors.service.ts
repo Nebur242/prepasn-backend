@@ -15,12 +15,12 @@ import { InstructorsRepository } from './repositories/instructor.repository';
 export class InstructorsService {
   constructor(private readonly instructorsRepository: InstructorsRepository) {}
 
-  create(createInstructorDto: CreateInstructorDto) {
+  create(createInstructorDto: CreateInstructorDto): Promise<Instructor> {
     const instructor = this.instructorsRepository.create(createInstructorDto);
     return this.instructorsRepository.save(instructor);
   }
 
-  findAll(filter: FindManyOptions<Instructor> = {}) {
+  findAll(filter: FindManyOptions<Instructor> = {}): Promise<Instructor[]> {
     return this.instructorsRepository.find(filter);
   }
 
@@ -35,13 +35,19 @@ export class InstructorsService {
     return instructor;
   }
 
-  async update(id: number, updateInstructorDto: UpdateInstructorDto) {
+  async update(
+    id: number,
+    updateInstructorDto: UpdateInstructorDto
+  ): Promise<Instructor> {
     const instructor = await this.findOne(id);
     await this.instructorsRepository.update(instructor.id, updateInstructorDto);
     return this.findOne(id);
   }
 
-  async updateStatus(id: number, updateUserStatusDto: UpdateUserStatusDto) {
+  async updateStatus(
+    id: number,
+    updateUserStatusDto: UpdateUserStatusDto
+  ): Promise<Instructor> {
     const instructor = await this.findOne(id);
     await this.instructorsRepository.update(instructor.id, updateUserStatusDto);
     return this.findOne(id);
@@ -49,6 +55,7 @@ export class InstructorsService {
 
   async remove(id: number): Promise<Instructor> {
     const instructor = await this.findOne(id);
-    return this.instructorsRepository.remove(instructor);
+    await this.instructorsRepository.remove(instructor);
+    return instructor;
   }
 }

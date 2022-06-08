@@ -53,8 +53,17 @@ export const loginUser = createAsyncThunk(
     try {
       const response = await logInFirebaseWithEmailAndPassword(loginDto);
       const user = response.user.toJSON();
-      dispatch(setUser(user));
-      return fulfillWithValue(user);
+      const token = await response.user.getIdTokenResult(true);
+      dispatch(
+        setUser({
+          ...user,
+          roles: token.claims.roles,
+        })
+      );
+      return fulfillWithValue({
+        ...user,
+        roles: token.claims.roles,
+      });
     } catch (err) {
       console.log('error', err);
       const error = err as AuthError;
@@ -85,10 +94,21 @@ export const authenticateUser = createAsyncThunk(
   async (_, { rejectWithValue, dispatch, fulfillWithValue }) => {
     try {
       const response = await authUser();
+
       if (!response) throw new Error('User not connected');
       const user = response.toJSON();
-      dispatch(setUser(user));
-      return fulfillWithValue(user);
+      const token = await response.getIdTokenResult(true);
+      // console.log('token', token.claims);
+      dispatch(
+        setUser({
+          ...user,
+          roles: token.claims.roles,
+        })
+      );
+      return fulfillWithValue({
+        ...user,
+        roles: token.claims.roles,
+      });
     } catch (error) {
       const err = error as Error;
       return rejectWithValue(err.message || 'User not found');
