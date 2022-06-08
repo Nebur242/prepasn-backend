@@ -33,6 +33,12 @@ export abstract class BaseContent {
   @JoinColumn()
   video?: Document | null;
 
+  @Column({ nullable: true, default: null })
+  createdBy: string;
+
+  @Column({ nullable: true, default: null })
+  updatedBy: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

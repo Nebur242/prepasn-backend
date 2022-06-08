@@ -11,7 +11,7 @@ import { DocumentsModule } from '../modules/documents/documents.module';
 import { ChaptersModule } from '../modules/chapters/chapters.module';
 import { ClassroomsModule } from '../modules/classrooms/classrooms.module';
 import { InstructorsModule } from '../modules/instructors/instructors.module';
-
+import { CategoriesModule } from '../modules/categories/categories.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -34,6 +34,7 @@ import { InstructorsModule } from '../modules/instructors/instructors.module';
     DocumentsModule,
     ChaptersModule,
     ClassroomsModule,
+    CategoriesModule,
   ],
   controllers: [],
   providers: [],

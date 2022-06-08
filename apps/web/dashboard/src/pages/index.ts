@@ -93,3 +93,6 @@ export const CreateInstructor = lazy(
 export const UpdateInstructor = lazy(
   () => import('./dashboard/users-manager/content/instructors/update')
 );
+
+//STATS
+export const Stats = lazy(() => import('./dashboard/stats'));

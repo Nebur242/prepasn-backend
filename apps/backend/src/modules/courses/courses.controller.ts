@@ -15,6 +15,7 @@ import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { Course } from './entities/course.entity';
 import Controller from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
+import { GetClaims } from '@prepa-sn/backend/common/decorators/get-decoded-token';
 
 @Controller('courses')
 export class CoursesController {
@@ -24,8 +25,15 @@ export class CoursesController {
   @Admin()
   @ApiOkResponse({ type: CourseDto, isArray: false })
   @ApiBody({ type: CreateCourseDto })
-  create(@Body() createCourseDto: CreateCourseDto): Promise<Course> {
-    return this.coursesService.create(createCourseDto);
+  create(
+    @GetClaims('uid') uid: string,
+    @Body() createCourseDto: CreateCourseDto
+  ): Promise<Course> {
+    return this.coursesService.create({
+      ...createCourseDto,
+      createdBy: uid,
+      updatedBy: uid,
+    });
   }
 
   @Get()
@@ -48,9 +56,13 @@ export class CoursesController {
   @ApiBody({ type: CreateCourseDto })
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updateCourseDto: UpdateCourseDto
+    @Body() updateCourseDto: UpdateCourseDto,
+    @GetClaims('uid') uid: string
   ): Promise<Course> {
-    return this.coursesService.update(id, updateCourseDto);
+    return this.coursesService.update(id, {
+      ...updateCourseDto,
+      updatedBy: uid,
+    });
   }
 
   @Delete(':id')

@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
 import Controller from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
+import { GetClaims } from '@prepa-sn/backend/common/decorators/get-decoded-token';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { Authenticated } from '../auth/roles-auth.guard';
 import { DocumentsService } from './documents.service';
@@ -25,16 +26,30 @@ export class DocumentsController {
 
   @Post()
   @ApiOkResponse({ type: CreateDocumentDto, isArray: false })
-  create(@Body() createDocumentDto: CreateDocumentDto): Promise<Document> {
-    return this.documentsService.create(createDocumentDto);
+  create(
+    @GetClaims('uid') uid: string,
+    @Body() createDocumentDto: CreateDocumentDto
+  ): Promise<Document> {
+    return this.documentsService.create({
+      ...createDocumentDto,
+      createdBy: uid,
+      updatedBy: uid,
+    });
   }
 
   @Post('bulk')
   @ApiOkResponse({ type: [CreateDocumentDto], isArray: true })
   bulkCreate(
+    @GetClaims('uid') uid: string,
     @Body() createDocumentDtos: CreateDocumentDto[]
   ): Promise<Document[]> {
-    return this.documentsService.bulkCreate(createDocumentDtos);
+    return this.documentsService.bulkCreate(
+      createDocumentDtos.map((dto) => ({
+        ...dto,
+        createdBy: uid,
+        updatedBy: uid,
+      }))
+    );
   }
 
   @Get()
@@ -59,10 +74,14 @@ export class DocumentsController {
   @Patch(':id')
   @ApiOkResponse({ type: CreateDocumentDto, isArray: false })
   update(
+    @GetClaims('uid') uid: string,
     @Param('id', ParseIntPipe) id: number,
     @Body() updateDocumentDto: UpdateDocumentDto
   ): Promise<Document> {
-    return this.documentsService.update(id, updateDocumentDto);
+    return this.documentsService.update(id, {
+      ...updateDocumentDto,
+      updatedBy: uid,
+    });
   }
 
   @Delete(':id')

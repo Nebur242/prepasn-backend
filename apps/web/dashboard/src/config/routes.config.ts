@@ -27,6 +27,7 @@ import {
   Instructors,
   CreateInstructor,
   UpdateInstructor,
+  Stats,
 } from '../pages';
 export interface Route {
   path: string;
@@ -70,9 +71,18 @@ export const DASHBOARD: Route = {
       path: '',
       name: 'home',
       access: ['admin'],
-      icon: 'DashboardOutlined',
+      icon: 'HomeOutlined',
       isPublic: false,
       element: Welcome,
+      routes: [],
+    },
+    {
+      path: 'stats',
+      name: 'stats',
+      isPublic: false,
+      icon: 'AreaChartOutlined',
+      access: [],
+      element: Stats,
       routes: [],
     },
     {
@@ -263,7 +273,7 @@ export const DASHBOARD: Route = {
       path: 'uploads',
       name: 'media-library',
       access: ['admin'],
-      icon: 'DashboardOutlined',
+      icon: 'FolderOpenOutlined',
       isPublic: false,
       element: MediaLibrary,
       routes: [],

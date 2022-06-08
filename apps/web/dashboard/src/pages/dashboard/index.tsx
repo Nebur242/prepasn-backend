@@ -12,14 +12,19 @@ import {
   Space,
   Popover,
   Popconfirm,
+  Badge,
 } from 'antd';
 
-import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
+import {
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+  BellOutlined,
+} from '@ant-design/icons';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Icon from '../../components/Icon';
 import logo from '../../../public/images/logo.png';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../store';
 import { logoutUser } from '../../store/features/auth';
 
@@ -40,6 +45,7 @@ const Dashboard = () => {
   const { t } = useTranslation();
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
+  const user = useSelector((state: RootState) => state.user);
 
   const toggle = () => setCollapsed((prev) => !prev);
 
@@ -126,12 +132,29 @@ const Dashboard = () => {
             </Col>
             <Col>
               <Space>
+                <Button type="text">
+                  <div style={{ paddingTop: 20 }}>
+                    <Badge count={5}>
+                      <BellOutlined style={{ fontSize: 25 }} />
+                    </Badge>
+                  </div>
+                </Button>
                 <Popover
                   placement="bottomRight"
                   content={content}
                   title="Paramètre"
                 >
-                  <Avatar icon={<Icon type="UserOutlined" />} />
+                  <Button
+                    type="text"
+                    icon={
+                      <Avatar
+                        style={{ marginRight: 10 }}
+                        src={`http://gravatar.com/avatar/${user.infos.uid}?d=identicon`}
+                      />
+                    }
+                  >
+                    {user.infos.email}
+                  </Button>
                 </Popover>
                 <Button
                   shape="circle"
