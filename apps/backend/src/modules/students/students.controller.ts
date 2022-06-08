@@ -1,7 +1,9 @@
 import {
   Body,
   DefaultValuePipe,
+  Delete,
   Get,
+  Param,
   ParseIntPipe,
   Patch,
   Post,
@@ -91,5 +93,11 @@ export class StudentsController {
   @Roles(Role.STUDENT)
   findOne(@Claims('uid') uid: string): Promise<Student> {
     return this.studentsService.findOne(uid);
+  }
+
+  @Delete(':uid')
+  @Admin()
+  remove(@Param('uid') uid: string) {
+    return this.studentsService.remove(uid);
   }
 }

@@ -61,4 +61,20 @@ export class StudentsService {
       throw new NotFoundException(`Student with uid ${uid} not found`);
     return student;
   }
+
+  async getOne(filter: FindManyOptions<Student> = {}): Promise<Student> {
+    const student = await this.studentsRepository.findOne(filter);
+    if (!Student)
+      throw new NotFoundException(`Student with this filter not found`);
+    return student;
+  }
+
+  async remove(uid: string): Promise<Student> {
+    const student = await this.getOne({
+      where: { uid },
+    });
+    await this.firebaseService.removeUser(student.uid);
+    await this.studentsRepository.remove(student);
+    return student;
+  }
 }
