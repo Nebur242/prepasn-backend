@@ -16,31 +16,33 @@ import { Pagination } from 'nestjs-typeorm-paginate';
 import { Instructor } from './entities/instructor.entity';
 import { UpdateUserStatusDto } from '@prepa-sn/backend/common/dtos/update-user-status.dto';
 import ControllerWithApiTags from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
-import { Admin } from '../auth/roles-auth.guard';
+import { Admin, Authenticated } from '../auth/roles-auth.guard';
 import { ApiOkResponse } from '@nestjs/swagger';
-import { FirebaseService } from '../firebase/firebase.service';
-import { Role } from '@prepa-sn/shared/enums';
+import { Claims } from '@prepa-sn/backend/common/decorators/get-user.decorator';
+import { JwtClaims } from '@prepa-sn/backend/common/types/claims.type';
 
 @ControllerWithApiTags('instructors')
 export class InstructorsController {
-  constructor(
-    private readonly instructorsService: InstructorsService,
-    private readonly firebaseService: FirebaseService
-  ) {}
+  constructor(private readonly instructorsService: InstructorsService) {}
+
+  @Post('/create')
+  @Authenticated()
+  @ApiOkResponse({ type: Instructor })
+  async createInstructor(
+    @Body() createInstructorDto: CreateInstructorDto,
+    @Claims() claims: JwtClaims
+  ) {
+    return this.instructorsService.createInstructor(
+      createInstructorDto,
+      claims
+    );
+  }
 
   @Post()
   @Admin()
   @ApiOkResponse({ type: Instructor })
   async create(@Body() createInstructorDto: CreateInstructorDto) {
-    const createdUser = await this.firebaseService.createUser(
-      createInstructorDto.email,
-      createInstructorDto.password
-    );
-    await this.firebaseService.setRoles(createdUser.uid, [Role.INSTRUCTOR]);
-    return this.instructorsService.create({
-      ...createInstructorDto,
-      uid: createdUser.uid,
-    });
+    return this.instructorsService.create(createInstructorDto);
   }
 
   @Get()
@@ -84,10 +86,10 @@ export class InstructorsController {
     return this.instructorsService.updateStatus(id, updateUserStatusDto);
   }
 
-  @Delete(':id')
+  @Delete(':uid')
   @Admin()
   @ApiOkResponse({ type: Instructor })
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('uid') id: string) {
     return this.instructorsService.remove(id);
   }
 }

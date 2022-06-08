@@ -96,9 +96,8 @@ export class StudentsController {
   }
 
   @Delete(':uid')
-  @ApiOkResponse({ type: StudentDto })
-  @Roles(Role.ADMIN)
-  remove(@Param('uid') uid: string): Promise<Student> {
-    return this.studentsService.removeUser(uid);
+  @Admin()
+  remove(@Param('uid') uid: string) {
+    return this.studentsService.remove(uid);
   }
 }

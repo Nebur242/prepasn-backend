@@ -1,4 +1,5 @@
 import { Category } from '@prepa-sn/backend/modules/categories/entities/category.entity';
+import { Admin } from '@prepa-sn/backend/modules/admins/entities/admin.entity';
 import { Chapter } from '@prepa-sn/backend/modules/chapters/entities/chapter.entity';
 import { Classroom } from '@prepa-sn/backend/modules/classrooms/entities/classroom.entity';
 import { Course } from '@prepa-sn/backend/modules/courses/entities/course.entity';
@@ -21,6 +22,7 @@ export default {
     Document,
     Student,
     Instructor,
+    Admin,
     Grade,
     Course,
     Chapter,
