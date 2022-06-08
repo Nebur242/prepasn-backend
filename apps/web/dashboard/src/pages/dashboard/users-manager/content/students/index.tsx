@@ -38,10 +38,8 @@ const Students = () => {
     ...pagination,
   });
 
-  const [
-    deleteStudent,
-    { isSuccess: isDeleted, isError: hasError },
-  ] = useDeleteStudentMutation();
+  const [deleteStudent, { isSuccess: isDeleted, isError: hasError }] =
+    useDeleteStudentMutation();
 
   const columns = [
     {
@@ -101,12 +99,12 @@ const Students = () => {
 
   useEffect(() => {
     if (isDeleted) {
-      message.success('L\'étudiant a été supprimé avec succès');
+      message.success("L'étudiant a été supprimé avec succès");
     }
     if (hasError) {
       message.error('Une erreur est survenue lors de la suppression');
     }
-  }, [isDeleted, hasError])
+  }, [isDeleted, hasError]);
 
   return (
     <ContentSectionWrapper
