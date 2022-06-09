@@ -5,7 +5,10 @@ import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.i
 import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
 import Icon from 'apps/web/dashboard/src/components/Icon';
 import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
-import { useDeleteAdminMutation, useFindAllAdminsQuery } from 'apps/web/dashboard/src/store/features/admin';
+import {
+  useDeleteAdminMutation,
+  useFindAllAdminsQuery,
+} from 'apps/web/dashboard/src/store/features/admin';
 
 import dayjs from 'dayjs';
 import {

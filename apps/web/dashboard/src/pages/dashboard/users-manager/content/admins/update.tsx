@@ -6,7 +6,10 @@ import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-sec
 
 import { useParams } from 'react-router-dom';
 import CreateAndUpdate from './create-update';
-import { useFindOneAdminQuery, useUpdateAdminMutation } from 'apps/web/dashboard/src/store/features/admin';
+import {
+  useFindOneAdminQuery,
+  useUpdateAdminMutation,
+} from 'apps/web/dashboard/src/store/features/admin';
 
 const UpdateAdmin = () => {
   const { id } = useParams<{ id: string }>();
