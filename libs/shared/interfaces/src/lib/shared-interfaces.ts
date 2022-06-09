@@ -31,6 +31,8 @@ export interface Student extends User {}
 
 export interface Instructor extends User {}
 
+export interface Admin extends User {}
+
 export interface Document {
   id: number;
   title: string;

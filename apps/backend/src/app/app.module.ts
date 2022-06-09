@@ -12,6 +12,7 @@ import { ChaptersModule } from '../modules/chapters/chapters.module';
 import { ClassroomsModule } from '../modules/classrooms/classrooms.module';
 import { InstructorsModule } from '../modules/instructors/instructors.module';
 import { CategoriesModule } from '../modules/categories/categories.module';
+import { AdminsModule } from '../modules/admins/admins.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -27,6 +28,7 @@ import { CategoriesModule } from '../modules/categories/categories.module';
     }),
     StudentsModule,
     InstructorsModule,
+    AdminsModule,
     AuthModule,
     TestHelpersModule,
     GradesModule,

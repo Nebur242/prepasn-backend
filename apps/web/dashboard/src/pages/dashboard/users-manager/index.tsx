@@ -12,10 +12,15 @@ const UsertManager = () => {
     {
       key: '1',
       icon: null,
-      label: <NavLink to="students">Étudiants</NavLink>,
+      label: <NavLink to="admins">Admins</NavLink>,
     },
     {
       key: '2',
+      icon: null,
+      label: <NavLink to="students">Étudiants</NavLink>,
+    },
+    {
+      key: '3',
       icon: null,
       label: <NavLink to="instructors">Professeurs</NavLink>,
     },

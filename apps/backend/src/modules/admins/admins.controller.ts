@@ -1,5 +1,4 @@
 import {
-  Controller,
   Get,
   Post,
   Body,
@@ -11,6 +10,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
+import ControllerWithApiTags from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { Admin } from '../auth/roles-auth.guard';
 import { AdminsService } from './admins.service';
@@ -18,7 +18,7 @@ import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { Admin as AdminEntity } from './entities/admin.entity';
 
-@Controller('admins')
+@ControllerWithApiTags('admins')
 export class AdminsController {
   constructor(private readonly adminsService: AdminsService) {}
 
@@ -43,19 +43,24 @@ export class AdminsController {
     });
   }
 
-  @Get(':id')
+  @Get(':uid')
   @Admin()
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.adminsService.findOne(id);
+  findOne(@Param('uid') uid: string) {
+    return this.adminsService.getOne({
+      where: { uid },
+    });
   }
 
-  @Patch(':id')
+  @Patch(':uid')
   @Admin()
-  update(
-    @Param('id', ParseIntPipe) id: number,
+  async update(
+    @Param('uid') uid: string,
     @Body() updateAdminDto: UpdateAdminDto
   ) {
-    return this.adminsService.update(id, updateAdminDto);
+    const admin = await this.adminsService.getOne({
+      where: { uid },
+    });
+    return this.adminsService.update(admin.id, updateAdminDto);
   }
 
   @Delete(':uid')

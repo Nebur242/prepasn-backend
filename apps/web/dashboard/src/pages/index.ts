@@ -94,5 +94,17 @@ export const UpdateInstructor = lazy(
   () => import('./dashboard/users-manager/content/instructors/update')
 );
 
+export const Admins = lazy(
+  () => import('./dashboard/users-manager/content/admins')
+);
+
+export const CreateAdmin = lazy(
+  () => import('./dashboard/users-manager/content/admins/create')
+);
+
+export const UpdateAdmin = lazy(
+  () => import('./dashboard/users-manager/content/admins/update')
+);
+
 //STATS
 export const Stats = lazy(() => import('./dashboard/stats'));
