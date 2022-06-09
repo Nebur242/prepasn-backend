@@ -25,6 +25,7 @@ interface IContentWithSiderProps {
   initialValues?: Store;
   createdAt: string;
   updatedAt: string;
+  hasLanguage?: boolean;
 }
 
 const ContentWithSider: FC<IContentWithSiderProps> = ({
@@ -35,6 +36,7 @@ const ContentWithSider: FC<IContentWithSiderProps> = ({
   initialValues = {},
   createdAt,
   updatedAt,
+  hasLanguage = true,
 }) => {
   const { infos: user } = useSelector((state: RootState) => state.user);
 
@@ -87,19 +89,21 @@ const ContentWithSider: FC<IContentWithSiderProps> = ({
             </Row>
 
             <Divider />
-            <Form.Item
-              label="Langue"
-              name="language"
-              rules={[{ required: true, message: 'Language is required' }]}
-            >
-              <Select placeholder="Langues">
-                {Object.values(LANGUAGE).map((lang: LANGUAGE) => (
-                  <Option key={lang} value={lang}>
-                    {lang}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
+            {hasLanguage && (
+              <Form.Item
+                label="Langue"
+                name="language"
+                rules={[{ required: true, message: 'Language is required' }]}
+              >
+                <Select placeholder="Langues">
+                  {Object.values(LANGUAGE).map((lang: LANGUAGE) => (
+                    <Option key={lang} value={lang}>
+                      {lang}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            )}
             <Form.Item name="status" label="Status">
               <Select placeholder="Status">
                 <Option value={Status.ACTIVE}>Active</Option>

@@ -59,21 +59,30 @@ export class InstructorsController {
     });
   }
 
-  @Get(':id')
+  @Get(':uid')
   @Admin()
   @ApiOkResponse({ type: Instructor })
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.instructorsService.findOne(id);
+  findOne(@Param('uid') uid: string) {
+    return this.instructorsService.getOne({
+      where: {
+        uid,
+      },
+    });
   }
 
-  @Patch(':id')
+  @Patch(':uid')
   @Admin()
   @ApiOkResponse({ type: Instructor })
-  update(
-    @Param('id', ParseIntPipe) id: number,
+  async update(
+    @Param('uid') uid: string,
     @Body() updateInstructorDto: UpdateInstructorDto
   ) {
-    return this.instructorsService.update(id, updateInstructorDto);
+    const instructor = await this.instructorsService.getOne({
+      where: {
+        uid,
+      },
+    });
+    return this.instructorsService.update(instructor.id, updateInstructorDto);
   }
 
   @Patch(':id/status')

@@ -68,11 +68,34 @@ export const instructorsApi = createApi({
       invalidatesTags: [TAG_TYPE],
     }),
     updateInstructor: builder.mutation<Document, Partial<Instructor>>({
-      query: ({ id, ...updated }) => ({
-        url: `${BASE_PATH}/${id}`,
+      query: ({ uid, ...updated }) => ({
+        url: `${BASE_PATH}/${uid}`,
         method: 'PATCH',
         data: updated,
       }),
+    }),
+    findOneInstructor: builder.query<Instructor, { id: string }>({
+      query: ({ id }) => ({
+        url: `${BASE_PATH}/${id}`,
+        method: 'GET',
+      }),
+      providesTags: (result, _error, _arg) => {
+        return result
+          ? [
+              {
+                type: TAG_TYPE,
+                id: result.id,
+              },
+            ]
+          : [];
+      },
+    }),
+    deleteInstructor: builder.mutation<Instructor, { uid: string }>({
+      query: ({ uid }) => ({
+        url: `${BASE_PATH}/${uid}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: [TAG_TYPE],
     }),
   }),
 });
@@ -81,6 +104,8 @@ export const {
   useCreateInstructorMutation,
   useFindAllInstructorsQuery,
   useUpdateInstructorMutation,
+  useFindOneInstructorQuery,
+  useDeleteInstructorMutation,
 } = instructorsApi;
 
 const instructorsSlice = createSlice({

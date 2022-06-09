@@ -25,6 +25,7 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
       onFinish={onFinish}
       createdAt={dayjs(initialValues?.createdAt).format('DD/MM/YYYY:HH:mm:ss')}
       updatedAt={dayjs(initialValues?.updatedAt).format('DD/MM/YYYY:HH:mm:ss')}
+      hasLanguage={false}
     >
       <Row gutter={10}>
         <Col span={12}>
@@ -67,39 +68,44 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
           </Form.Item>
         </Col>
 
-        <Col span={12}>
-          <Form.Item
-            label="mot de passe"
-            name="password"
-            rules={[
-              { required: !isUpdate, message: 'mot de passe est requis' },
-            ]}
-          >
-            <Input.Password size="middle" />
-          </Form.Item>
-        </Col>
+        {!isUpdate && (
+          <>
+            <Col span={12}>
+              <Form.Item
+                label="mot de passe"
+                name="password"
+                rules={[
+                  { required: !isUpdate, message: 'mot de passe est requis' },
+                ]}
+              >
+                <Input.Password size="middle" />
+              </Form.Item>
+            </Col>
 
-        <Col span={12}>
-          <Form.Item
-            label="Confirmer mot de passe"
-            name="confirm_password"
-            rules={[
-              { required: !isUpdate },
-              ({ getFieldValue }) => ({
-                validator(_, value) {
-                  if (!value || getFieldValue('password') === value) {
-                    return Promise.resolve();
-                  }
-                  return Promise.reject(
-                    new Error('Les mots de passe ne correspondent :(')
-                  );
-                },
-              }),
-            ]}
-          >
-            <Input.Password size="middle" />
-          </Form.Item>
-        </Col>
+            <Col span={12}>
+              <Form.Item
+                label="Confirmer mot de passe"
+                name="confirm_password"
+                rules={[
+                  { required: !isUpdate },
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!value || getFieldValue('password') === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(
+                        new Error('Les mots de passe ne correspondent :(')
+                      );
+                    },
+                  }),
+                ]}
+              >
+                <Input.Password size="middle" />
+              </Form.Item>
+            </Col>
+          </>
+        )}
+
         {/* <Col span={24}>
                     <Button icon={
                         <Icon type="PlusOutlined" />

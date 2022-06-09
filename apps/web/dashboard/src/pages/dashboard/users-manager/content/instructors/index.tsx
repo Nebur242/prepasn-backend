@@ -1,18 +1,21 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Instructor, Student } from '@prepa-sn/shared/interfaces';
-import { Button, Space, Table, Tag } from 'antd';
+import { Button, message, Space, Table, Tag } from 'antd';
 import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.interface';
 import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
 import Icon from 'apps/web/dashboard/src/components/Icon';
 import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
-import { useFindAllInstructorsQuery } from 'apps/web/dashboard/src/store/features/instructors';
+import {
+  useDeleteInstructorMutation,
+  useFindAllInstructorsQuery,
+} from 'apps/web/dashboard/src/store/features/instructors';
 import dayjs from 'dayjs';
 import {
   IPaginationLinks,
   IPaginationMeta,
   IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Instructors = () => {
@@ -34,6 +37,9 @@ const Instructors = () => {
   } = useFindAllInstructorsQuery({
     ...pagination,
   });
+
+  const [deleteInstructor, { isSuccess: isDeleted, isError: hasError }] =
+    useDeleteInstructorMutation();
 
   const columns = [
     {
@@ -68,7 +74,7 @@ const Instructors = () => {
             type="primary"
             ghost
             icon={<Icon type="EditOutlined" />}
-            onClick={() => navigate(`update/${instructor.id}`)}
+            onClick={() => navigate(`update/${instructor.uid}`)}
           />
           <Button
             type="primary"
@@ -82,7 +88,7 @@ const Instructors = () => {
                 content: 'Voulez-vous vraiment supprimer cette section ?',
                 data: instructor,
                 onCancel: () => console.log('cancel'),
-                onOk: () => console.log('ok'),
+                onOk: () => deleteInstructor({ uid: instructor.uid }),
               } as IConfirmation<Instructor>)
             }
           />
@@ -90,6 +96,15 @@ const Instructors = () => {
       ),
     },
   ];
+
+  useEffect(() => {
+    if (isDeleted) {
+      message.success('Professeur a été supprimé avec succès');
+    }
+    if (hasError) {
+      message.error('Une erreur est survenue lors de la suppression');
+    }
+  }, [isDeleted, hasError]);
 
   return (
     <ContentSectionWrapper
