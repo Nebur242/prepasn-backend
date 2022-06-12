@@ -1,8 +1,10 @@
 import { UserInfo } from 'firebase/auth';
 import { createSlice } from '@reduxjs/toolkit';
 
+export type User = UserInfo & { roles: string[] };
+
 export interface UserInitialState {
-  infos: UserInfo | null;
+  infos: User | null;
 }
 
 const initialState: UserInitialState = {
@@ -14,7 +16,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state: UserInitialState, action) => {
-      state.infos = action.payload as UserInfo;
+      state.infos = action.payload as User;
     },
     updateUser: (state: UserInitialState, action) => {
       state.infos = { ...(state.infos || {}), ...action.payload };
