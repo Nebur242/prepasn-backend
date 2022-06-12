@@ -46,7 +46,7 @@ const Instructors = () => {
       title: 'Email',
       dataIndex: 'email',
       render: (text: string, classroom: Student) => (
-        <Button onClick={() => navigate(`update/${classroom.id}`)} type="link">
+        <Button onClick={() => navigate(`update/${classroom.uid}`)} type="link">
           {text}
         </Button>
       ),

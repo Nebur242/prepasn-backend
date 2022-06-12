@@ -46,8 +46,8 @@ const Admins = () => {
     {
       title: 'Email',
       dataIndex: 'email',
-      render: (text: string, classroom: Student) => (
-        <Button onClick={() => navigate(`update/${classroom.id}`)} type="link">
+      render: (text: string, admin: Admin) => (
+        <Button onClick={() => navigate(`update/${admin.uid}`)} type="link">
           {text}
         </Button>
       ),

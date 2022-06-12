@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as routes from '../../config/routes.config';
 import { Route } from '../../config/routes.config';
 import {
@@ -13,6 +13,7 @@ import {
   Popover,
   Popconfirm,
   Badge,
+  Dropdown,
 } from 'antd';
 
 import {
@@ -95,6 +96,26 @@ const Dashboard = () => {
     </div>
   );
 
+  const menu = (
+    <Menu
+      items={[
+        {
+          label: <a href="https://www.antgroup.com">1st menu item</a>,
+          key: '0',
+        },
+        {
+          label: <a href="https://www.aliyun.com">2nd menu item</a>,
+          key: '1',
+        },
+
+        {
+          label: '3rd menu item',
+          key: '3',
+        },
+      ]}
+    />
+  );
+
   return (
     <Layout style={{ height: '100vh' }}>
       <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -134,9 +155,15 @@ const Dashboard = () => {
               <Space>
                 <Button type="text">
                   <div style={{ paddingTop: 20 }}>
-                    <Badge count={5}>
-                      <BellOutlined style={{ fontSize: 25 }} />
-                    </Badge>
+                    <Dropdown
+                      placement="bottom"
+                      overlay={menu}
+                      trigger={['click']}
+                    >
+                      <Badge count={5}>
+                        <BellOutlined style={{ fontSize: 25 }} />
+                      </Badge>
+                    </Dropdown>
                   </div>
                 </Button>
                 <Popover
@@ -149,11 +176,11 @@ const Dashboard = () => {
                     icon={
                       <Avatar
                         style={{ marginRight: 10 }}
-                        src={`http://gravatar.com/avatar/${user.infos.uid}?d=identicon`}
+                        src={`http://gravatar.com/avatar/${user?.infos?.uid}?d=identicon`}
                       />
                     }
                   >
-                    {user.infos.email}
+                    {user?.infos?.email}
                   </Button>
                 </Popover>
                 <Button

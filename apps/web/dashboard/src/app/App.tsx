@@ -1,4 +1,4 @@
-import { Suspense, FC } from 'react';
+import { Suspense, FC, useEffect } from 'react';
 import styled from 'styled-components';
 import { ConfigProvider } from 'antd';
 import Routes from '../routes';

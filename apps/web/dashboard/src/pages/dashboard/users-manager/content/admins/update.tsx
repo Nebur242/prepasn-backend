@@ -1,6 +1,6 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { useEffect } from 'react';
-import { Instructor } from '@prepa-sn/shared/interfaces';
+import { Admin } from '@prepa-sn/shared/interfaces';
 import { Form, message, Row, Spin } from 'antd';
 import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
 
@@ -27,7 +27,7 @@ const UpdateAdmin = () => {
     try {
       await form.validateFields();
       const values = form.getFieldsValue();
-      const updatedInstructor: Partial<Instructor> = JSON.parse(
+      const updatedInstructor: Partial<Admin> = JSON.parse(
         JSON.stringify({
           ...values,
           id: data?.id,

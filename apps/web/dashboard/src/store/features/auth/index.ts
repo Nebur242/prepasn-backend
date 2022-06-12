@@ -78,7 +78,7 @@ export const logoutUser = createAsyncThunk(
   async (_, { rejectWithValue, dispatch }) => {
     try {
       await logout();
-      dispatch(setUser(null));
+      // dispatch(setUser(null));
       return;
     } catch (err) {
       console.log('error', err);
