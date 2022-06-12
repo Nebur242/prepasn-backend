@@ -1,7 +1,7 @@
-import { Role } from "@prepa-sn/shared/enums";
-import { useSelector } from "react-redux";
-import AdminProfile from "./admin";
-import InstructorProfile from "./instructor";
+import { Role } from '@prepa-sn/shared/enums';
+import { useSelector } from 'react-redux';
+import AdminProfile from './admin';
+import InstructorProfile from './instructor';
 
 const Profile = () => {
   const user = useSelector((state: RootState) => state.user);
@@ -13,9 +13,7 @@ const Profile = () => {
     return <InstructorProfile />;
   }
 
-  return (
-    <div>Not known user</div>
-  )
-}
+  return <div>Not known user</div>;
+};
 
 export default Profile;

@@ -4,8 +4,8 @@ import AppRoute from '../components/route';
 import * as routes from '../config/routes.config';
 import { Route as RouteConfig } from '../config/routes.config';
 
-const setNestedRoutes = (routes: RouteConfig[]): React.ReactNode => {
-  return routes.map((route) => {
+const setNestedRoutes = (appRoutes: RouteConfig[]): React.ReactNode => {
+  return appRoutes.map((route) => {
     if (route.routes.length > 0) {
       return (
         <Route

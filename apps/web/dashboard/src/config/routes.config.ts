@@ -1,3 +1,4 @@
+import { Role } from '@prepa-sn/shared/enums';
 import {
   Welcome,
   Home,
@@ -31,6 +32,7 @@ import {
   UpdateAdmin,
   Admins,
   Stats,
+  Unauthorized,
 } from '../pages';
 export interface Route {
   path: string;
@@ -84,7 +86,7 @@ export const DASHBOARD: Route = {
       name: 'stats',
       isPublic: false,
       icon: 'AreaChartOutlined',
-      access: [],
+      access: [Role.ADMIN],
       element: Stats,
       routes: [],
     },
@@ -312,6 +314,15 @@ export const DASHBOARD: Route = {
       icon: 'UserOutlined',
       isPublic: false,
       element: Profile,
+      routes: [],
+    },
+    {
+      path: 'unauthorized',
+      name: 'unauthorized',
+      isPublic: false,
+      icon: 'HomeOutlined',
+      access: [],
+      element: Unauthorized,
       routes: [],
     },
   ],

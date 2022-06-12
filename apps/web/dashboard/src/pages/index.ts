@@ -1,6 +1,8 @@
 import { lazy } from 'react';
 
 export const Welcome = lazy(() => import('./app/welcome.page'));
+export const Unauthorized = lazy(() => import('./app/unauthorized.page'));
+
 export const ContentManager = lazy(() => import('./dashboard/content-manager'));
 export const ContentManagerHome = lazy(
   () => import('./dashboard/content-manager/home.page')

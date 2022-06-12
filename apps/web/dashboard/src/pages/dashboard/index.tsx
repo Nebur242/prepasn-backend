@@ -28,6 +28,7 @@ import logo from '../../../public/images/logo.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../store';
 import { logoutUser } from '../../store/features/auth';
+import { User } from '../../store/features/user';
 
 const { Header, Sider, Content } = Layout;
 
@@ -57,6 +58,20 @@ const Dashboard = () => {
         icon: <Icon type={route?.icon} />,
         label: <NavLink to={route.path}>{t(`menu.${route.name}`)}</NavLink>,
       };
+    });
+  };
+
+  const filterRouteAccess = (_routes: Route[], _user: User): Route[] => {
+    return _routes.filter((route: Route) => {
+      return route.access.some((access: string) =>
+        _user.roles.includes(access)
+      );
+    });
+  };
+
+  const filterUnusedRoutes = (_routes: Route[]): Route[] => {
+    return _routes.filter((route: Route) => {
+      return route.name !== 'unauthorized';
     });
   };
 
@@ -138,7 +153,9 @@ const Dashboard = () => {
           theme={theme}
           mode="inline"
           defaultSelectedKeys={['0']}
-          items={setNestedMenu(DASHBOARD.routes)}
+          items={setNestedMenu(
+            filterRouteAccess(filterUnusedRoutes(DASHBOARD.routes), user.infos)
+          )}
         />
       </Sider>
       <Layout>
