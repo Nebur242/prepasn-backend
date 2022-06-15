@@ -1,4 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  IPaginationOptions,
+  paginate,
+  Pagination,
+} from 'nestjs-typeorm-paginate';
 import { DeepPartial, FindManyOptions } from 'typeorm';
 import { ChaptersService } from '../chapters/chapters.service';
 import { CreateExerciseDto } from './dto/create-exercise.dto';
@@ -29,6 +34,10 @@ export class ExercisesService {
 
   findAll(filter: FindManyOptions<Exercise> = {}) {
     return this.exercisesRepository.find(filter);
+  }
+
+  paginate(options: IPaginationOptions): Promise<Pagination<Exercise>> {
+    return paginate<Exercise>(this.exercisesRepository, options);
   }
 
   async findOne(id: number) {
