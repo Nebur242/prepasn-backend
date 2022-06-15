@@ -1,26 +1,59 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { DeepPartial, FindManyOptions } from 'typeorm';
+import { ChaptersService } from '../chapters/chapters.service';
 import { CreateExerciseDto } from './dto/create-exercise.dto';
 import { UpdateExerciseDto } from './dto/update-exercise.dto';
+import { Exercise } from './entities/exercise.entity';
+import { ExercisesRepository } from './repositories/exercise.repository';
 
 @Injectable()
 export class ExercisesService {
-  create(createExerciseDto: CreateExerciseDto) {
-    return 'This action adds a new exercise';
+  constructor(
+    private readonly exercisesRepository: ExercisesRepository,
+    private readonly chaptersService: ChaptersService
+  ) {}
+
+  createEntity(entityLike: DeepPartial<Exercise>): Exercise {
+    return this.exercisesRepository.create(entityLike);
   }
 
-  findAll() {
-    return `This action returns all exercises`;
+  async create(createExerciseDto: CreateExerciseDto) {
+    const exercise = this.exercisesRepository.create({
+      ...createExerciseDto,
+      chapter: this.chaptersService.createEntity({
+        id: createExerciseDto.chapter,
+      }),
+    });
+    return this.exercisesRepository.save(exercise);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} exercise`;
+  findAll(filter: FindManyOptions<Exercise> = {}) {
+    return this.exercisesRepository.find(filter);
   }
 
-  update(id: number, updateExerciseDto: UpdateExerciseDto) {
-    return `This action updates a #${id} exercise`;
+  async findOne(id: number) {
+    const found = await this.exercisesRepository.findOne(id, {
+      relations: ['documents', 'image', 'video', 'chapter'],
+    });
+    if (!found) throw new NotFoundException(`Exercise with id ${id} not found`);
+    return found;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} exercise`;
+  async update(id: number, updateExerciseDto: UpdateExerciseDto) {
+    const exercise: Exercise = await this.findOne(id);
+    return this.exercisesRepository.save({
+      ...exercise,
+      ...updateExerciseDto,
+      chapter: updateExerciseDto.chapter
+        ? this.chaptersService.createEntity({
+            id: updateExerciseDto.chapter,
+          })
+        : exercise.chapter,
+    });
+  }
+
+  async remove(id: number) {
+    const found: Exercise = await this.findOne(id);
+    return this.exercisesRepository.remove(found);
   }
 }

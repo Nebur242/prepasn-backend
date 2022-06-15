@@ -19,9 +19,10 @@ const AppRoute: FC<Props> = ({ route }) => {
   if (!isPublic && !auth.isLoggedIn && !auth.loading)
     return <Navigate to={routes.LOGIN.path} />;
 
-  const hasAccess = route.access.some((access) =>
+  const hasAccess = route.access.length > 0 ? route.access.some((access) =>
     user.infos.roles.includes(access)
-  );
+  ) : true;
+
 
   return (
     <Suspense fallback={<Loader />}>

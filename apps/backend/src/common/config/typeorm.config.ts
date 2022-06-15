@@ -7,6 +7,8 @@ import { Document } from '@prepa-sn/backend/modules/documents/entities/document.
 import { Grade } from '@prepa-sn/backend/modules/grades/entities/grade.entity';
 import { Instructor } from '@prepa-sn/backend/modules/instructors/entities/instructor.entity';
 import { Student } from '@prepa-sn/backend/modules/students/entities/student.entity';
+import { Exercise } from '@prepa-sn/backend/modules/exercises/entities/exercise.entity';
+import { Question } from '@prepa-sn/backend/modules/questions/entities/question.entity';
 
 export default {
   type: process.env.DB_TYPE,
@@ -28,5 +30,7 @@ export default {
     Chapter,
     Classroom,
     Category,
+    Exercise,
+    Question,
   ],
 };
