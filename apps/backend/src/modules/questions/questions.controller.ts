@@ -6,40 +6,68 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
+  Query,
+  DefaultValuePipe,
 } from '@nestjs/common';
 import { QuestionsService } from './questions.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
+import { Authenticated } from '../auth/roles-auth.guard';
+import { GetClaims } from '@prepa-sn/backend/common/decorators/get-decoded-token';
 
 @Controller('questions')
 export class QuestionsController {
   constructor(private readonly questionsService: QuestionsService) {}
 
   @Post()
-  create(@Body() createQuestionDto: CreateQuestionDto) {
-    return this.questionsService.create(createQuestionDto);
+  @Authenticated()
+  create(
+    @GetClaims('uid') uid: string,
+    @Body() createQuestionDto: CreateQuestionDto
+  ) {
+    return this.questionsService.create({
+      ...createQuestionDto,
+      createdBy: uid,
+      updatedBy: uid,
+    });
   }
 
   @Get()
-  findAll() {
-    return this.questionsService.findAll();
+  @Authenticated()
+  findAll(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit
+  ) {
+    return this.questionsService.paginate({
+      page,
+      limit,
+      route: '/questions',
+    });
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.questionsService.findOne(+id);
+  @Authenticated()
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.questionsService.findOne(id);
   }
 
   @Patch(':id')
+  @Authenticated()
   update(
-    @Param('id') id: string,
+    @GetClaims('uid') uid: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateQuestionDto: UpdateQuestionDto
   ) {
-    return this.questionsService.update(+id, updateQuestionDto);
+    return this.questionsService.update(id, {
+      ...updateQuestionDto,
+      updatedBy: uid,
+    });
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.questionsService.remove(+id);
+  @Authenticated()
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.questionsService.remove(id);
   }
 }
