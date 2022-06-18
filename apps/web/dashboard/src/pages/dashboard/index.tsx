@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import * as routes from '../../config/routes.config';
 import { Route } from '../../config/routes.config';
 import {
