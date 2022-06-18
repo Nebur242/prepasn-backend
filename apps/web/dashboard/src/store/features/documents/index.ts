@@ -17,7 +17,7 @@ export interface DocumentsInitialState {
   documents: Document[];
 }
 
-export const initialState: DocumentsInitialState = {
+const initialState: DocumentsInitialState = {
   loading: false,
   error: '',
   status: Status.PENDING,

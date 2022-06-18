@@ -1,53 +1,31 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
-import { Course } from '@prepa-sn/shared/interfaces';
+import { Classroom } from '@prepa-sn/shared/interfaces';
 import { Form, message, Row, Spin } from 'antd';
 import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
 import {
-  useFindOneCourseQuery,
-  useUpdateCourseMutation,
-} from 'apps/web/dashboard/src/store/features/courses';
+  useFindOneCategoryQuery,
+  useUpdateCategoryMutation,
+} from 'apps/web/dashboard/src/store/features/categories';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import CreateAndUpdate from './create-update';
 
-const UpdateCourse = () => {
+const UpdateCategory = () => {
   const { id } = useParams<{ id: string }>();
   const [form] = Form.useForm();
-  const { data, isLoading } = useFindOneCourseQuery(id);
+  const { data, isLoading } = useFindOneCategoryQuery(id);
 
   const [
-    updateCourse,
+    updateGrade,
     { isLoading: isUpdating, isSuccess: isUpdated, isError: hasError },
-  ] = useUpdateCourseMutation();
-
-  useEffect(() => {
-    if (data) {
-      form.setFieldsValue({
-        ...data,
-        image: data.image ? data.image?.id : null,
-        video: data.video ? data.video?.id : null,
-        grades: data.grades.map((grade) => grade.id),
-        categories: data.categories.map((category) => category.id),
-      });
-    }
-  }, [data, form]);
-
-  useEffect(() => {
-    if (isUpdated) {
-      message.success('Le cours a été modifié avec succès');
-    }
-
-    if (hasError) {
-      message.error('Une erreur est survenue');
-    }
-  }, [isUpdated, hasError, form]);
+  ] = useUpdateCategoryMutation();
 
   const onFinish = async () => {
     try {
       await form.validateFields();
-      const values: Course = form.getFieldsValue();
+      const values: Classroom = form.getFieldsValue();
       if (data?.id) {
-        updateCourse({
+        updateGrade({
           ...values,
           id: data?.id,
         });
@@ -57,6 +35,26 @@ const UpdateCourse = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (data) {
+      form.setFieldsValue({
+        ...data,
+        image: data.image ? data.image?.id : null,
+        video: data.video ? data.video?.id : null,
+      });
+    }
+  }, [data, form]);
+
+  useEffect(() => {
+    if (isUpdated) {
+      message.success('La section a été crée avec succès');
+    }
+
+    if (hasError) {
+      message.error('Une erreur est survenue');
+    }
+  }, [isUpdated, hasError, form]);
 
   if (isLoading)
     return (
@@ -68,8 +66,8 @@ const UpdateCourse = () => {
   return (
     <ContentSectionWrapper
       title={`Update the entry : ${data?.title}`}
-      description={`Course ID : ${data?.id}`}
-      createButtonText="Update the grade"
+      description={`Category ID : ${data?.id}`}
+      createButtonText="Update the category"
       onCreate={onFinish}
       createButtonProps={{ loading: isUpdating }}
     >
@@ -78,4 +76,4 @@ const UpdateCourse = () => {
   );
 };
 
-export default UpdateCourse;
+export default UpdateCategory;

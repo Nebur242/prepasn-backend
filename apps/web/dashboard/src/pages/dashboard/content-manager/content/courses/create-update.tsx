@@ -10,13 +10,19 @@ import {
   Select,
   Divider,
 } from 'antd';
+import {
+  IPaginationLinks,
+  IPaginationMeta,
+  IPaginationOptions,
+} from 'nestjs-typeorm-paginate';
 import ContentWithSider from 'apps/web/dashboard/src/components/content-with-sider';
 import AppUpload from 'apps/web/dashboard/src/components/upload';
 import { Course, Document } from '@prepa-sn/shared/interfaces';
 import { CKEditor } from 'ckeditor4-react';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useFindAllGradesQuery } from 'apps/web/dashboard/src/store/features/grades';
 import dayjs from 'dayjs';
+import { useFindAllCategoriesQuery } from 'apps/web/dashboard/src/store/features/categories';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -32,8 +38,24 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
   form,
   initialValues,
 }) => {
+  const [pagination, setPagination] = useState<IPaginationOptions>({
+    page: 1,
+    limit: 10,
+  });
+
   const { data: grades = [], isLoading: gradesloading } =
     useFindAllGradesQuery();
+
+  const {
+    data: categories = {
+      items: [],
+      meta: {} as IPaginationMeta,
+      links: {} as IPaginationLinks,
+    },
+    isLoading: categoriesLoading,
+  } = useFindAllCategoriesQuery({
+    ...pagination,
+  });
 
   return (
     <ContentWithSider
@@ -59,6 +81,24 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
               loading={gradesloading}
             >
               {grades.map((item) => (
+                <Option key={item.id} value={item.id}>
+                  {item.title}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            rules={[{ required: true, message: 'Please select a grade' }]}
+            label="Catgories"
+            name="categories"
+          >
+            <Select
+              mode="multiple"
+              allowClear
+              placeholder="Categories"
+              loading={categoriesLoading}
+            >
+              {categories.items.map((item) => (
                 <Option key={item.id} value={item.id}>
                   {item.title}
                 </Option>

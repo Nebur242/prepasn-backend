@@ -15,6 +15,7 @@ import { UpdateChapterDto } from './dto/update-chapter.dto';
 import { Chapter } from './entities/chapter.entity';
 import Controller from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
 import { GetClaims } from '@prepa-sn/backend/common/decorators/get-decoded-token';
+import { Claims } from '@prepa-sn/backend/common/decorators/get-user.decorator';
 
 @Controller('chapters')
 export class ChaptersController {
@@ -24,7 +25,7 @@ export class ChaptersController {
   @Admin()
   @ApiOkResponse({ type: Chapter, isArray: false })
   create(
-    @GetClaims('uid') uid: string,
+    @Claims('uid') uid: string,
     @Body() createChapterDto: CreateChapterDto
   ): Promise<Chapter> {
     return this.chaptersService.create({
@@ -52,7 +53,7 @@ export class ChaptersController {
   @Admin()
   @ApiOkResponse({ type: Chapter, isArray: false })
   update(
-    @GetClaims('uid') uid: string,
+    @Claims('uid') uid: string,
     @Param('id', ParseIntPipe) id: number,
     @Body() updateChapterDto: UpdateChapterDto
   ): Promise<Chapter> {

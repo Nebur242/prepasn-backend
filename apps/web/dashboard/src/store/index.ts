@@ -11,6 +11,7 @@ import { classroomsApi } from './features/classrooms';
 import { studentsApi } from './features/students';
 import { instructorsApi } from './features/instructors';
 import { adminsApi } from './features/admin';
+import { categoriessApi } from './features/categories';
 
 export const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ export const store = configureStore({
     [studentsApi.reducerPath]: studentsApi.reducer,
     [instructorsApi.reducerPath]: instructorsApi.reducer,
     [adminsApi.reducerPath]: adminsApi.reducer,
+    [categoriessApi.reducerPath]: categoriessApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -36,7 +38,8 @@ export const store = configureStore({
       .concat(classroomsApi.middleware)
       .concat(studentsApi.middleware)
       .concat(instructorsApi.middleware)
-      .concat(adminsApi.middleware),
+      .concat(adminsApi.middleware)
+      .concat(categoriessApi.middleware),
 
   devTools: import.meta.env.DEV,
 });
