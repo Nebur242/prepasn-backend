@@ -123,3 +123,16 @@ export const CreateCategory = lazy(
 export const UpdateCategory = lazy(
   () => import('./dashboard/content-manager/content/categories/update')
 );
+
+//EXERCISES
+export const Exercises = lazy(
+  () => import('./dashboard/content-manager/content/courses/exercises')
+);
+
+export const CreateExercise = lazy(
+  () => import('./dashboard/content-manager/content/courses/exercises/create')
+);
+
+export const UpdateExercise = lazy(
+  () => import('./dashboard/content-manager/content/courses/exercises/update')
+);

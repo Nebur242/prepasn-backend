@@ -33,7 +33,7 @@ export class ChaptersService {
 
   async findOne(id: number): Promise<Chapter> {
     const found = await this.chaptersRepository.findOne(id, {
-      relations: ['documents', 'image', 'video', 'course'],
+      relations: ['documents', 'image', 'video', 'course', 'exercises'],
     });
     if (!found) throw new NotFoundException(`Chapter with id ${id} not found`);
     return found;

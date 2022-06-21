@@ -89,8 +89,18 @@ export const loginUser = createAsyncThunk(
     try {
       const response = await logInFirebaseWithEmailAndPassword(loginDto);
       const user = response.user.toJSON();
-      dispatch(setUser(user));
-      return fulfillWithValue(user);
+      const token = await response.user.getIdTokenResult(true);
+
+      dispatch(
+        setUser({
+          ...user,
+          roles: token.claims.roles,
+        })
+      );
+      return fulfillWithValue({
+        ...user,
+        roles: token.claims.roles,
+      });
     } catch (err) {
       console.log('error', err);
       const error = err as AuthError;

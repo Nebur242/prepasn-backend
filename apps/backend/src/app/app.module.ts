@@ -13,6 +13,8 @@ import { ClassroomsModule } from '../modules/classrooms/classrooms.module';
 import { InstructorsModule } from '../modules/instructors/instructors.module';
 import { CategoriesModule } from '../modules/categories/categories.module';
 import { AdminsModule } from '../modules/admins/admins.module';
+import { ExercisesModule } from '../modules/exercises/exercises.module';
+import { QuestionsModule } from '../modules/questions/questions.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -37,6 +39,8 @@ import { AdminsModule } from '../modules/admins/admins.module';
     ChaptersModule,
     ClassroomsModule,
     CategoriesModule,
+    ExercisesModule,
+    QuestionsModule,
   ],
   controllers: [],
   providers: [],

@@ -21,7 +21,7 @@ const AppRoute: FC<Props> = ({ route }) => {
 
   const hasAccess =
     route.access.length > 0
-      ? route.access.some((access) => user.infos.roles.includes(access))
+      ? route.access.some((access) => user.infos?.roles?.includes(access))
       : true;
 
   return (

@@ -63,7 +63,7 @@ const Dashboard = () => {
 
   const filterRouteAccess = (_routes: Route[], _user: User): Route[] => {
     return _routes.filter((route: Route) => {
-      return route.access.some((access: string) =>
+      return route.access.length < 1 ? true : route.access.some((access: string) =>
         _user.roles.includes(access)
       );
     });

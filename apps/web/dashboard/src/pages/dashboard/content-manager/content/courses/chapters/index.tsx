@@ -7,8 +7,9 @@ import Icon from 'apps/web/dashboard/src/components/Icon';
 import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
 import { useDeleteChapterMutation } from 'apps/web/dashboard/src/store/features/chapters';
 import { useFindOneCourseQuery } from 'apps/web/dashboard/src/store/features/courses';
+import dayjs from 'dayjs';
 import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 
 const rowSelection = {
   onChange: (selectedRowKeys: React.Key[], selectedRows: Chapter[]) => {
@@ -25,7 +26,7 @@ const Chapters = () => {
   const { courseId } = useParams<{ courseId: string }>();
   const navigate = useNavigate();
 
-  const { data, isLoading, refetch } = useFindOneCourseQuery(courseId);
+  const { data, isLoading } = useFindOneCourseQuery(courseId);
 
   const [deleteChapter, { isSuccess, isError }] = useDeleteChapterMutation();
 
@@ -55,8 +56,18 @@ const Chapters = () => {
     },
 
     {
+      title: 'Exercices',
+      render: (_, chapter: Chapter) => <Link to={`${chapter.id}/exercises`}>
+        <Button type='link'>
+          Exercices
+        </Button>
+      </Link>,
+    },
+
+    {
       title: 'Created At',
       dataIndex: 'createdAt',
+      render: (text: string) => <span>{dayjs(text).format('DD/MM/YYYY')}</span>,
     },
     {
       title: 'Action',
@@ -100,9 +111,6 @@ const Chapters = () => {
     }
   }, [isError, isSuccess]);
 
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
 
   return (
     <ContentSectionWrapper

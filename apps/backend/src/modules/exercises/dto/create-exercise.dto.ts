@@ -1,7 +1,7 @@
 import { CreateBaseContentDto } from '@prepa-sn/backend/common/dtos/create-base-content.dto';
 import { IsDefined, IsEnum, IsNumber } from 'class-validator';
 import { Chapter } from '../../chapters/entities/chapter.entity';
-import { displayType, exerciseType, level } from '../entities/exercise.entity';
+import { displayType, exerciseType, level } from '@prepa-sn/shared/enums';
 export class CreateExerciseDto extends CreateBaseContentDto {
   @IsDefined()
   @IsNumber()

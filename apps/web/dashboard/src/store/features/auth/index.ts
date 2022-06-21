@@ -54,6 +54,7 @@ export const loginUser = createAsyncThunk(
       const response = await logInFirebaseWithEmailAndPassword(loginDto);
       const user = response.user.toJSON();
       const token = await response.user.getIdTokenResult(true);
+
       dispatch(
         setUser({
           ...user,
@@ -75,10 +76,9 @@ export const loginUser = createAsyncThunk(
 
 export const logoutUser = createAsyncThunk(
   'auth/logout',
-  async (_, { rejectWithValue, dispatch }) => {
+  async (_, { rejectWithValue }) => {
     try {
       await logout();
-      // dispatch(setUser(null));
       return;
     } catch (err) {
       console.log('error', err);

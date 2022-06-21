@@ -36,6 +36,9 @@ import {
   Categories,
   CreateCategory,
   UpdateCategory,
+  Exercises,
+  CreateExercise,
+  UpdateExercise,
 } from '../pages';
 export interface Route {
   path: string;
@@ -78,7 +81,7 @@ export const DASHBOARD: Route = {
     {
       path: '',
       name: 'home',
-      access: ['admin'],
+      access: [],
       icon: 'HomeOutlined',
       isPublic: false,
       element: Welcome,
@@ -207,6 +210,30 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: UpdateChapters,
+          routes: [],
+        },
+        {
+          path: 'courses/:courseId/chapters/:chapterId/exercises',
+          name: 'course-chapters',
+          access: ['admin'],
+          isPublic: false,
+          element: Exercises,
+          routes: [],
+        },
+        {
+          path: 'courses/:courseId/chapters/:chapterId/exercises/create',
+          name: 'course-chapters',
+          access: ['admin'],
+          isPublic: false,
+          element: CreateExercise,
+          routes: [],
+        },
+        {
+          path: 'courses/:courseId/chapters/:chapterId/exercises/update/:id',
+          name: 'course-chapters',
+          access: ['admin'],
+          isPublic: false,
+          element: UpdateExercise,
           routes: [],
         },
         {

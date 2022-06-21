@@ -16,7 +16,7 @@ import { Pagination } from 'nestjs-typeorm-paginate';
 import { Exercise } from './entities/exercise.entity';
 import ControllerWithApiTags from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
 import { Authenticated } from '../auth/roles-auth.guard';
-import { GetClaims } from '@prepa-sn/backend/common/decorators/get-decoded-token';
+import { Claims } from '@prepa-sn/backend/common/decorators/get-user.decorator';
 
 @ControllerWithApiTags('exercises')
 export class ExercisesController {
@@ -25,7 +25,7 @@ export class ExercisesController {
   @Post()
   @Authenticated()
   create(
-    @GetClaims('uid') uid: string,
+    @Claims('uid') uid: string,
     @Body() createExerciseDto: CreateExerciseDto
   ) {
     return this.exercisesService.create({
@@ -57,7 +57,7 @@ export class ExercisesController {
   @Patch(':id')
   @Authenticated()
   update(
-    @GetClaims('uid') uid: string,
+    @Claims('uid') uid: string,
     @Param('id', ParseIntPipe) id: number,
     @Body() updateExerciseDto: UpdateExerciseDto
   ) {

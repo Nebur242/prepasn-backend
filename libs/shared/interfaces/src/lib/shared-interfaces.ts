@@ -1,5 +1,10 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
-import { Status } from '@prepa-sn/shared/enums';
+import {
+  displayType,
+  exerciseType,
+  level,
+  Status,
+} from '@prepa-sn/shared/enums';
 
 export interface FirebaseConfig {
   type: string;
@@ -80,6 +85,19 @@ export interface Grade extends BaseContent {
 export interface Chapter extends BaseContent {
   course: Course;
   documents: Document[];
+  exercises: Exercise[];
+}
+
+export interface Question extends BaseContent {
+  exercise: Exercise;
+}
+
+export interface Exercise extends BaseContent {
+  chapter: Chapter;
+  type: exerciseType;
+  questions: Question[];
+  level: level;
+  display: displayType;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
