@@ -57,11 +57,11 @@ const Chapters = () => {
 
     {
       title: 'Exercices',
-      render: (_, chapter: Chapter) => <Link to={`${chapter.id}/exercises`}>
-        <Button type='link'>
-          Exercices
-        </Button>
-      </Link>,
+      render: (_, chapter: Chapter) => (
+        <Link to={`${chapter.id}/exercises`}>
+          <Button type="link">Exercices</Button>
+        </Link>
+      ),
     },
 
     {
@@ -110,7 +110,6 @@ const Chapters = () => {
       message.error('Une erreur est survenue');
     }
   }, [isError, isSuccess]);
-
 
   return (
     <ContentSectionWrapper
