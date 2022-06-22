@@ -1,7 +1,7 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
-import { Classroom, Document } from '@prepa-sn/shared/interfaces';
+import { Document, Exercise } from '@prepa-sn/shared/interfaces';
 import { FC } from 'react';
-import { Card, Form, FormInstance, Input, Select } from 'antd';
+import { Form, FormInstance, Input, Select } from 'antd';
 import ContentWithSider from 'apps/web/dashboard/src/components/content-with-sider';
 import AppUpload from 'apps/web/dashboard/src/components/upload';
 import { displayType, exerciseType, level } from '@prepa-sn/shared/enums';
@@ -12,7 +12,7 @@ import dayjs from 'dayjs';
 interface ICreateAndUpdateProps {
     onFinish: () => Promise<void>;
     form: FormInstance;
-    initialValues?: Classroom;
+    initialValues?: Exercise;
 }
 
 const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
@@ -22,6 +22,7 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
 }) => {
 
     const display = Form.useWatch('display', form);
+
 
     return (
         <ContentWithSider
@@ -35,7 +36,6 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
                 ...initialValues,
             }}
         >
-            <p>{display}</p>
             <Form.Item
                 label="Type d'affichage"
                 rules={[{ required: true, message: 'Display is required' }]}
@@ -52,14 +52,15 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
                 </Select>
             </Form.Item>
             {
-                display === displayType.TEXT && <> <Form.Item
-                    label="Title"
-                    rules={[{ required: true, message: 'Title is required' }]}
-                    name="title"
-                >
-                    <Input size="middle" />
-                </Form.Item>
-
+                display === displayType.TEXT &&
+                <>
+                    <Form.Item
+                        label="Title"
+                        rules={[{ required: true, message: 'Title is required' }]}
+                        name="title"
+                    >
+                        <Input size="middle" />
+                    </Form.Item>
                     <Form.Item
                         label="Description"
                         name="description"
@@ -74,7 +75,6 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
                             }}
                         />
                     </Form.Item>
-
                 </>
             }
             {

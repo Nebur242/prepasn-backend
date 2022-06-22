@@ -42,7 +42,7 @@ export class ExercisesService {
 
   async findOne(id: number) {
     const found = await this.exercisesRepository.findOne(id, {
-      relations: ['documents', 'image', 'video', 'chapter', 'exercises'],
+      relations: ['image', 'video', 'chapter', 'questions'],
     });
     if (!found) throw new NotFoundException(`Exercise with id ${id} not found`);
     return found;
