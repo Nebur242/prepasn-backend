@@ -1,3 +1,4 @@
+/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Exercise } from '@prepa-sn/shared/interfaces';
 import { Divider, Form, message, Spin } from 'antd';
 import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
@@ -42,12 +43,22 @@ const Update = () => {
     }
   }, [data, form]);
 
+  useEffect(() => {
+    if (isSuccess) {
+      message.success("L'exercice a été modifié avec succès");
+    }
+
+    if (isError) {
+      message.error('Une erreur est survenue');
+    }
+  }, [isSuccess, isError]);
+
   return (
     <ContentSectionWrapper
       title={`Exercise : ${data?.title}`}
       description="Update Chapter"
       createButtonText="Update chapter"
-      createButtonProps={{ loading: false }}
+      createButtonProps={{ loading: isUpdating }}
     >
       {isLoading && <Spin />}
 
@@ -59,7 +70,7 @@ const Update = () => {
             onFinish={onFinish}
           />
           <Divider />
-          <Questions questions={data?.questions || []} />
+          <Questions exercise={data} questions={data?.questions || []} />
         </>
       )}
     </ContentSectionWrapper>

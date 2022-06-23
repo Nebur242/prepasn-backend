@@ -1,10 +1,13 @@
-import { Question } from '@prepa-sn/shared/interfaces';
-import { Button, Row, Space, Table, Tag } from 'antd';
+/* eslint-disable @nrwl/nx/enforce-module-boundaries */
+import { Exercise, Question } from '@prepa-sn/shared/interfaces';
+import { Button, Modal, Row, Space, Table, Tag } from 'antd';
 import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.interface';
 import Icon from 'apps/web/dashboard/src/components/Icon';
 import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
 import dayjs from 'dayjs';
-import { FC } from 'react';
+import { FC, useState } from 'react';
+import Create from './create';
+import Update from './update';
 
 const rowSelection = {
   onChange: (selectedRowKeys: React.Key[], selectedRows: Question[]) => {
@@ -19,10 +22,13 @@ const rowSelection = {
 
 type QuestionsProps = {
   questions: Question[];
+  exercise: Exercise;
 };
 
-const Questions: FC<QuestionsProps> = ({ questions }) => {
-  console.log('questions', questions);
+const Questions: FC<QuestionsProps> = ({ questions, exercise }) => {
+  const [createModalVisible, setCreateModalVisible] = useState(false);
+  const [updateModalVisible, setUpdateModalVisible] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState<Question>();
 
   const columns = [
     {
@@ -48,7 +54,15 @@ const Questions: FC<QuestionsProps> = ({ questions }) => {
       key: 'action',
       render: (_: string, question: Question) => (
         <Space size="middle">
-          <Button type="primary" ghost icon={<Icon type="EditOutlined" />} />
+          <Button
+            onClick={() => {
+              setCurrentQuestion(question);
+              setUpdateModalVisible(true);
+            }}
+            type="primary"
+            ghost
+            icon={<Icon type="EditOutlined" />}
+          />
           <Button
             type="primary"
             ghost
@@ -73,7 +87,11 @@ const Questions: FC<QuestionsProps> = ({ questions }) => {
   return (
     <div>
       <Row style={{ marginBottom: 20 }} justify="end">
-        <Button icon={<Icon type="PlusOutlined" />} type="primary">
+        <Button
+          onClick={() => setCreateModalVisible(true)}
+          icon={<Icon type="PlusOutlined" />}
+          type="primary"
+        >
           Ajouter une question
         </Button>
       </Row>
@@ -83,11 +101,29 @@ const Questions: FC<QuestionsProps> = ({ questions }) => {
           ...rowSelection,
         }}
         columns={columns}
-        dataSource={questions?.map((question: Question) => ({
-          ...question,
-          key: question.id,
+        dataSource={questions?.map((q: Question) => ({
+          ...q,
+          key: q.id,
         }))}
       />
+      <Modal
+        width={`60vw`}
+        title="Ajouter une question à l'exercice"
+        visible={createModalVisible}
+        onCancel={() => setCreateModalVisible(false)}
+        footer={null}
+      >
+        <Create exercise={exercise} />
+      </Modal>
+      <Modal
+        width={`60vw`}
+        title="Mettre à jour cette question"
+        visible={updateModalVisible}
+        onCancel={() => setUpdateModalVisible(false)}
+        footer={null}
+      >
+        <Update exercise={exercise} question={currentQuestion} />
+      </Modal>
     </div>
   );
 };

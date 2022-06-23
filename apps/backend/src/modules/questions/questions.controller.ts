@@ -15,6 +15,7 @@ import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
 import { Authenticated } from '../auth/roles-auth.guard';
 import { GetClaims } from '@prepa-sn/backend/common/decorators/get-decoded-token';
+import { Claims } from '@prepa-sn/backend/common/decorators/get-user.decorator';
 
 @Controller('questions')
 export class QuestionsController {
@@ -23,7 +24,7 @@ export class QuestionsController {
   @Post()
   @Authenticated()
   create(
-    @GetClaims('uid') uid: string,
+    @Claims('uid') uid: string,
     @Body() createQuestionDto: CreateQuestionDto
   ) {
     return this.questionsService.create({
@@ -55,7 +56,7 @@ export class QuestionsController {
   @Patch(':id')
   @Authenticated()
   update(
-    @GetClaims('uid') uid: string,
+    @Claims('uid') uid: string,
     @Param('id', ParseIntPipe) id: number,
     @Body() updateQuestionDto: UpdateQuestionDto
   ) {

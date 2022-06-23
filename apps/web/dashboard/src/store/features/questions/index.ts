@@ -28,8 +28,8 @@ export const exercisesApi = createApi({
   baseQuery: axiosBaseQuery(),
   tagTypes: [TAG_TYPE],
   endpoints: (build) => ({
-    findOneQuestion: build.query<Question, string>({
-      query: (id: string) => ({ url: `${BASE_PATH}/${id}`, method: 'GET' }),
+    findOneQuestion: build.query<Question, number>({
+      query: (id: number) => ({ url: `${BASE_PATH}/${id}`, method: 'GET' }),
     }),
     findAllQuestions: build.query<Pagination<Question>, IPaginationOptions>({
       query: (
@@ -60,16 +60,19 @@ export const exercisesApi = createApi({
           : [{ type: TAG_TYPE, id: 'PARTIAL-LIST' }];
       },
     }),
-    createQuestion: build.mutation<Question, Omit<Question, 'id' | 'exercise'>>(
-      {
-        query: (Categories: Omit<Question, 'id' | 'exercise'>) => ({
-          url: BASE_PATH,
-          method: 'POST',
-          data: Categories,
-        }),
-        invalidatesTags: [TAG_TYPE],
-      }
-    ),
+    createQuestion: build.mutation<
+      Question,
+      Omit<Question, 'id' | 'exercise'> | { exercise: number }
+    >({
+      query: (
+        question: Omit<Question, 'id' | 'exercise'> | { exercise: number }
+      ) => ({
+        url: BASE_PATH,
+        method: 'POST',
+        data: question,
+      }),
+      invalidatesTags: [TAG_TYPE],
+    }),
     updateQuestion: build.mutation<Question, Question>({
       query: (question: Question) => ({
         url: `${BASE_PATH}/${question.id}`,
