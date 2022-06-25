@@ -64,11 +64,7 @@ const Update = () => {
       createButtonText="Update chapter"
       createButtonProps={{ loading: isUpdating }}
     >
-      <CreateAndUpdate
-        initialValues={data}
-        form={form}
-        onFinish={onFinish}
-      />
+      <CreateAndUpdate initialValues={data} form={form} onFinish={onFinish} />
       <Divider />
       <Questions exercise={data} />
     </ContentSectionWrapper>

@@ -4,9 +4,16 @@ import { Button, Modal, Row, Space, Spin, Table, Tag } from 'antd';
 import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.interface';
 import Icon from 'apps/web/dashboard/src/components/Icon';
 import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
-import { useDeleteQuestionMutation, useFindAllQuestionsQuery } from 'apps/web/dashboard/src/store/features/questions';
+import {
+  useDeleteQuestionMutation,
+  useFindAllQuestionsQuery,
+} from 'apps/web/dashboard/src/store/features/questions';
 import dayjs from 'dayjs';
-import { IPaginationLinks, IPaginationMeta, IPaginationOptions } from 'nestjs-typeorm-paginate';
+import {
+  IPaginationLinks,
+  IPaginationMeta,
+  IPaginationOptions,
+} from 'nestjs-typeorm-paginate';
 import { FC, useEffect, useState } from 'react';
 import Create from './create';
 import Update from './update';
@@ -48,7 +55,6 @@ const Questions: FC<QuestionsProps> = ({ exercise }) => {
     ...pagination,
     exercise: exercise.id,
   });
-
 
   const [deleteQuestion, { isLoading, isSuccess, isError, data }] =
     useDeleteQuestionMutation();
@@ -115,7 +121,7 @@ const Questions: FC<QuestionsProps> = ({ exercise }) => {
   }, [isSuccess, isError, data]);
 
   if (questionsLoading) {
-    return <Spin tip='loading...' />
+    return <Spin tip="loading..." />;
   }
 
   return (

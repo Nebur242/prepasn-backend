@@ -1,7 +1,10 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Question } from '@prepa-sn/shared/interfaces';
 import { Form, message, Spin } from 'antd';
-import { useFindOneQuestionQuery, useUpdateQuestionMutation } from 'apps/web/dashboard/src/store/features/questions';
+import {
+  useFindOneQuestionQuery,
+  useUpdateQuestionMutation,
+} from 'apps/web/dashboard/src/store/features/questions';
 import { FC, useEffect } from 'react';
 import CreateUpdate from './create-update';
 
@@ -13,11 +16,10 @@ const Update: FC<UpdateProps> = ({ question }) => {
   const [form] = Form.useForm();
   const { data, isLoading } = useFindOneQuestionQuery(question.id);
 
-  const [updateQuestion, {
-    isLoading: isUpdating,
-    isSuccess: isUpdated,
-    isError,
-  }] = useUpdateQuestionMutation();
+  const [
+    updateQuestion,
+    { isLoading: isUpdating, isSuccess: isUpdated, isError },
+  ] = useUpdateQuestionMutation();
 
   const onFinish = async () => {
     try {
@@ -53,7 +55,6 @@ const Update: FC<UpdateProps> = ({ question }) => {
   if (isLoading) {
     return <Spin />;
   }
-
 
   return (
     <CreateUpdate
