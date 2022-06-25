@@ -53,6 +53,10 @@ const Update = () => {
     }
   }, [isSuccess, isError]);
 
+  if (isLoading) {
+    return <Spin />;
+  }
+
   return (
     <ContentSectionWrapper
       title={`Exercise : ${data?.title}`}
@@ -60,19 +64,13 @@ const Update = () => {
       createButtonText="Update chapter"
       createButtonProps={{ loading: isUpdating }}
     >
-      {isLoading && <Spin />}
-
-      {!isLoading && (
-        <>
-          <CreateAndUpdate
-            initialValues={data}
-            form={form}
-            onFinish={onFinish}
-          />
-          <Divider />
-          <Questions exercise={data} questions={data?.questions || []} />
-        </>
-      )}
+      <CreateAndUpdate
+        initialValues={data}
+        form={form}
+        onFinish={onFinish}
+      />
+      <Divider />
+      <Questions exercise={data} />
     </ContentSectionWrapper>
   );
 };

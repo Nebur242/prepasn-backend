@@ -16,7 +16,6 @@ const Create: FC<CreateProps> = ({ exercise }) => {
   const onFinish = async () => {
     try {
       const values = await form.validateFields();
-      // console.log(values);
       createQuestion({
         ...values,
         exercise: exercise.id,

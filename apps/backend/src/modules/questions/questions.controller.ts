@@ -1,5 +1,4 @@
 import {
-  Controller,
   Get,
   Post,
   Body,
@@ -14,10 +13,11 @@ import { QuestionsService } from './questions.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
 import { Authenticated } from '../auth/roles-auth.guard';
-import { GetClaims } from '@prepa-sn/backend/common/decorators/get-decoded-token';
 import { Claims } from '@prepa-sn/backend/common/decorators/get-user.decorator';
+import { FilterDto } from './dto/filter.dto';
+import ControllerWithApiTags from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
 
-@Controller('questions')
+@ControllerWithApiTags('questions')
 export class QuestionsController {
   constructor(private readonly questionsService: QuestionsService) {}
 
@@ -38,13 +38,19 @@ export class QuestionsController {
   @Authenticated()
   findAll(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page,
-    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit,
+    @Query() filter: FilterDto
   ) {
-    return this.questionsService.paginate({
-      page,
-      limit,
-      route: '/questions',
-    });
+    return this.questionsService.paginate(
+      {
+        page,
+        limit,
+        route: '/questions',
+      },
+      {
+        exercise: filter.exercise,
+      }
+    );
   }
 
   @Get(':id')

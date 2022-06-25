@@ -7,6 +7,7 @@ import {
 import { DeepPartial, FindManyOptions } from 'typeorm';
 import { ExercisesService } from '../exercises/exercises.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
+import { FilterDto } from './dto/filter.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
 import { Question } from './entities/question.entity';
 import { QuestionsRepository } from './repositories/question.repository';
@@ -36,8 +37,13 @@ export class QuestionsService {
     return this.questionsRepository.find(filter);
   }
 
-  paginate(options: IPaginationOptions): Promise<Pagination<Question>> {
-    return paginate<Question>(this.questionsRepository, options);
+  paginate(
+    options: IPaginationOptions,
+    filter: FilterDto
+  ): Promise<Pagination<Question>> {
+    return paginate<Question>(this.questionsRepository, options, {
+      where: filter,
+    });
   }
 
   async findOne(id: number) {

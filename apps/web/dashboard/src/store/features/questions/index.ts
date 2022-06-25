@@ -23,7 +23,7 @@ const BASE_PATH = `/questions` as const;
 const TAG_TYPE = `Questions` as const;
 const NAME = 'questions' as const;
 
-export const exercisesApi = createApi({
+export const questionsApi = createApi({
   reducerPath: `${NAME}Api`,
   baseQuery: axiosBaseQuery(),
   tagTypes: [TAG_TYPE],
@@ -31,17 +31,16 @@ export const exercisesApi = createApi({
     findOneQuestion: build.query<Question, number>({
       query: (id: number) => ({ url: `${BASE_PATH}/${id}`, method: 'GET' }),
     }),
-    findAllQuestions: build.query<Pagination<Question>, IPaginationOptions>({
-      query: (
-        pagination: IPaginationOptions = {
-          page: 1,
-          limit: 10,
-        }
-      ) => {
-        const { page, limit } = pagination;
+    findAllQuestions: build.query<
+      Pagination<Question>,
+      IPaginationOptions & { exercise: number }
+    >({
+      query: (pagination: IPaginationOptions & { exercise: number }) => {
+        const { page, limit, exercise } = pagination;
         const params = new URLSearchParams({
           page: `${page}`,
           limit: `${limit}`,
+          exercise: `${exercise}`,
         }).toString();
         return {
           url: `${BASE_PATH}?${params}`,
@@ -81,8 +80,8 @@ export const exercisesApi = createApi({
       }),
       invalidatesTags: [TAG_TYPE],
     }),
-    deleteQuestion: build.mutation<Question, string>({
-      query: (id: string) => ({
+    deleteQuestion: build.mutation<Question, number>({
+      query: (id: number) => ({
         url: `${BASE_PATH}/${id}`,
         method: 'DELETE',
       }),
@@ -97,7 +96,7 @@ export const {
   useDeleteQuestionMutation,
   useFindOneQuestionQuery,
   useFindAllQuestionsQuery,
-} = exercisesApi;
+} = questionsApi;
 
 const questionsSlice = createSlice({
   name: NAME,

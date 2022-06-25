@@ -1,11 +1,13 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Exercise, Question } from '@prepa-sn/shared/interfaces';
-import { Button, Modal, Row, Space, Table, Tag } from 'antd';
+import { Button, Modal, Row, Space, Spin, Table, Tag } from 'antd';
 import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.interface';
 import Icon from 'apps/web/dashboard/src/components/Icon';
 import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
+import { useDeleteQuestionMutation, useFindAllQuestionsQuery } from 'apps/web/dashboard/src/store/features/questions';
 import dayjs from 'dayjs';
-import { FC, useState } from 'react';
+import { IPaginationLinks, IPaginationMeta, IPaginationOptions } from 'nestjs-typeorm-paginate';
+import { FC, useEffect, useState } from 'react';
 import Create from './create';
 import Update from './update';
 
@@ -21,14 +23,35 @@ const rowSelection = {
 };
 
 type QuestionsProps = {
-  questions: Question[];
+  questions?: Question[];
   exercise: Exercise;
 };
 
-const Questions: FC<QuestionsProps> = ({ questions, exercise }) => {
+const Questions: FC<QuestionsProps> = ({ exercise }) => {
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [updateModalVisible, setUpdateModalVisible] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState<Question>();
+  const [pagination, setPagination] = useState<IPaginationOptions>({
+    page: 1,
+    limit: 10,
+  });
+
+  const {
+    data: questions = {
+      items: [],
+      meta: {} as IPaginationMeta,
+      links: {} as IPaginationLinks,
+    },
+    isLoading: questionsLoading,
+    isFetching: questionsFeatching,
+  } = useFindAllQuestionsQuery({
+    ...pagination,
+    exercise: exercise.id,
+  });
+
+
+  const [deleteQuestion, { isLoading, isSuccess, isError, data }] =
+    useDeleteQuestionMutation();
 
   const columns = [
     {
@@ -75,7 +98,7 @@ const Questions: FC<QuestionsProps> = ({ questions, exercise }) => {
                 content: 'Voulez-vous vraiment supprimer cette section ?',
                 data: question,
                 onCancel: () => console.log('cancel'),
-                onOk: () => console.log('ok'),
+                onOk: () => deleteQuestion(question.id),
               } as IConfirmation<Question>)
             }
           />
@@ -83,6 +106,17 @@ const Questions: FC<QuestionsProps> = ({ questions, exercise }) => {
       ),
     },
   ];
+
+  useEffect(() => {
+    if (isSuccess) {
+      setCreateModalVisible(false);
+      setUpdateModalVisible(false);
+    }
+  }, [isSuccess, isError, data]);
+
+  if (questionsLoading) {
+    return <Spin tip='loading...' />
+  }
 
   return (
     <div>
@@ -96,12 +130,13 @@ const Questions: FC<QuestionsProps> = ({ questions, exercise }) => {
         </Button>
       </Row>
       <Table
+        loading={isLoading}
         rowSelection={{
           type: 'checkbox',
           ...rowSelection,
         }}
         columns={columns}
-        dataSource={questions?.map((q: Question) => ({
+        dataSource={questions.items?.map((q: Question) => ({
           ...q,
           key: q.id,
         }))}
