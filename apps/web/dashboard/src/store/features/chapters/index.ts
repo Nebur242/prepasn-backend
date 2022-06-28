@@ -2,6 +2,7 @@ import { Status } from '@prepa-sn/shared/enums';
 import { Chapter } from '@prepa-sn/shared/interfaces';
 import { createSlice } from '@reduxjs/toolkit';
 import { createApi } from '@reduxjs/toolkit/dist/query/react';
+import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import { axiosBaseQuery } from '../../../config/api.config';
 
 export interface ChaptersInitialState {
@@ -18,27 +19,46 @@ const initialState: ChaptersInitialState = {
   chapters: [],
 };
 
+const NAME = 'chapters' as const;
+const BASE_PATH = `/${NAME}` as const;
+const TAG_TYPE = `Chapters` as const;
+
 export const chaptersApi = createApi({
-  reducerPath: 'chaptersApi',
+  reducerPath: `${NAME}Api`,
   baseQuery: axiosBaseQuery(),
-  tagTypes: ['Chapters'],
+  tagTypes: [TAG_TYPE],
   endpoints: (build) => ({
     findOneChapter: build.query<Chapter, string>({
-      query: (id: string) => ({ url: `/chapters/${id}`, method: 'GET' }),
+      query: (id: string) => ({ url: `${BASE_PATH}/${id}`, method: 'GET' }),
     }),
-    findAllChapters: build.query<Chapter[], void>({
-      query: () => ({ url: '/chapters', method: 'GET' }),
+    findAllChapters: build.query<
+      Pagination<Chapter>,
+      IPaginationOptions & { course: string }
+    >({
+      query: (pagination: IPaginationOptions & { course: string }) => {
+        const { page, limit, course } = pagination;
+        const params = new URLSearchParams({
+          page: `${page}`,
+          limit: `${limit}`,
+          course: `${course}`,
+        }).toString();
+
+        return {
+          url: `${BASE_PATH}?${params}`,
+          method: 'GET',
+        };
+      },
       providesTags: (result, _error, _arg) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const final: any[] = [
           {
-            type: 'Chapters',
+            type: TAG_TYPE,
           },
         ];
         return [
           ...final,
-          ...(result?.map((chapter) => ({
-            type: 'Chapters',
+          ...(result.items?.map((chapter) => ({
+            type: TAG_TYPE,
             id: chapter.id,
           })) || []),
         ];
@@ -46,28 +66,28 @@ export const chaptersApi = createApi({
     }),
     createChapter: build.mutation<Chapter, Omit<Chapter, 'id'>>({
       query: (chapter: Omit<Chapter, 'id'>) => ({
-        url: '/chapters',
+        url: `${BASE_PATH}`,
         method: 'POST',
         data: chapter,
       }),
-      invalidatesTags: ['Chapters'],
+      invalidatesTags: [TAG_TYPE],
     }),
     updateChapter: build.mutation<Chapter, Chapter>({
       query: (chapter: Chapter) => ({
-        url: `/chapters/${chapter.id}`,
+        url: `${BASE_PATH}/${chapter.id}`,
         method: 'PATCH',
         data: chapter,
       }),
       invalidatesTags: (_result, _error, arg) => [
-        { type: 'Chapters', id: arg.id },
+        { type: TAG_TYPE, id: arg.id },
       ],
     }),
     deleteChapter: build.mutation<Chapter, number>({
       query: (id: number) => ({
-        url: `/chapters/${id}`,
+        url: `${BASE_PATH}/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['Chapters'],
+      invalidatesTags: [TAG_TYPE],
     }),
   }),
 });
@@ -81,7 +101,7 @@ export const {
 } = chaptersApi;
 
 const chapterSlice = createSlice({
-  name: 'chapters',
+  name: TAG_TYPE,
   initialState,
   reducers: {},
   extraReducers: {},

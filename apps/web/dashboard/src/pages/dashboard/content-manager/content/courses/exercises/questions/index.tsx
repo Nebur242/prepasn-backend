@@ -38,7 +38,7 @@ const Questions: FC<QuestionsProps> = ({ exercise }) => {
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [updateModalVisible, setUpdateModalVisible] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState<Question>();
-  const [pagination, setPagination] = useState<IPaginationOptions>({
+  const [pagination,] = useState<IPaginationOptions>({
     page: 1,
     limit: 10,
   });
@@ -163,7 +163,7 @@ const Questions: FC<QuestionsProps> = ({ exercise }) => {
         onCancel={() => setUpdateModalVisible(false)}
         footer={null}
       >
-        <Update exercise={exercise} question={currentQuestion} />
+        <Update question={currentQuestion} />
       </Modal>
     </div>
   );

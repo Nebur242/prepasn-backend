@@ -5,10 +5,11 @@ import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.i
 import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
 import Icon from 'apps/web/dashboard/src/components/Icon';
 import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
-import { useDeleteChapterMutation } from 'apps/web/dashboard/src/store/features/chapters';
+import { useDeleteChapterMutation, useFindAllChaptersQuery } from 'apps/web/dashboard/src/store/features/chapters';
 import { useFindOneCourseQuery } from 'apps/web/dashboard/src/store/features/courses';
 import dayjs from 'dayjs';
-import { useEffect } from 'react';
+import { IPaginationLinks, IPaginationMeta, IPaginationOptions } from 'nestjs-typeorm-paginate';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 
 const rowSelection = {
@@ -23,12 +24,30 @@ const rowSelection = {
 };
 
 const Chapters = () => {
+  const [pagination,] = useState<IPaginationOptions>({
+    page: 1,
+    limit: 10,
+  });
+
+
   const { courseId } = useParams<{ courseId: string }>();
   const navigate = useNavigate();
-
-  const { data, isLoading } = useFindOneCourseQuery(courseId);
-
+  const { data: course, isLoading: courseLoading } = useFindOneCourseQuery(courseId);
   const [deleteChapter, { isSuccess, isError }] = useDeleteChapterMutation();
+
+
+  const {
+    data: chapters = {
+      items: [],
+      meta: {} as IPaginationMeta,
+      links: {} as IPaginationLinks,
+    },
+    isLoading,
+    isFetching,
+  } = useFindAllChaptersQuery({
+    ...pagination,
+    course: courseId,
+  });
 
   const columns = [
     {
@@ -49,12 +68,6 @@ const Chapters = () => {
         </Tag>
       ),
     },
-
-    {
-      title: 'Course',
-      render: () => <span>{data?.title}</span>,
-    },
-
     {
       title: 'Exercices',
       render: (_, chapter: Chapter) => (
@@ -113,7 +126,7 @@ const Chapters = () => {
 
   return (
     <ContentSectionWrapper
-      title={`Chapters : Course ${data?.title ? data.title : ''}`}
+      title={courseLoading ? 'Loading...' : `Chapters : ${course.title}`}
       description="All Chapters"
       createButtonText="Add a new chapter"
       onCreate={() => navigate('create')}
@@ -123,9 +136,9 @@ const Chapters = () => {
           type: 'checkbox',
           ...rowSelection,
         }}
-        loading={isLoading}
+        loading={isLoading || isFetching}
         columns={columns}
-        dataSource={data?.chapters?.map((chapter: Chapter) => ({
+        dataSource={chapters.items?.map((chapter: Chapter) => ({
           ...chapter,
           key: chapter.id,
         }))}
