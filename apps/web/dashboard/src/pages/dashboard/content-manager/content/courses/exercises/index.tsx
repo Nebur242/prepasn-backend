@@ -6,7 +6,10 @@ import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-sec
 import Icon from 'apps/web/dashboard/src/components/Icon';
 import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
 import { useFindOneChapterQuery } from 'apps/web/dashboard/src/store/features/chapters';
+import { useFindAllExercisesQuery } from 'apps/web/dashboard/src/store/features/exercises';
 import dayjs from 'dayjs';
+import { IPaginationLinks, IPaginationMeta, IPaginationOptions } from 'nestjs-typeorm-paginate';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const rowSelection = {
@@ -26,7 +29,25 @@ const Exercises = () => {
     chapterId: string;
   }>();
 
-  const { data, isLoading, isFetching } = useFindOneChapterQuery(chapterId);
+  const [pagination, setPagination] = useState<IPaginationOptions>({
+    page: 1,
+    limit: 10,
+  });
+
+  const { data, isLoading } = useFindOneChapterQuery(chapterId);
+
+  const {
+    data: exercises = {
+      items: [],
+      meta: {} as IPaginationMeta,
+      links: {} as IPaginationLinks,
+    },
+    isLoading: exercisesLoading,
+    isFetching: exercisesFetching,
+  } = useFindAllExercisesQuery({
+    ...pagination,
+    chapter: chapterId,
+  });
 
   const navigate = useNavigate();
 
@@ -96,7 +117,7 @@ const Exercises = () => {
 
   return (
     <ContentSectionWrapper
-      title={`Chapiter : ${data?.title ? data.title : ''}`}
+      title={isLoading ? 'Loading...' : `Chapiter : ${data?.title ? data.title : ''}`}
       description="All exercises"
       createButtonText="Add a new exercise"
       onCreate={() => navigate('create')}
@@ -106,12 +127,21 @@ const Exercises = () => {
           type: 'checkbox',
           ...rowSelection,
         }}
-        loading={isLoading || isFetching}
+        loading={exercisesLoading || exercisesFetching}
         columns={columns}
-        dataSource={data?.exercises?.map((exercise: Exercise) => ({
+        dataSource={exercises?.items?.map((exercise: Exercise) => ({
           ...exercise,
           key: exercise.id,
         }))}
+        pagination={{
+          defaultCurrent: 1,
+          total: exercises?.meta.total,
+          showSizeChanger: true,
+          showQuickJumper: true,
+          onChange: (page: number, pageSize: number) => {
+            setPagination({ ...pagination, page, limit: pageSize });
+          },
+        }}
       />
     </ContentSectionWrapper>
   );

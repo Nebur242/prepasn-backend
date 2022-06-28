@@ -31,17 +31,16 @@ export const exercisesApi = createApi({
     findOneExercise: build.query<Exercise, string>({
       query: (id: string) => ({ url: `${BASE_PATH}/${id}`, method: 'GET' }),
     }),
-    findAllExercises: build.query<Pagination<Exercise>, IPaginationOptions>({
-      query: (
-        pagination: IPaginationOptions = {
-          page: 1,
-          limit: 10,
-        }
-      ) => {
-        const { page, limit } = pagination;
+    findAllExercises: build.query<
+      Pagination<Exercise>,
+      IPaginationOptions & { chapter: string }
+    >({
+      query: (pagination) => {
+        const { page, limit, chapter } = pagination;
         const params = new URLSearchParams({
           page: `${page}`,
           limit: `${limit}`,
+          chapter: `${chapter}`,
         }).toString();
         return {
           url: `${BASE_PATH}?${params}`,

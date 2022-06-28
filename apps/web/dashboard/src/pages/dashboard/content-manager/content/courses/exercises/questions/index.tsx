@@ -38,7 +38,7 @@ const Questions: FC<QuestionsProps> = ({ exercise }) => {
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [updateModalVisible, setUpdateModalVisible] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState<Question>();
-  const [pagination,] = useState<IPaginationOptions>({
+  const [pagination, setPagination] = useState<IPaginationOptions>({
     page: 1,
     limit: 10,
   });
@@ -50,7 +50,6 @@ const Questions: FC<QuestionsProps> = ({ exercise }) => {
       links: {} as IPaginationLinks,
     },
     isLoading: questionsLoading,
-    isFetching: questionsFeatching,
   } = useFindAllQuestionsQuery({
     ...pagination,
     exercise: exercise.id,
@@ -146,6 +145,15 @@ const Questions: FC<QuestionsProps> = ({ exercise }) => {
           ...q,
           key: q.id,
         }))}
+        pagination={{
+          defaultCurrent: 1,
+          total: questions?.meta.total,
+          showSizeChanger: true,
+          showQuickJumper: true,
+          onChange: (page: number, pageSize: number) => {
+            setPagination({ ...pagination, page, limit: pageSize });
+          },
+        }}
       />
       <Modal
         width={`60vw`}
