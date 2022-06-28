@@ -14,12 +14,12 @@ import { ChaptersService } from './chapters.service';
 import { CreateChapterDto } from './dto/create-chapter.dto';
 import { UpdateChapterDto } from './dto/update-chapter.dto';
 import { Chapter } from './entities/chapter.entity';
-import Controller from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
 import { Claims } from '@prepa-sn/backend/common/decorators/get-user.decorator';
 import { FilterDto } from './dto/filter.dto';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
+import ControllerWithApiTags from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
 
-@Controller('chapters')
+@ControllerWithApiTags('chapters')
 export class ChaptersController {
   constructor(private readonly chaptersService: ChaptersService) {}
 
