@@ -12,11 +12,12 @@ import {
 import { ExercisesService } from './exercises.service';
 import { CreateExerciseDto } from './dto/create-exercise.dto';
 import { UpdateExerciseDto } from './dto/update-exercise.dto';
-import { Pagination } from 'nestjs-typeorm-paginate';
+import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import { Exercise } from './entities/exercise.entity';
 import ControllerWithApiTags from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
 import { Authenticated } from '../auth/roles-auth.guard';
 import { Claims } from '@prepa-sn/backend/common/decorators/get-user.decorator';
+import { FilterDto } from './dto/filter.dto';
 
 @ControllerWithApiTags('exercises')
 export class ExercisesController {
@@ -38,14 +39,17 @@ export class ExercisesController {
   @Get()
   @Authenticated()
   findAll(
-    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page,
-    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit
+    @Query() filterDto: FilterDto & IPaginationOptions
   ): Promise<Pagination<Exercise>> {
-    return this.exercisesService.paginate({
-      page,
-      limit,
-      route: '/exercises',
-    });
+    const { page = 0, limit = 10, ...filter } = filterDto;
+    return this.exercisesService.paginate(
+      {
+        page,
+        limit,
+        route: '/exercises',
+      },
+      filter
+    );
   }
 
   @Get(':id')
