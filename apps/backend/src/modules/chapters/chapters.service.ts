@@ -1,7 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  IPaginationOptions,
+  paginate,
+  Pagination,
+} from 'nestjs-typeorm-paginate';
 import { DeepPartial, FindManyOptions } from 'typeorm';
 import { CoursesService } from '../courses/courses.service';
 import { CreateChapterDto } from './dto/create-chapter.dto';
+import { FilterDto } from './dto/filter.dto';
 import { UpdateChapterDto } from './dto/update-chapter.dto';
 import { Chapter } from './entities/chapter.entity';
 import { ChaptersRepository } from './repositories/chapter.repository';
@@ -29,6 +35,15 @@ export class ChaptersService {
 
   findAll(filter: FindManyOptions<Chapter> = {}): Promise<Chapter[]> {
     return this.chaptersRepository.find(filter);
+  }
+
+  paginate(
+    options: IPaginationOptions,
+    filter: FilterDto
+  ): Promise<Pagination<Chapter>> {
+    return paginate<Chapter>(this.chaptersRepository, options, {
+      where: filter,
+    });
   }
 
   async findOne(id: number): Promise<Chapter> {

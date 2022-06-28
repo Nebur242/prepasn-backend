@@ -6,6 +6,7 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { Admin, Authenticated } from '../auth/roles-auth.guard';
@@ -14,8 +15,9 @@ import { CreateChapterDto } from './dto/create-chapter.dto';
 import { UpdateChapterDto } from './dto/update-chapter.dto';
 import { Chapter } from './entities/chapter.entity';
 import Controller from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
-import { GetClaims } from '@prepa-sn/backend/common/decorators/get-decoded-token';
 import { Claims } from '@prepa-sn/backend/common/decorators/get-user.decorator';
+import { FilterDto } from './dto/filter.dto';
+import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 
 @Controller('chapters')
 export class ChaptersController {
@@ -38,8 +40,18 @@ export class ChaptersController {
   @Get()
   @Authenticated()
   @ApiOkResponse({ type: Chapter, isArray: true })
-  findAll(): Promise<Chapter[]> {
-    return this.chaptersService.findAll();
+  findAll(
+    @Query() filterDto: FilterDto & IPaginationOptions
+  ): Promise<Pagination<Chapter>> {
+    const { page = 0, limit = 10, ...filter } = filterDto;
+    return this.chaptersService.paginate(
+      {
+        page,
+        limit,
+        route: '/chapters',
+      },
+      filter
+    );
   }
 
   @Get(':id')

@@ -16,6 +16,7 @@ import { Authenticated } from '../auth/roles-auth.guard';
 import { Claims } from '@prepa-sn/backend/common/decorators/get-user.decorator';
 import { FilterDto } from './dto/filter.dto';
 import ControllerWithApiTags from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 
 @ControllerWithApiTags('questions')
 export class QuestionsController {
@@ -36,20 +37,15 @@ export class QuestionsController {
 
   @Get()
   @Authenticated()
-  findAll(
-    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page,
-    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit,
-    @Query() filter: FilterDto
-  ) {
+  findAll(@Query() filterDto: FilterDto & IPaginationOptions) {
+    const { page = 0, limit = 10, ...filter } = filterDto;
     return this.questionsService.paginate(
       {
         page,
         limit,
         route: '/questions',
       },
-      {
-        exercise: filter.exercise,
-      }
+      filter
     );
   }
 
