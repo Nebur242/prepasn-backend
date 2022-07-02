@@ -17,7 +17,6 @@ import { Admin, Authenticated } from '../auth/roles-auth.guard';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { Classroom } from './entities/classroom.entity';
 import { Pagination } from 'nestjs-typeorm-paginate';
-import { GetClaims } from '@prepa-sn/backend/common/decorators/get-decoded-token';
 import { Claims } from '@prepa-sn/backend/common/decorators/get-user.decorator';
 
 @Controller('classrooms')

@@ -15,7 +15,6 @@ import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { Course } from './entities/course.entity';
 import Controller from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
-import { GetClaims } from '@prepa-sn/backend/common/decorators/get-decoded-token';
 import { Claims } from '@prepa-sn/backend/common/decorators/get-user.decorator';
 
 @Controller('courses')
