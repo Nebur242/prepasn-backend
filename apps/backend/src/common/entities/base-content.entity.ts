@@ -1,4 +1,5 @@
 import { Document } from '@prepa-sn/backend/modules/documents/entities/document.entity';
+import { User } from '@prepa-sn/backend/modules/users/entities/user.entity';
 import { LANGUAGE, Status } from '@prepa-sn/shared/enums';
 import {
   Column,
@@ -33,11 +34,11 @@ export abstract class BaseContent {
   @JoinColumn()
   video?: Document | null;
 
-  @Column({ nullable: true, default: null })
-  createdBy: string;
+  @ManyToOne(() => User)
+  createdBy: User;
 
-  @Column({ nullable: true, default: null })
-  updatedBy: string;
+  @ManyToOne(() => User)
+  updatedBy: User;
 
   @CreateDateColumn()
   createdAt: Date;
