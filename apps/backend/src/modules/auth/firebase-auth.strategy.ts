@@ -2,12 +2,16 @@ import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-firebase-jwt';
 import { FirebaseService } from '../firebase/firebase.service';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class FirebaseAuthStrategy extends PassportStrategy(Strategy) {
   private logger = new Logger('FirebaseAuthStrategy');
 
-  constructor(private readonly firebaseService: FirebaseService) {
+  constructor(
+    private readonly firebaseService: FirebaseService,
+    private readonly usersService: UsersService
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     });
@@ -17,7 +21,15 @@ export class FirebaseAuthStrategy extends PassportStrategy(Strategy) {
     try {
       const user = await this.firebaseService.verifyToken(token);
       if (!user) throw new UnauthorizedException("User doesn't exist");
-      return user;
+      const currentUser = await this.usersService.getOne({
+        where: {
+          uid: user.uid,
+        },
+      });
+      return {
+        ...currentUser,
+        roles: user.roles,
+      };
     } catch (error) {
       this.logger.error(error);
       throw new UnauthorizedException('Invalid token');
