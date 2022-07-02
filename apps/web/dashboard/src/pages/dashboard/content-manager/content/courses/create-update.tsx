@@ -38,7 +38,7 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
   form,
   initialValues,
 }) => {
-  const [pagination, setPagination] = useState<IPaginationOptions>({
+  const [pagination,] = useState<IPaginationOptions>({
     page: 1,
     limit: 10,
   });

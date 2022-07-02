@@ -1,3 +1,4 @@
+/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Exercise } from '@prepa-sn/shared/interfaces';
 import { Form, message } from 'antd';
 import { useCreateQuestionMutation } from 'apps/web/dashboard/src/store/features/questions';

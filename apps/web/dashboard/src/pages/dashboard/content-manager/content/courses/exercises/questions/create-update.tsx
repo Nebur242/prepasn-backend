@@ -1,3 +1,4 @@
+/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Document, Question } from '@prepa-sn/shared/interfaces';
 import { Button, Checkbox, Col, Form, FormInstance, Input, Row } from 'antd';
 import AppUpload from 'apps/web/dashboard/src/components/upload';

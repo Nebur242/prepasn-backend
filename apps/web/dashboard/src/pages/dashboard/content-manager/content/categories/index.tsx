@@ -1,3 +1,4 @@
+/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Category } from '@prepa-sn/shared/interfaces';
 import { Button, Space, Table, Tag } from 'antd';
 import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.interface';
