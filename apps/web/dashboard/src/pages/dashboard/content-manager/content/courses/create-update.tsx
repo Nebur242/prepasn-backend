@@ -1,4 +1,3 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import {
   Col,
   Form,
@@ -10,19 +9,21 @@ import {
   Select,
   Divider,
 } from 'antd';
+
 import {
   IPaginationLinks,
   IPaginationMeta,
   IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
-import ContentWithSider from 'apps/web/dashboard/src/components/content-with-sider';
-import AppUpload from 'apps/web/dashboard/src/components/upload';
+
+import ContentWithSider from '@prepa-sn/dashboard/components/content-with-sider';
+import AppUpload from '@prepa-sn/dashboard/components/upload';
 import { Course, Document } from '@prepa-sn/shared/interfaces';
 import { CKEditor } from 'ckeditor4-react';
 import { FC, useState } from 'react';
-import { useFindAllGradesQuery } from 'apps/web/dashboard/src/store/features/grades';
+import { useFindAllGradesQuery } from '@prepa-sn/dashboard/store/features/grades';
 import dayjs from 'dayjs';
-import { useFindAllCategoriesQuery } from 'apps/web/dashboard/src/store/features/categories';
+import { useFindAllCategoriesQuery } from '@prepa-sn/dashboard/store/features/categories';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -38,7 +39,7 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
   form,
   initialValues,
 }) => {
-  const [pagination,] = useState<IPaginationOptions>({
+  const [pagination] = useState<IPaginationOptions>({
     page: 1,
     limit: 10,
   });
