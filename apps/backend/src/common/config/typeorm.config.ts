@@ -9,6 +9,7 @@ import { Instructor } from '@prepa-sn/backend/modules/instructors/entities/instr
 import { Student } from '@prepa-sn/backend/modules/students/entities/student.entity';
 import { Exercise } from '@prepa-sn/backend/modules/exercises/entities/exercise.entity';
 import { Question } from '@prepa-sn/backend/modules/questions/entities/question.entity';
+import { User } from '@prepa-sn/backend/modules/users/entities/user.entity';
 
 export default {
   type: process.env.DB_TYPE,
@@ -32,5 +33,6 @@ export default {
     Category,
     Exercise,
     Question,
+    User,
   ],
 };
