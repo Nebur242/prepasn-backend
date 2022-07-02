@@ -8,7 +8,11 @@ import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
 import { useFindOneChapterQuery } from 'apps/web/dashboard/src/store/features/chapters';
 import { useFindAllExercisesQuery } from 'apps/web/dashboard/src/store/features/exercises';
 import dayjs from 'dayjs';
-import { IPaginationLinks, IPaginationMeta, IPaginationOptions } from 'nestjs-typeorm-paginate';
+import {
+  IPaginationLinks,
+  IPaginationMeta,
+  IPaginationOptions,
+} from 'nestjs-typeorm-paginate';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -117,7 +121,9 @@ const Exercises = () => {
 
   return (
     <ContentSectionWrapper
-      title={isLoading ? 'Loading...' : `Chapiter : ${data?.title ? data.title : ''}`}
+      title={
+        isLoading ? 'Loading...' : `Chapiter : ${data?.title ? data.title : ''}`
+      }
       description="All exercises"
       createButtonText="Add a new exercise"
       onCreate={() => navigate('create')}

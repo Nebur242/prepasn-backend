@@ -5,10 +5,17 @@ import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.i
 import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
 import Icon from 'apps/web/dashboard/src/components/Icon';
 import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
-import { useDeleteChapterMutation, useFindAllChaptersQuery } from 'apps/web/dashboard/src/store/features/chapters';
+import {
+  useDeleteChapterMutation,
+  useFindAllChaptersQuery,
+} from 'apps/web/dashboard/src/store/features/chapters';
 import { useFindOneCourseQuery } from 'apps/web/dashboard/src/store/features/courses';
 import dayjs from 'dayjs';
-import { IPaginationLinks, IPaginationMeta, IPaginationOptions } from 'nestjs-typeorm-paginate';
+import {
+  IPaginationLinks,
+  IPaginationMeta,
+  IPaginationOptions,
+} from 'nestjs-typeorm-paginate';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 
@@ -24,17 +31,16 @@ const rowSelection = {
 };
 
 const Chapters = () => {
-  const [pagination,] = useState<IPaginationOptions>({
+  const [pagination] = useState<IPaginationOptions>({
     page: 1,
     limit: 10,
   });
 
-
   const { courseId } = useParams<{ courseId: string }>();
   const navigate = useNavigate();
-  const { data: course, isLoading: courseLoading } = useFindOneCourseQuery(courseId);
+  const { data: course, isLoading: courseLoading } =
+    useFindOneCourseQuery(courseId);
   const [deleteChapter, { isSuccess, isError }] = useDeleteChapterMutation();
-
 
   const {
     data: chapters = {
