@@ -38,22 +38,4 @@ export class CreateBaseContentDto {
   @IsOptional()
   @Type(() => Document)
   video?: Document;
-
-  @ApiProperty({
-    description: 'The uid of the user who created the content',
-    required: true,
-  })
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  createdBy?: string;
-
-  @ApiProperty({
-    description: 'The uid of the user who updated the content',
-    required: true,
-  })
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  updatedBy?: string;
 }
