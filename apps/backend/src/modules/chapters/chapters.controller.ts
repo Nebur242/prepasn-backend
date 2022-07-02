@@ -18,6 +18,7 @@ import { Claims } from '@prepa-sn/backend/common/decorators/get-user.decorator';
 import { FilterDto } from './dto/filter.dto';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import ControllerWithApiTags from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
+import { User } from '../users/entities/user.entity';
 
 @ControllerWithApiTags('chapters')
 export class ChaptersController {
@@ -27,13 +28,12 @@ export class ChaptersController {
   @Admin()
   @ApiOkResponse({ type: Chapter, isArray: false })
   create(
-    @Claims('uid') uid: string,
+    @Claims() user: User,
     @Body() createChapterDto: CreateChapterDto
   ): Promise<Chapter> {
     return this.chaptersService.create({
       ...createChapterDto,
-      createdBy: uid,
-      updatedBy: uid,
+      createdBy: user,
     });
   }
 
@@ -65,13 +65,13 @@ export class ChaptersController {
   @Admin()
   @ApiOkResponse({ type: Chapter, isArray: false })
   update(
-    @Claims('uid') uid: string,
+    @Claims() user: User,
     @Param('id', ParseIntPipe) id: number,
     @Body() updateChapterDto: UpdateChapterDto
   ): Promise<Chapter> {
     return this.chaptersService.update(id, {
       ...updateChapterDto,
-      updatedBy: uid,
+      updatedBy: user,
     });
   }
 

@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { DeepPartial, FindManyOptions } from 'typeorm';
+import { User } from '../users/entities/user.entity';
 import { CreateGradeDto } from './dto/create-grade.dto';
 import { UpdateGradeDto } from './dto/update-grade.dto';
 import { Grade } from './entities/grade.entity';
@@ -13,7 +14,11 @@ export class GradesService {
     return this.gradesRepository.create(entityLike);
   }
 
-  async create(createGradeDto: CreateGradeDto): Promise<Grade> {
+  async create(
+    createGradeDto: CreateGradeDto & {
+      createdBy: User;
+    }
+  ): Promise<Grade> {
     const grade = this.createEntity({
       ...createGradeDto,
       parent: {
@@ -32,13 +37,26 @@ export class GradesService {
 
   async findOne(id: number): Promise<Grade> {
     const grade = await this.gradesRepository.findOne(id, {
-      relations: ['parent', 'courses', 'children', 'image', 'video'],
+      relations: [
+        'parent',
+        'courses',
+        'children',
+        'image',
+        'video',
+        'createdBy',
+        'updatedBy',
+      ],
     });
     if (!grade) throw new NotFoundException(`Grade with id ${id} not found`);
     return grade;
   }
 
-  async update(id: number, updateGradeDto: UpdateGradeDto): Promise<Grade> {
+  async update(
+    id: number,
+    updateGradeDto: UpdateGradeDto & {
+      updatedBy: User;
+    }
+  ): Promise<Grade> {
     const grade = await this.findOne(id);
     await this.gradesRepository.update(grade.id, {
       ...updateGradeDto,

@@ -10,9 +10,9 @@ import {
   Query,
 } from '@nestjs/common';
 import ControllerWithApiTags from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
-import { GetClaims } from '@prepa-sn/backend/common/decorators/get-decoded-token';
 import { Claims } from '@prepa-sn/backend/common/decorators/get-user.decorator';
 import { Admin, Authenticated } from '../auth/roles-auth.guard';
+import { User } from '../users/entities/user.entity';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
@@ -23,14 +23,10 @@ export class CategoriesController {
 
   @Post()
   @Admin()
-  create(
-    @Claims('uid') uid: string,
-    @Body() createCategoryDto: CreateCategoryDto
-  ) {
+  create(@Claims() user: User, @Body() createCategoryDto: CreateCategoryDto) {
     return this.categoriesService.create({
       ...createCategoryDto,
-      createdBy: uid,
-      updatedBy: uid,
+      createdBy: user,
     });
   }
 
@@ -56,13 +52,13 @@ export class CategoriesController {
   @Patch(':id')
   @Admin()
   update(
-    @Claims('uid') uid: string,
+    @Claims() user: User,
     @Param('id', ParseIntPipe) id: number,
     @Body() updateCategoryDto: UpdateCategoryDto
   ) {
     return this.categoriesService.update(id, {
       ...updateCategoryDto,
-      updatedBy: uid,
+      updatedBy: user,
     });
   }
 

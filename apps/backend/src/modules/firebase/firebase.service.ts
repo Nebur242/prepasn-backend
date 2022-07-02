@@ -34,6 +34,11 @@ export class FirebaseService {
   }
 
   @CatchFirebaseException()
+  getUser(uid: string) {
+    return getAuth().getUser(uid);
+  }
+
+  @CatchFirebaseException()
   setRoles(uid: string, roles: Role[]) {
     return getAuth().setCustomUserClaims(uid, { roles });
   }

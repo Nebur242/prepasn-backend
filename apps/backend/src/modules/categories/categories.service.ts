@@ -5,6 +5,7 @@ import {
   Pagination,
 } from 'nestjs-typeorm-paginate';
 import { DeepPartial, FindManyOptions } from 'typeorm';
+import { User } from '../users/entities/user.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
@@ -18,7 +19,11 @@ export class CategoriesService {
     return this.categoriesRepository.create(createCategoryDto);
   }
 
-  create(createCategoryDto: CreateCategoryDto): Promise<Category> {
+  create(
+    createCategoryDto: CreateCategoryDto & {
+      createdBy: User | null;
+    }
+  ): Promise<Category> {
     const category = this.createEntity(createCategoryDto);
     return this.categoriesRepository.save(category);
   }
@@ -40,7 +45,12 @@ export class CategoriesService {
     return category;
   }
 
-  async update(id: number, updateCategoryDto: UpdateCategoryDto) {
+  async update(
+    id: number,
+    updateCategoryDto: UpdateCategoryDto & {
+      updatedBy: User | null;
+    }
+  ) {
     const category = await this.findOne(id);
     await this.categoriesRepository.update(category.id, {
       ...updateCategoryDto,

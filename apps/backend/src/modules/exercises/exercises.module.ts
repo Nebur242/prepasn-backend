@@ -4,9 +4,14 @@ import { ExercisesController } from './exercises.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ExercisesRepository } from './repositories/exercise.repository';
 import { ChaptersModule } from '../chapters/chapters.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ExercisesRepository]), ChaptersModule],
+  imports: [
+    AuthModule,
+    TypeOrmModule.forFeature([ExercisesRepository]),
+    ChaptersModule,
+  ],
   controllers: [ExercisesController],
   providers: [ExercisesService],
   exports: [ExercisesService],

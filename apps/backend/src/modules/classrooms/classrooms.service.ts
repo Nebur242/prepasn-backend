@@ -5,6 +5,7 @@ import {
   Pagination,
 } from 'nestjs-typeorm-paginate';
 import { DeepPartial, FindManyOptions } from 'typeorm';
+import { User } from '../users/entities/user.entity';
 import { CreateClassroomDto } from './dto/create-classroom.dto';
 import { UpdateClassroomDto } from './dto/update-classroom.dto';
 import { Classroom } from './entities/classroom.entity';
@@ -18,8 +19,13 @@ export class ClassroomsService {
     return this.classroomsRepository.create(entityLike);
   }
 
-  create(createClassroomDto: CreateClassroomDto): Promise<Classroom> {
-    const classroom = this.createEntity(createClassroomDto);
+  create(
+    createClassroomDto: CreateClassroomDto & { createdBy: User }
+  ): Promise<Classroom> {
+    const classroom = this.createEntity({
+      ...createClassroomDto,
+      createdBy: createClassroomDto.createdBy,
+    });
     return this.classroomsRepository.save(classroom);
   }
 
@@ -44,7 +50,7 @@ export class ClassroomsService {
 
   async update(
     id: number,
-    updateClassroomDto: UpdateClassroomDto
+    updateClassroomDto: UpdateClassroomDto & { updatedBy: User }
   ): Promise<Classroom> {
     const classroom = await this.findOne(id);
     await this.classroomsRepository.update(classroom.id, updateClassroomDto);

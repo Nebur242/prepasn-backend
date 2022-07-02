@@ -17,6 +17,7 @@ import { Claims } from '@prepa-sn/backend/common/decorators/get-user.decorator';
 import { FilterDto } from './dto/filter.dto';
 import ControllerWithApiTags from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
+import { User } from '../users/entities/user.entity';
 
 @ControllerWithApiTags('questions')
 export class QuestionsController {
@@ -25,13 +26,12 @@ export class QuestionsController {
   @Post()
   @Authenticated()
   create(
-    @Claims('uid') uid: string,
+    @Claims() createdBy: User,
     @Body() createQuestionDto: CreateQuestionDto
   ) {
     return this.questionsService.create({
       ...createQuestionDto,
-      createdBy: uid,
-      updatedBy: uid,
+      createdBy,
     });
   }
 
@@ -58,13 +58,13 @@ export class QuestionsController {
   @Patch(':id')
   @Authenticated()
   update(
-    @Claims('uid') uid: string,
+    @Claims() updatedBy: User,
     @Param('id', ParseIntPipe) id: number,
     @Body() updateQuestionDto: UpdateQuestionDto
   ) {
     return this.questionsService.update(id, {
       ...updateQuestionDto,
-      updatedBy: uid,
+      updatedBy,
     });
   }
 

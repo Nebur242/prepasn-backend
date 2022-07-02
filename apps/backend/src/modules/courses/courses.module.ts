@@ -6,9 +6,11 @@ import { CoursesRepository } from './repositories/course.repository';
 import { GradesModule } from '../grades/grades.module';
 import { DocumentsModule } from '../documents/documents.module';
 import { CategoriesModule } from '../categories/categories.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [
+    AuthModule,
     TypeOrmModule.forFeature([CoursesRepository]),
     GradesModule,
     DocumentsModule,

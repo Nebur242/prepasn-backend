@@ -18,6 +18,7 @@ import ControllerWithApiTags from '@prepa-sn/backend/common/decorators/controlle
 import { Authenticated } from '../auth/roles-auth.guard';
 import { Claims } from '@prepa-sn/backend/common/decorators/get-user.decorator';
 import { FilterDto } from './dto/filter.dto';
+import { User } from '../users/entities/user.entity';
 
 @ControllerWithApiTags('exercises')
 export class ExercisesController {
@@ -26,13 +27,12 @@ export class ExercisesController {
   @Post()
   @Authenticated()
   create(
-    @Claims('uid') uid: string,
+    @Claims() createdBy: User,
     @Body() createExerciseDto: CreateExerciseDto
   ) {
     return this.exercisesService.create({
       ...createExerciseDto,
-      createdBy: uid,
-      updatedBy: uid,
+      createdBy,
     });
   }
 
@@ -61,13 +61,13 @@ export class ExercisesController {
   @Patch(':id')
   @Authenticated()
   update(
-    @Claims('uid') uid: string,
+    @Claims() updatedBy: User,
     @Param('id', ParseIntPipe) id: number,
     @Body() updateExerciseDto: UpdateExerciseDto
   ) {
     return this.exercisesService.update(id, {
       ...updateExerciseDto,
-      updatedBy: uid,
+      updatedBy,
     });
   }
 

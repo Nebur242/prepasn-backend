@@ -6,6 +6,7 @@ import {
 } from 'nestjs-typeorm-paginate';
 import { DeepPartial, FindManyOptions } from 'typeorm';
 import { ExercisesService } from '../exercises/exercises.service';
+import { User } from '../users/entities/user.entity';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { FilterDto } from './dto/filter.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
@@ -23,7 +24,11 @@ export class QuestionsService {
     return this.questionsRepository.create(entityLike);
   }
 
-  create(createQuestionDto: CreateQuestionDto) {
+  create(
+    createQuestionDto: CreateQuestionDto & {
+      createdBy: User;
+    }
+  ) {
     const question = this.questionsRepository.create({
       ...createQuestionDto,
       exercise: this.exercisesService.createEntity({
@@ -54,7 +59,12 @@ export class QuestionsService {
     return found;
   }
 
-  async update(id: number, updateQuestionDto: UpdateQuestionDto) {
+  async update(
+    id: number,
+    updateQuestionDto: UpdateQuestionDto & {
+      updatedBy: User;
+    }
+  ) {
     const question: Question = await this.findOne(id);
     return this.questionsRepository.save({
       ...question,

@@ -15,6 +15,7 @@ import { Admin, Authenticated } from '../auth/roles-auth.guard';
 import { Grade } from './entities/grade.entity';
 import Controller from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
 import { Claims } from '@prepa-sn/backend/common/decorators/get-user.decorator';
+import { User } from '../users/entities/user.entity';
 
 @Controller('grades')
 export class GradesController {
@@ -24,13 +25,12 @@ export class GradesController {
   @Admin()
   @ApiOkResponse({ type: Grade, isArray: false })
   create(
-    @Claims('uid') uid: string,
+    @Claims() createdBy: User,
     @Body() createGradeDto: CreateGradeDto
   ): Promise<Grade> {
     return this.gradesService.create({
       ...createGradeDto,
-      createdBy: uid,
-      updatedBy: uid,
+      createdBy,
     });
   }
 
@@ -52,13 +52,13 @@ export class GradesController {
   @Admin()
   @ApiOkResponse({ type: Grade, isArray: false })
   update(
-    @Claims('uid') uid: string,
+    @Claims() updatedBy: User,
     @Param('id', ParseIntPipe) id: number,
     @Body() updateGradeDto: UpdateGradeDto
   ): Promise<Grade> {
     return this.gradesService.update(id, {
       ...updateGradeDto,
-      updatedBy: uid,
+      updatedBy,
     });
   }
 

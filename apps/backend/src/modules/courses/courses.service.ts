@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { DeepPartial, FindManyOptions } from 'typeorm';
 import { CategoriesService } from '../categories/categories.service';
 import { GradesService } from '../grades/grades.service';
+import { User } from '../users/entities/user.entity';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { Course } from './entities/course.entity';
@@ -19,7 +20,11 @@ export class CoursesService {
     return this.coursesRepository.create(entityLike);
   }
 
-  async create(createCourseDto: CreateCourseDto): Promise<Course> {
+  async create(
+    createCourseDto: CreateCourseDto & {
+      createdBy: User | null;
+    }
+  ): Promise<Course> {
     const course = this.coursesRepository.create({
       ...createCourseDto,
       grades: createCourseDto.grades.map((id) => {
@@ -53,7 +58,12 @@ export class CoursesService {
     return course;
   }
 
-  async update(id: number, updateCourseDto: UpdateCourseDto): Promise<Course> {
+  async update(
+    id: number,
+    updateCourseDto: UpdateCourseDto & {
+      updatedBy: User | null;
+    }
+  ): Promise<Course> {
     const course: Course = await this.findOne(id);
     return this.coursesRepository.save({
       ...course,
