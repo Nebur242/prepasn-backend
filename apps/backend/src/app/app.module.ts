@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { StudentsModule } from '../modules/students/students.module';
 import { AuthModule } from '../modules/auth/auth.module';
 import { TestHelpersModule } from '../modules/test-helpers/test-helpers.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -10,9 +9,7 @@ import { CoursesModule } from '../modules/courses/courses.module';
 import { DocumentsModule } from '../modules/documents/documents.module';
 import { ChaptersModule } from '../modules/chapters/chapters.module';
 import { ClassroomsModule } from '../modules/classrooms/classrooms.module';
-import { InstructorsModule } from '../modules/instructors/instructors.module';
 import { CategoriesModule } from '../modules/categories/categories.module';
-import { AdminsModule } from '../modules/admins/admins.module';
 import { ExercisesModule } from '../modules/exercises/exercises.module';
 import { QuestionsModule } from '../modules/questions/questions.module';
 import { UsersModule } from '../modules/users/users.module';
@@ -29,9 +26,7 @@ import { UsersModule } from '../modules/users/users.module';
       useFactory: (configService: ConfigService) =>
         configService.get('config.typeorm'),
     }),
-    StudentsModule,
-    InstructorsModule,
-    AdminsModule,
+
     AuthModule,
     TestHelpersModule,
     GradesModule,

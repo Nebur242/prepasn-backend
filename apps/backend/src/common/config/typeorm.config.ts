@@ -1,12 +1,9 @@
 import { Category } from '@prepa-sn/backend/modules/categories/entities/category.entity';
-import { Admin } from '@prepa-sn/backend/modules/admins/entities/admin.entity';
 import { Chapter } from '@prepa-sn/backend/modules/chapters/entities/chapter.entity';
 import { Classroom } from '@prepa-sn/backend/modules/classrooms/entities/classroom.entity';
 import { Course } from '@prepa-sn/backend/modules/courses/entities/course.entity';
 import { Document } from '@prepa-sn/backend/modules/documents/entities/document.entity';
 import { Grade } from '@prepa-sn/backend/modules/grades/entities/grade.entity';
-import { Instructor } from '@prepa-sn/backend/modules/instructors/entities/instructor.entity';
-import { Student } from '@prepa-sn/backend/modules/students/entities/student.entity';
 import { Exercise } from '@prepa-sn/backend/modules/exercises/entities/exercise.entity';
 import { Question } from '@prepa-sn/backend/modules/questions/entities/question.entity';
 import { User } from '@prepa-sn/backend/modules/users/entities/user.entity';
@@ -23,9 +20,6 @@ export default {
   synchronize: process.env.DB_SYNC?.toLowerCase() === 'true',
   entities: [
     Document,
-    Student,
-    Instructor,
-    Admin,
     Grade,
     Course,
     Chapter,
