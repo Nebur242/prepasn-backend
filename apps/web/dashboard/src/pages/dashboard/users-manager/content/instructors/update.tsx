@@ -1,8 +1,7 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { useEffect } from 'react';
 import { Instructor } from '@prepa-sn/shared/interfaces';
 import { Form, message, Row, Spin } from 'antd';
-import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
+import ContentSectionWrapper from '@prepa-sn/dashboard/components/content-section-wrapper';
 import { useParams } from 'react-router-dom';
 import CreateAndUpdate from './create-update';
 import {

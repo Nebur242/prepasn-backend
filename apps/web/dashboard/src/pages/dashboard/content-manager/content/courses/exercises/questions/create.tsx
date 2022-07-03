@@ -1,7 +1,6 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Exercise } from '@prepa-sn/shared/interfaces';
 import { Form, message } from 'antd';
-import { useCreateQuestionMutation } from 'apps/web/dashboard/src/store/features/questions';
+import { useCreateQuestionMutation } from '@prepa-sn/dashboard/store/features/questions';
 import { FC, useEffect } from 'react';
 import CreateUpdate from './create-update';
 

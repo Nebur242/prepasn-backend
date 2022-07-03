@@ -1,11 +1,10 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Exercise } from '@prepa-sn/shared/interfaces';
 import { Divider, Form, message, Spin } from 'antd';
-import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
+import ContentSectionWrapper from '@prepa-sn/dashboard/components/content-section-wrapper';
 import {
   useFindOneExerciseQuery,
   useUpdateExerciseMutation,
-} from 'apps/web/dashboard/src/store/features/exercises';
+} from '@prepa-sn/dashboard/store/features/exercises';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import CreateAndUpdate from './create-update';

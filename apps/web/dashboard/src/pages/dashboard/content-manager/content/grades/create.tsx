@@ -1,10 +1,9 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { useEffect } from 'react';
 import { Form, message } from 'antd';
-import { useCreateGradeMutation } from 'apps/web/dashboard/src/store/features/grades';
+import { useCreateGradeMutation } from '@prepa-sn/dashboard/store/features/grades';
 import CreateAndUpdate from './create-update';
 import { Grade } from '@prepa-sn/shared/interfaces';
-import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
+import ContentSectionWrapper from '@prepa-sn/dashboard/components/content-section-wrapper';
 
 const CreateGrade = () => {
   const [form] = Form.useForm();

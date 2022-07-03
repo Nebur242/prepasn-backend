@@ -1,9 +1,8 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Document, Exercise } from '@prepa-sn/shared/interfaces';
 import { FC } from 'react';
 import { Form, FormInstance, Input, Select } from 'antd';
-import ContentWithSider from 'apps/web/dashboard/src/components/content-with-sider';
-import AppUpload from 'apps/web/dashboard/src/components/upload';
+import ContentWithSider from '@prepa-sn/dashboard/components/content-with-sider';
+import AppUpload from '@prepa-sn/dashboard/components/upload';
 import { displayType, exerciseType, level } from '@prepa-sn/shared/enums';
 import { CKEditor } from 'ckeditor4-react';
 

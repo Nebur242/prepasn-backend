@@ -1,10 +1,9 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Classroom, Document } from '@prepa-sn/shared/interfaces';
 import { FC } from 'react';
 import { Col, Form, FormInstance, Input, Row } from 'antd';
-import ContentWithSider from 'apps/web/dashboard/src/components/content-with-sider';
+import ContentWithSider from '@prepa-sn/dashboard/components/content-with-sider';
 import { CKEditor } from 'ckeditor4-react';
-import AppUpload from 'apps/web/dashboard/src/components/upload';
+import AppUpload from '@prepa-sn/dashboard/components/upload';
 import dayjs from 'dayjs';
 
 interface ICreateAndUpdateProps {

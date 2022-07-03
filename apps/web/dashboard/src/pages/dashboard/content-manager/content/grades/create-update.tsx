@@ -1,4 +1,3 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import {
   Card,
   Col,
@@ -10,9 +9,9 @@ import {
   Divider,
   FormInstance,
 } from 'antd';
-import ContentWithSider from 'apps/web/dashboard/src/components/content-with-sider';
-import { useFindAllGradesQuery } from 'apps/web/dashboard/src/store/features/grades';
-import AppUpload from 'apps/web/dashboard/src/components/upload';
+import ContentWithSider from '@prepa-sn/dashboard/components/content-with-sider';
+import { useFindAllGradesQuery } from '@prepa-sn/dashboard/store/features/grades';
+import AppUpload from '@prepa-sn/dashboard/components/upload';
 import { Document, Grade } from '@prepa-sn/shared/interfaces';
 import { CKEditor } from 'ckeditor4-react';
 import { FC, useState } from 'react';

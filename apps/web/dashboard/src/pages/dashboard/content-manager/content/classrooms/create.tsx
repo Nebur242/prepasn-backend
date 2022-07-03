@@ -1,8 +1,7 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Classroom } from '@prepa-sn/shared/interfaces';
 import { Form, message } from 'antd';
-import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
-import { useCreateClassroomMutation } from 'apps/web/dashboard/src/store/features/classrooms';
+import ContentSectionWrapper from '@prepa-sn/dashboard/components/content-section-wrapper';
+import { useCreateClassroomMutation } from '@prepa-sn/dashboard/store/features/classrooms';
 import { useEffect } from 'react';
 import CreateAndUpdate from './create-update';
 

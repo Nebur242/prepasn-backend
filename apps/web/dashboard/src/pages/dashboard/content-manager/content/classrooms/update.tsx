@@ -1,11 +1,10 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Classroom } from '@prepa-sn/shared/interfaces';
 import { Form, message, Row, Spin } from 'antd';
-import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
+import ContentSectionWrapper from '@prepa-sn/dashboard/components/content-section-wrapper';
 import {
   useFindOneClassroomQuery,
   useUpdateClassroomMutation,
-} from 'apps/web/dashboard/src/store/features/classrooms';
+} from '@prepa-sn/dashboard/store/features/classrooms';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import CreateAndUpdate from './create-update';

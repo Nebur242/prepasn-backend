@@ -11,10 +11,10 @@ import {
 } from 'antd';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { useState } from 'react';
-import ContentSectionWrapper from '../../../components/content-section-wrapper';
-import AppDocuments from '../../../components/documents';
-import AppUploadDocuments from '../../../components/uploadFiles';
-import { useFindAllDocumentsQuery } from '../../../store/features/documents';
+import ContentSectionWrapper from '@prepa-sn/dashboard/components/content-section-wrapper';
+import AppDocuments from '@prepa-sn/dashboard/components/documents';
+import AppUploadDocuments from '@prepa-sn/dashboard/components/uploadFiles';
+import { useFindAllDocumentsQuery } from '@prepa-sn/dashboard/store/features/documents';
 import { Document } from '@prepa-sn/shared/interfaces';
 
 interface MediaLibraryProps {

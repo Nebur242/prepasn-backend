@@ -1,9 +1,8 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Chapter } from '@prepa-sn/shared/interfaces';
 import { Form, message } from 'antd';
-import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
-import { useCreateChapterMutation } from 'apps/web/dashboard/src/store/features/chapters';
-import { useFindOneCourseQuery } from 'apps/web/dashboard/src/store/features/courses';
+import ContentSectionWrapper from '@prepa-sn/dashboard/components/content-section-wrapper';
+import { useCreateChapterMutation } from '@prepa-sn/dashboard/store/features/chapters';
+import { useFindOneCourseQuery } from '@prepa-sn/dashboard/store/features/courses';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import CreateAndUpdate from './create-update';

@@ -1,10 +1,9 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Question } from '@prepa-sn/shared/interfaces';
 import { Form, message, Spin } from 'antd';
 import {
   useFindOneQuestionQuery,
   useUpdateQuestionMutation,
-} from 'apps/web/dashboard/src/store/features/questions';
+} from '@prepa-sn/dashboard/store/features/questions';
 import { FC, useEffect } from 'react';
 import CreateUpdate from './create-update';
 

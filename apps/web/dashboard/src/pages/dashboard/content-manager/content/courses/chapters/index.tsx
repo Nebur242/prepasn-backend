@@ -1,14 +1,13 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Chapter } from '@prepa-sn/shared/interfaces';
 import { Button, Space, Table, Tag, message } from 'antd';
-import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
-import Icon from 'apps/web/dashboard/src/components/Icon';
-import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
+import ContentSectionWrapper from '@prepa-sn/dashboard/components/content-section-wrapper';
+import Icon from '@prepa-sn/dashboard/components/Icon';
+import { showConfirm } from '@prepa-sn/dashboard/helpers/functions.helpers';
 import {
   useDeleteChapterMutation,
   useFindAllChaptersQuery,
-} from 'apps/web/dashboard/src/store/features/chapters';
-import { useFindOneCourseQuery } from 'apps/web/dashboard/src/store/features/courses';
+} from '@prepa-sn/dashboard/store/features/chapters';
+import { useFindOneCourseQuery } from '@prepa-sn/dashboard/store/features/courses';
 import dayjs from 'dayjs';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { useEffect, useState } from 'react';

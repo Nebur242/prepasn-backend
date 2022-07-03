@@ -1,10 +1,9 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Document, Question } from '@prepa-sn/shared/interfaces';
 import { Button, Checkbox, Col, Form, FormInstance, Input, Row } from 'antd';
-import AppUpload from 'apps/web/dashboard/src/components/upload';
+import AppUpload from '@prepa-sn/dashboard/components/upload';
 import { FC } from 'react';
 import { CKEditor } from 'ckeditor4-react';
-import Icon from 'apps/web/dashboard/src/components/Icon';
+import Icon from '@prepa-sn/dashboard/components/Icon';
 
 type ICreateAndUpdateProps = {
   onFinish: () => Promise<void>;

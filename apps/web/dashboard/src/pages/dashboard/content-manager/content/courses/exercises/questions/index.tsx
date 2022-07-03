@@ -1,12 +1,11 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Exercise, Question } from '@prepa-sn/shared/interfaces';
 import { Button, Modal, Row, Space, Spin, Table, Tag } from 'antd';
-import Icon from 'apps/web/dashboard/src/components/Icon';
-import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
+import Icon from '@prepa-sn/dashboard/components/Icon';
+import { showConfirm } from '@prepa-sn/dashboard/helpers/functions.helpers';
 import {
   useDeleteQuestionMutation,
   useFindAllQuestionsQuery,
-} from 'apps/web/dashboard/src/store/features/questions';
+} from '@prepa-sn/dashboard/store/features/questions';
 import dayjs from 'dayjs';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { FC, useEffect, useState } from 'react';

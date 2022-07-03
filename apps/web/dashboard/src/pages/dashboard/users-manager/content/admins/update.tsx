@@ -1,4 +1,3 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { useEffect } from 'react';
 import { Admin } from '@prepa-sn/shared/interfaces';
 import { Form, message, Row, Spin } from 'antd';

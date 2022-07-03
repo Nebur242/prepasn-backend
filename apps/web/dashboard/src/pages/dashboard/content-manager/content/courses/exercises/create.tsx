@@ -1,9 +1,8 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Exercise } from '@prepa-sn/shared/interfaces';
 import { Form, message } from 'antd';
-import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
-import { useFindOneChapterQuery } from 'apps/web/dashboard/src/store/features/chapters';
-import { useCreateExerciseMutation } from 'apps/web/dashboard/src/store/features/exercises';
+import ContentSectionWrapper from '@prepa-sn/dashboard/components/content-section-wrapper';
+import { useFindOneChapterQuery } from '@prepa-sn/dashboard/store/features/chapters';
+import { useCreateExerciseMutation } from '@prepa-sn/dashboard/store/features/exercises';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import CreateAndUpdate from './create-update';
@@ -63,9 +62,8 @@ const Create = () => {
   return (
     <ContentSectionWrapper
       title={`Ajouter un exercice`}
-      description={`Chapitre : ${
-        chapterIsLoading ? 'Loading...' : chapter.title
-      }`}
+      description={`Chapitre : ${chapterIsLoading ? 'Loading...' : chapter.title
+        }`}
       createButtonText="Ajouter cet exercice"
       onCreate={onFinish}
       createButtonProps={{ loading: exerciseIsLoading }}
