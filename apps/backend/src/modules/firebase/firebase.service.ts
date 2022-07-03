@@ -67,14 +67,6 @@ export class FirebaseService {
   }
 
   @CatchFirebaseException()
-  async getStudents(maxResults?: number, pageToken?: string) {
-    const users = await getAuth().listUsers(maxResults, pageToken);
-    return users.users.filter((user) =>
-      user.customClaims?.roles?.includes(Role.STUDENT)
-    );
-  }
-
-  @CatchFirebaseException()
   async removeUser(uid: string) {
     await getAuth().deleteUser(uid);
   }
