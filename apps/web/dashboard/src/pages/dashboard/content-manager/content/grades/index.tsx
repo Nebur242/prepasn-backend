@@ -9,7 +9,8 @@ import {
   useDeleteGradeMutation,
   useFindAllGradesQuery,
 } from 'apps/web/dashboard/src/store/features/grades';
-import { useEffect } from 'react';
+import { IPaginationLinks, IPaginationMeta, IPaginationOptions } from 'nestjs-typeorm-paginate';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const rowSelection = {
@@ -26,8 +27,24 @@ const rowSelection = {
 const Grades = () => {
   const navigate = useNavigate();
 
-  const { data: grades = [], isLoading: gradesLoading } =
-    useFindAllGradesQuery();
+  const [pagination, setPagination] = useState<IPaginationOptions>({
+    page: 1,
+    limit: 10,
+  });
+
+  const {
+    data: grades = {
+      items: [],
+      meta: {} as IPaginationMeta,
+      links: {} as IPaginationLinks,
+    },
+    isLoading: gradesLoading,
+    isFetching,
+  } = useFindAllGradesQuery({
+    ...pagination,
+  });
+
+
 
   const [deleteGrade, { isSuccess, isError }] = useDeleteGradeMutation();
 
@@ -111,12 +128,21 @@ const Grades = () => {
           type: 'checkbox',
           ...rowSelection,
         }}
-        loading={gradesLoading}
+        loading={gradesLoading || isFetching}
         columns={columns}
-        dataSource={grades.map((grade: Grade) => ({
+        dataSource={grades.items.map((grade: Grade) => ({
           ...grade,
           key: grade.id,
         }))}
+        pagination={{
+          defaultCurrent: 1,
+          total: grades?.meta.total,
+          showSizeChanger: true,
+          showQuickJumper: true,
+          onChange: (page: number, pageSize: number) => {
+            setPagination({ ...pagination, page, limit: pageSize });
+          },
+        }}
       />
     </ContentSectionWrapper>
   );

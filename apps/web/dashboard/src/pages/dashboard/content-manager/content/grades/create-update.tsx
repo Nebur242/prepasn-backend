@@ -15,8 +15,9 @@ import { useFindAllGradesQuery } from 'apps/web/dashboard/src/store/features/gra
 import AppUpload from 'apps/web/dashboard/src/components/upload';
 import { Document, Grade } from '@prepa-sn/shared/interfaces';
 import { CKEditor } from 'ckeditor4-react';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import dayjs from 'dayjs';
+import { IPaginationLinks, IPaginationMeta, IPaginationOptions } from 'nestjs-typeorm-paginate';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -32,8 +33,21 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
   form,
   initialValues,
 }) => {
-  const { data: grades = [], isLoading: gradesloading } =
-    useFindAllGradesQuery();
+  const [pagination, setPagination] = useState<IPaginationOptions>({
+    page: 1,
+    limit: 10,
+  });
+  const {
+    data: grades = {
+      items: [],
+      meta: {} as IPaginationMeta,
+      links: {} as IPaginationLinks,
+    },
+    isLoading: gradesLoading,
+    isFetching,
+  } = useFindAllGradesQuery({
+    ...pagination,
+  });
 
   return (
     <ContentWithSider
@@ -48,8 +62,8 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
           </Title>
           <Divider />
           <Form.Item label="Grades" name="parent">
-            <Select placeholder="Grades" loading={gradesloading}>
-              {grades.map((item) => (
+            <Select placeholder="Grades" loading={gradesLoading || isFetching}>
+              {grades.items.map((item) => (
                 <Option key={item.id} value={item.id}>
                   {item.title}
                 </Option>
