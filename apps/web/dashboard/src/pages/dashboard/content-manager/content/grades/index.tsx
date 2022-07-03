@@ -1,14 +1,13 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Grade } from '@prepa-sn/shared/interfaces';
 import { Button, Space, Table, Tag, message } from 'antd';
-import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.interface';
-import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
-import Icon from 'apps/web/dashboard/src/components/Icon';
-import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
+import { IConfirmation } from '@prepa-sn/dashboard/common/interfaces/common.interface';
+import ContentSectionWrapper from '@prepa-sn/dashboard/components/content-section-wrapper';
+import Icon from '@prepa-sn/dashboard/components/Icon';
+import { showConfirm } from '@prepa-sn/dashboard/helpers/functions.helpers';
 import {
   useDeleteGradeMutation,
   useFindAllGradesQuery,
-} from 'apps/web/dashboard/src/store/features/grades';
+} from '@prepa-sn/dashboard/store/features/grades';
 import { IPaginationLinks, IPaginationMeta, IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';

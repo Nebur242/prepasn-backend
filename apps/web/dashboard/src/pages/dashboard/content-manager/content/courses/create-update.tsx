@@ -44,8 +44,25 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
     limit: 10,
   });
 
-  const { data: grades = [], isLoading: gradesloading } =
-    useFindAllGradesQuery();
+
+  const [gradePagination] = useState<IPaginationOptions>({
+    page: 1,
+    limit: 10,
+  });
+
+
+  const {
+    data: grades = {
+      items: [],
+      meta: {} as IPaginationMeta,
+      links: {} as IPaginationLinks,
+    },
+    isLoading: gradesLoading,
+    isFetching: gradesFetching,
+  } = useFindAllGradesQuery({
+    ...gradePagination,
+  });
+
 
   const {
     data: categories = {
@@ -79,9 +96,9 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
               mode="multiple"
               allowClear
               placeholder="Grades"
-              loading={gradesloading}
+              loading={gradesLoading || gradesFetching}
             >
-              {grades.map((item) => (
+              {grades.items?.map((item) => (
                 <Option key={item.id} value={item.id}>
                   {item.title}
                 </Option>
