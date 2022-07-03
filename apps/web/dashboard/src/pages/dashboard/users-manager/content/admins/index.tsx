@@ -1,5 +1,8 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
-import { useDeleteUserMutation, useFindAllUsersQuery } from '@prepa-sn/dashboard/store/features/users';
+import {
+  useDeleteUserMutation,
+  useFindAllUsersQuery,
+} from '@prepa-sn/dashboard/store/features/users';
 import { Role } from '@prepa-sn/shared/enums';
 import { Admin } from '@prepa-sn/shared/interfaces';
 import { Button, message, Space, Table, Tag } from 'antd';
@@ -7,7 +10,6 @@ import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.i
 import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
 import Icon from 'apps/web/dashboard/src/components/Icon';
 import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
-
 
 import dayjs from 'dayjs';
 import {
@@ -37,8 +39,8 @@ const Admins = () => {
   } = useFindAllUsersQuery({
     pagination,
     filter: {
-      roles: [Role.ADMIN]
-    }
+      roles: [Role.ADMIN],
+    },
   });
 
   const [deleteAdmin, { isSuccess: isDeleted, isError: hasError }] =

@@ -8,7 +8,11 @@ import {
   useDeleteCourseMutation,
   useFindAllCoursesQuery,
 } from '@prepa-sn/dashboard/store/features/courses';
-import { IPaginationLinks, IPaginationMeta, IPaginationOptions } from 'nestjs-typeorm-paginate';
+import {
+  IPaginationLinks,
+  IPaginationMeta,
+  IPaginationOptions,
+} from 'nestjs-typeorm-paginate';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -29,7 +33,6 @@ const Courses = () => {
     page: 1,
     limit: 10,
   });
-
 
   const {
     data: courses = {

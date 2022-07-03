@@ -8,7 +8,11 @@ import {
   useDeleteGradeMutation,
   useFindAllGradesQuery,
 } from '@prepa-sn/dashboard/store/features/grades';
-import { IPaginationLinks, IPaginationMeta, IPaginationOptions } from 'nestjs-typeorm-paginate';
+import {
+  IPaginationLinks,
+  IPaginationMeta,
+  IPaginationOptions,
+} from 'nestjs-typeorm-paginate';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -42,8 +46,6 @@ const Grades = () => {
   } = useFindAllGradesQuery({
     ...pagination,
   });
-
-
 
   const [deleteGrade, { isSuccess, isError }] = useDeleteGradeMutation();
 

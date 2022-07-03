@@ -17,7 +17,11 @@ import { Document, Grade } from '@prepa-sn/shared/interfaces';
 import { CKEditor } from 'ckeditor4-react';
 import { FC, useState } from 'react';
 import dayjs from 'dayjs';
-import { IPaginationLinks, IPaginationMeta, IPaginationOptions } from 'nestjs-typeorm-paginate';
+import {
+  IPaginationLinks,
+  IPaginationMeta,
+  IPaginationOptions,
+} from 'nestjs-typeorm-paginate';
 
 const { Title } = Typography;
 const { Option } = Select;

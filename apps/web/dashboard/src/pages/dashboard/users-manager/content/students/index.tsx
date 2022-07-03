@@ -1,4 +1,7 @@
-import { useFindAllUsersQuery, useUpdateUserMutation } from '@prepa-sn/dashboard/store/features/users';
+import {
+  useFindAllUsersQuery,
+  useUpdateUserMutation,
+} from '@prepa-sn/dashboard/store/features/users';
 import { Role } from '@prepa-sn/shared/enums';
 import { Student } from '@prepa-sn/shared/interfaces';
 import { Button, message, Space, Table, Tag } from 'antd';
@@ -34,8 +37,8 @@ const Students = () => {
   } = useFindAllUsersQuery({
     pagination,
     filter: {
-      roles: [Role.STUDENT]
-    }
+      roles: [Role.STUDENT],
+    },
   });
 
   const [deleteStudent, { isSuccess: isDeleted, isError: hasError }] =

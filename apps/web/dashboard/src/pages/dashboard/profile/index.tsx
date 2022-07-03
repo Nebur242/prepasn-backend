@@ -1,4 +1,7 @@
-import { useFindOneUserQuery, useUpdateUserMutation } from '@prepa-sn/dashboard/store/features/users';
+import {
+  useFindOneUserQuery,
+  useUpdateUserMutation,
+} from '@prepa-sn/dashboard/store/features/users';
 import { Admin } from '@prepa-sn/shared/interfaces';
 import {
   Button,
@@ -16,7 +19,6 @@ import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ContentScroll from '../../../components/content-scroll';
 import Icon from '../../../components/Icon';
-
 
 const { Title, Paragraph } = Typography;
 

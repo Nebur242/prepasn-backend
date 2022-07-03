@@ -4,7 +4,10 @@ import { useEffect } from 'react';
 import ContentSectionWrapper from '@prepa-sn/dashboard/components/content-section-wrapper';
 import { useParams } from 'react-router-dom';
 import CreateAndUpdate from './create-update';
-import { useFindOneUserQuery, useUpdateUserMutation } from '@prepa-sn/dashboard/store/features/users';
+import {
+  useFindOneUserQuery,
+  useUpdateUserMutation,
+} from '@prepa-sn/dashboard/store/features/users';
 
 const UpdateStudent = () => {
   const { id } = useParams<{ id: string }>();

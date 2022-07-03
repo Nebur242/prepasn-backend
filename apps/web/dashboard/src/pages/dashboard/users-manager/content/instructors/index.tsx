@@ -1,4 +1,7 @@
-import { useDeleteUserMutation, useFindAllUsersQuery } from '@prepa-sn/dashboard/store/features/users';
+import {
+  useDeleteUserMutation,
+  useFindAllUsersQuery,
+} from '@prepa-sn/dashboard/store/features/users';
 import { Role } from '@prepa-sn/shared/enums';
 import { Instructor, Student } from '@prepa-sn/shared/interfaces';
 import { Button, message, Space, Table, Tag } from 'antd';
@@ -34,8 +37,8 @@ const Instructors = () => {
   } = useFindAllUsersQuery({
     pagination,
     filter: {
-      roles: [Role.INSTRUCTOR]
-    }
+      roles: [Role.INSTRUCTOR],
+    },
   });
 
   const [deleteInstructor, { isSuccess: isDeleted, isError: hasError }] =

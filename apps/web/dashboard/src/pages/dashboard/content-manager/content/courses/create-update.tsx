@@ -44,12 +44,10 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
     limit: 10,
   });
 
-
   const [gradePagination] = useState<IPaginationOptions>({
     page: 1,
     limit: 10,
   });
-
 
   const {
     data: grades = {
@@ -62,7 +60,6 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
   } = useFindAllGradesQuery({
     ...gradePagination,
   });
-
 
   const {
     data: categories = {
