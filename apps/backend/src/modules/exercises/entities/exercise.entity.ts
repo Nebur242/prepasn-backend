@@ -6,7 +6,9 @@ import { displayType, exerciseType, level } from '@prepa-sn/shared/enums';
 
 @Entity()
 export class Exercise extends BaseContent {
-  @ManyToOne(() => Chapter, (chapter) => chapter.exercises)
+  @ManyToOne(() => Chapter, (chapter) => chapter.exercises, {
+    onDelete: 'CASCADE',
+  })
   chapter?: Chapter;
 
   @OneToMany(() => Question, (question) => question.exercise)
