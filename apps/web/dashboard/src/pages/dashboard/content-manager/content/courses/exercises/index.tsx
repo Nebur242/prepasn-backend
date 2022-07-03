@@ -6,9 +6,7 @@ import { showConfirm } from '@prepa-sn/dashboard/helpers/functions.helpers';
 import { useFindOneChapterQuery } from '@prepa-sn/dashboard/store/features/chapters';
 import { useFindAllExercisesQuery } from '@prepa-sn/dashboard/store/features/exercises';
 import dayjs from 'dayjs';
-import {
-  IPaginationOptions,
-} from 'nestjs-typeorm-paginate';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 

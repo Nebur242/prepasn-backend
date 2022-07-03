@@ -62,8 +62,9 @@ const Create = () => {
   return (
     <ContentSectionWrapper
       title={`Ajouter un exercice`}
-      description={`Chapitre : ${chapterIsLoading ? 'Loading...' : chapter.title
-        }`}
+      description={`Chapitre : ${
+        chapterIsLoading ? 'Loading...' : chapter.title
+      }`}
       createButtonText="Ajouter cet exercice"
       onCreate={onFinish}
       createButtonProps={{ loading: exerciseIsLoading }}
