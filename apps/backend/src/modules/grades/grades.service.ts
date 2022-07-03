@@ -1,7 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  IPaginationOptions,
+  paginate,
+  Pagination,
+} from 'nestjs-typeorm-paginate';
 import { DeepPartial, FindManyOptions } from 'typeorm';
 import { User } from '../users/entities/user.entity';
 import { CreateGradeDto } from './dto/create-grade.dto';
+import { FilterDto } from './dto/filter.dto';
 import { UpdateGradeDto } from './dto/update-grade.dto';
 import { Grade } from './entities/grade.entity';
 import { GradesRepository } from './repositories/grade.repository';
@@ -33,6 +39,13 @@ export class GradesService {
       ...filter,
       relations: ['parent'],
     });
+  }
+
+  paginate(
+    options: IPaginationOptions,
+    filter: FilterDto
+  ): Promise<Pagination<Grade>> {
+    return paginate<Grade>(this.gradesRepository, options, filter);
   }
 
   async findOne(id: number): Promise<Grade> {
