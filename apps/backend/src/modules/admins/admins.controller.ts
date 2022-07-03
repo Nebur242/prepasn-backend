@@ -30,7 +30,7 @@ export class AdminsController {
   }
 
   @Get()
-  @Admin()
+  // @Admin()
   @ApiOkResponse({ type: AdminEntity, isArray: true })
   findAll(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page,
@@ -64,7 +64,7 @@ export class AdminsController {
   }
 
   @Delete(':uid')
-  @Admin()
+  // @Admin()
   remove(@Param('uid') uid: string) {
     return this.adminsService.remove(uid);
   }

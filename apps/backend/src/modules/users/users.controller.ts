@@ -11,7 +11,7 @@ import {
 import { ApiOkResponse } from '@nestjs/swagger';
 
 import { Role } from '@prepa-sn/shared/enums';
-import { Admin, Authenticated } from '../auth/roles-auth.guard';
+import { Admin, Authenticated, Roles } from '../auth/roles-auth.guard';
 import ControllerWithApiTags from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { UsersService } from './users.service';
@@ -26,7 +26,7 @@ export class UsersController {
 
   @Get()
   @ApiOkResponse({ type: User, isArray: true })
-  @Admin()
+  // @Admin()
   findAll(
     @Query(new ValidationPipe({ transform: true })) filter: FilterDto
   ): Promise<Pagination<User>> {
@@ -66,7 +66,7 @@ export class UsersController {
   }
 
   @Post('/students')
-  // @Admin()
+  @Admin()
   @ApiOkResponse({ type: User })
   async createStudent(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.usersService.create({
@@ -87,13 +87,13 @@ export class UsersController {
 
   @Get(':uid')
   @ApiOkResponse({ type: User })
-  // @Roles(Role.STUDENT, Role.ADMIN)
+  @Roles(Role.STUDENT, Role.ADMIN)
   findOne(@Param('uid') uid: string): Promise<User> {
     return this.usersService.findOne(uid);
   }
 
   @Delete(':uid')
-  // @Admin()
+  @Admin()
   remove(@Param('uid') uid: string) {
     return this.usersService.remove(uid);
   }
