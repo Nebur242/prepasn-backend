@@ -10,9 +10,7 @@ import {
 } from 'apps/web/dashboard/src/store/features/chapters';
 import { useFindOneCourseQuery } from 'apps/web/dashboard/src/store/features/courses';
 import dayjs from 'dayjs';
-import {
-  IPaginationOptions,
-} from 'nestjs-typeorm-paginate';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 

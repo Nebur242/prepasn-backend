@@ -7,10 +7,7 @@ import {
   useDeleteGradeMutation,
   useFindAllGradesQuery,
 } from '@prepa-sn/dashboard/store/features/grades';
-import {
-
-  IPaginationOptions,
-} from 'nestjs-typeorm-paginate';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 

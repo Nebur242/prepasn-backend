@@ -16,7 +16,6 @@ const Auth: FC<Props> = ({ children }) => {
     dispatch(authenticateUser());
   }, [dispatch]);
 
-
   if (auth.loading) return <Loader />;
   return <> {children} </>;
 };

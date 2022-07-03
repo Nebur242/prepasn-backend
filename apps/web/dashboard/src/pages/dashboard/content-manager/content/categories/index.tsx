@@ -5,9 +5,7 @@ import Icon from '@prepa-sn/dashboard/components/Icon';
 import { showConfirm } from '@prepa-sn/dashboard/helpers/functions.helpers';
 import { useFindAllCategoriesQuery } from '@prepa-sn/dashboard/store/features/categories';
 import dayjs from 'dayjs';
-import {
-  IPaginationOptions,
-} from 'nestjs-typeorm-paginate';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 

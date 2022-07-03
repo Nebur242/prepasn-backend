@@ -10,9 +10,7 @@ import {
   Divider,
 } from 'antd';
 
-import {
-  IPaginationOptions,
-} from 'nestjs-typeorm-paginate';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 
 import ContentWithSider from '@prepa-sn/dashboard/components/content-with-sider';
 import AppUpload from '@prepa-sn/dashboard/components/upload';
@@ -55,12 +53,10 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
     ...gradePagination,
   });
 
-  const {
-    data: categories,
-    isLoading: categoriesLoading,
-  } = useFindAllCategoriesQuery({
-    ...pagination,
-  });
+  const { data: categories, isLoading: categoriesLoading } =
+    useFindAllCategoriesQuery({
+      ...pagination,
+    });
 
   return (
     <ContentWithSider

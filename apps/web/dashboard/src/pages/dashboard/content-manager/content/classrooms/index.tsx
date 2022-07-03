@@ -5,9 +5,7 @@ import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-sec
 import Icon from 'apps/web/dashboard/src/components/Icon';
 import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
 import { useFindAllClassroomsQuery } from 'apps/web/dashboard/src/store/features/classrooms';
-import {
-  IPaginationOptions,
-} from 'nestjs-typeorm-paginate';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';

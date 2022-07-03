@@ -7,9 +7,7 @@ import {
   useDeleteCourseMutation,
   useFindAllCoursesQuery,
 } from '@prepa-sn/dashboard/store/features/courses';
-import {
-  IPaginationOptions,
-} from 'nestjs-typeorm-paginate';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 

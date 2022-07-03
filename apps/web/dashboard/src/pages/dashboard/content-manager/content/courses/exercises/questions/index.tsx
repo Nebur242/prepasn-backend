@@ -8,9 +8,7 @@ import {
   useFindAllQuestionsQuery,
 } from 'apps/web/dashboard/src/store/features/questions';
 import dayjs from 'dayjs';
-import {
-  IPaginationOptions,
-} from 'nestjs-typeorm-paginate';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { FC, useEffect, useState } from 'react';
 import Create from './create';
 import Update from './update';
@@ -40,13 +38,11 @@ const Questions: FC<QuestionsProps> = ({ exercise }) => {
     limit: 10,
   });
 
-  const {
-    data: questions,
-    isLoading: questionsLoading,
-  } = useFindAllQuestionsQuery({
-    ...pagination,
-    exercise: exercise.id,
-  });
+  const { data: questions, isLoading: questionsLoading } =
+    useFindAllQuestionsQuery({
+      ...pagination,
+      exercise: exercise.id,
+    });
 
   const [deleteQuestion, { isLoading, isSuccess, isError, data }] =
     useDeleteQuestionMutation();

@@ -11,9 +11,7 @@ import Icon from 'apps/web/dashboard/src/components/Icon';
 import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
 
 import dayjs from 'dayjs';
-import {
-  IPaginationOptions,
-} from 'nestjs-typeorm-paginate';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
