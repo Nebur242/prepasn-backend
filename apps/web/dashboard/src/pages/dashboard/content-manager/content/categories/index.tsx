@@ -1,11 +1,10 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Category } from '@prepa-sn/shared/interfaces';
 import { Button, Space, Table, Tag } from 'antd';
-import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.interface';
-import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
-import Icon from 'apps/web/dashboard/src/components/Icon';
-import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
-import { useFindAllCategoriesQuery } from 'apps/web/dashboard/src/store/features/categories';
+import { IConfirmation } from '@prepa-sn/dashboard/common/interfaces/common.interface';
+import ContentSectionWrapper from '@prepa-sn/dashboard/components/content-section-wrapper';
+import Icon from '@prepa-sn/dashboard/components/Icon';
+import { showConfirm } from '@prepa-sn/dashboard/helpers/functions.helpers';
+import { useFindAllCategoriesQuery } from '@prepa-sn/dashboard/store/features/categories';
 import dayjs from 'dayjs';
 import {
   IPaginationLinks,
