@@ -53,7 +53,10 @@ export const axiosBaseQuery =
         method,
         data,
       });
-      return result.data;
+      return {
+        data: result.data.data,
+        meta: result.data,
+      };
     } catch (axiosError) {
       const err = axiosError as AxiosError;
       return {

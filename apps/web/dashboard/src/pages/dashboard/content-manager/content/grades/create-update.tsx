@@ -18,8 +18,6 @@ import { CKEditor } from 'ckeditor4-react';
 import { FC, useState } from 'react';
 import dayjs from 'dayjs';
 import {
-  IPaginationLinks,
-  IPaginationMeta,
   IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
 
@@ -42,11 +40,7 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
     limit: 10,
   });
   const {
-    data: grades = {
-      items: [],
-      meta: {} as IPaginationMeta,
-      links: {} as IPaginationLinks,
-    },
+    data: grades,
     isLoading: gradesLoading,
     isFetching,
   } = useFindAllGradesQuery({
@@ -67,7 +61,7 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
           <Divider />
           <Form.Item label="Grades" name="parent">
             <Select placeholder="Grades" loading={gradesLoading || isFetching}>
-              {grades.items.map((item) => (
+              {grades?.items?.map((item) => (
                 <Option key={item.id} value={item.id}>
                   {item.title}
                 </Option>

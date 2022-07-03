@@ -5,14 +5,11 @@ import {
 import { Role } from '@prepa-sn/shared/enums';
 import { Instructor, Student } from '@prepa-sn/shared/interfaces';
 import { Button, message, Space, Table, Tag } from 'antd';
-import { IConfirmation } from '@prepa-sn/dashboard/common/interfaces/common.interface';
 import ContentSectionWrapper from '@prepa-sn/dashboard/components/content-section-wrapper';
 import Icon from '@prepa-sn/dashboard/components/Icon';
 import { showConfirm } from '@prepa-sn/dashboard/helpers/functions.helpers';
 import dayjs from 'dayjs';
 import {
-  IPaginationLinks,
-  IPaginationMeta,
   IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
 import { useEffect, useState } from 'react';
@@ -27,11 +24,7 @@ const Instructors = () => {
   });
 
   const {
-    data: instructors = {
-      items: [],
-      meta: {} as IPaginationMeta,
-      links: {} as IPaginationLinks,
-    },
+    data: instructors,
     isLoading,
     isFetching,
   } = useFindAllUsersQuery({
@@ -92,7 +85,7 @@ const Instructors = () => {
                 data: instructor,
                 onCancel: () => console.log('cancel'),
                 onOk: () => deleteInstructor({ uid: instructor.uid }),
-              } as IConfirmation<Instructor>)
+              })
             }
           />
         </Space>

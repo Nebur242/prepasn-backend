@@ -10,8 +10,6 @@ import {
   Spin,
 } from 'antd';
 import {
-  IPaginationLinks,
-  IPaginationMeta,
   IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
 import { useState } from 'react';
@@ -45,11 +43,7 @@ const MediaLibrary = ({
   const {
     isLoading,
     isFetching,
-    data = {
-      items: [] as Document[],
-      meta: {} as IPaginationMeta,
-      links: {} as IPaginationLinks,
-    },
+    data,
     error,
   } = useFindAllDocumentsQuery(pagination);
 
@@ -64,13 +58,11 @@ const MediaLibrary = ({
     setSelected(documents);
   };
 
+
   return (
     <ContentSectionWrapper
       title="Media Library"
-      description={`${
-        (pagination.page as number) * (pagination.limit as number) -
-        ((pagination.limit as number) - data.items.length)
-      } assets`}
+      description={`${data?.meta.totalItems} assets`}
       createButtonText="Add new assets"
       onCreate={openModal}
       style={{
@@ -118,19 +110,19 @@ const MediaLibrary = ({
           multiple={multiple}
           onDocumentsSelect={onSelected}
           selectedDocuments={onDocumentsSelect ? selectedDocuments : selected}
-          documents={data.items}
+          documents={data?.items || []}
           loading={isLoading}
           error={error}
           columns={columns}
         />
       </Spin>
       <Divider />
-      {data.items.length > 0 && (
+      {data?.items.length > 0 && (
         <Row justify="end">
           <Pagination
-            defaultPageSize={pagination.limit as number}
-            defaultCurrent={data.meta.currentPage}
-            total={data.meta.totalItems}
+            defaultPageSize={+pagination.limit}
+            defaultCurrent={data?.meta.currentPage}
+            total={data?.meta.totalItems}
             showPrevNextJumpers
             showSizeChanger
             showQuickJumper

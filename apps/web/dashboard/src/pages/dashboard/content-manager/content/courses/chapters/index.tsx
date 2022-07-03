@@ -1,7 +1,6 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Chapter } from '@prepa-sn/shared/interfaces';
 import { Button, Space, Table, Tag, message } from 'antd';
-import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.interface';
 import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
 import Icon from 'apps/web/dashboard/src/components/Icon';
 import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
@@ -12,8 +11,6 @@ import {
 import { useFindOneCourseQuery } from 'apps/web/dashboard/src/store/features/courses';
 import dayjs from 'dayjs';
 import {
-  IPaginationLinks,
-  IPaginationMeta,
   IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
 import { useEffect, useState } from 'react';
@@ -43,11 +40,7 @@ const Chapters = () => {
   const [deleteChapter, { isSuccess, isError }] = useDeleteChapterMutation();
 
   const {
-    data: chapters = {
-      items: [],
-      meta: {} as IPaginationMeta,
-      links: {} as IPaginationLinks,
-    },
+    data: chapters,
     isLoading,
     isFetching,
   } = useFindAllChaptersQuery({
@@ -112,7 +105,7 @@ const Chapters = () => {
                 data: chapter,
                 onCancel: () => console.log('cancel'),
                 onOk: () => deleteChapter(chapter.id),
-              } as IConfirmation<Chapter>)
+              })
             }
           />
         </Space>
@@ -144,7 +137,7 @@ const Chapters = () => {
         }}
         loading={isLoading || isFetching}
         columns={columns}
-        dataSource={chapters.items?.map((chapter: Chapter) => ({
+        dataSource={chapters?.items?.map((chapter: Chapter) => ({
           ...chapter,
           key: chapter.id,
         }))}

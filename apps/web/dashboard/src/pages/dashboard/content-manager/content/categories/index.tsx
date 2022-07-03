@@ -1,14 +1,11 @@
 import { Category } from '@prepa-sn/shared/interfaces';
 import { Button, Space, Table, Tag } from 'antd';
-import { IConfirmation } from '@prepa-sn/dashboard/common/interfaces/common.interface';
 import ContentSectionWrapper from '@prepa-sn/dashboard/components/content-section-wrapper';
 import Icon from '@prepa-sn/dashboard/components/Icon';
 import { showConfirm } from '@prepa-sn/dashboard/helpers/functions.helpers';
 import { useFindAllCategoriesQuery } from '@prepa-sn/dashboard/store/features/categories';
 import dayjs from 'dayjs';
 import {
-  IPaginationLinks,
-  IPaginationMeta,
   IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
 import { useState } from 'react';
@@ -33,11 +30,7 @@ const Categories = () => {
   });
 
   const {
-    data: classrooms = {
-      items: [],
-      meta: {} as IPaginationMeta,
-      links: {} as IPaginationLinks,
-    },
+    data: classrooms,
     isLoading,
     isFetching,
   } = useFindAllCategoriesQuery({
@@ -92,7 +85,7 @@ const Categories = () => {
                 data: classroom,
                 onCancel: () => console.log('cancel'),
                 onOk: () => console.log('ok'),
-              } as IConfirmation<Category>)
+              })
             }
           />
         </Space>

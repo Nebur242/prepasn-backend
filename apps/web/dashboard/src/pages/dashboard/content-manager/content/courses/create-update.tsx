@@ -11,8 +11,6 @@ import {
 } from 'antd';
 
 import {
-  IPaginationLinks,
-  IPaginationMeta,
   IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
 
@@ -50,11 +48,7 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
   });
 
   const {
-    data: grades = {
-      items: [],
-      meta: {} as IPaginationMeta,
-      links: {} as IPaginationLinks,
-    },
+    data: grades,
     isLoading: gradesLoading,
     isFetching: gradesFetching,
   } = useFindAllGradesQuery({
@@ -62,11 +56,7 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
   });
 
   const {
-    data: categories = {
-      items: [],
-      meta: {} as IPaginationMeta,
-      links: {} as IPaginationLinks,
-    },
+    data: categories,
     isLoading: categoriesLoading,
   } = useFindAllCategoriesQuery({
     ...pagination,
@@ -95,7 +85,7 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
               placeholder="Grades"
               loading={gradesLoading || gradesFetching}
             >
-              {grades.items?.map((item) => (
+              {grades?.items?.map((item) => (
                 <Option key={item.id} value={item.id}>
                   {item.title}
                 </Option>
@@ -113,7 +103,7 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
               placeholder="Categories"
               loading={categoriesLoading}
             >
-              {categories.items.map((item) => (
+              {categories?.items?.map((item) => (
                 <Option key={item.id} value={item.id}>
                   {item.title}
                 </Option>

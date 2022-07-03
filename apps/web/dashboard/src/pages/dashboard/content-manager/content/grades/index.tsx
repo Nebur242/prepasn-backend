@@ -1,6 +1,5 @@
 import { Grade } from '@prepa-sn/shared/interfaces';
 import { Button, Space, Table, Tag, message } from 'antd';
-import { IConfirmation } from '@prepa-sn/dashboard/common/interfaces/common.interface';
 import ContentSectionWrapper from '@prepa-sn/dashboard/components/content-section-wrapper';
 import Icon from '@prepa-sn/dashboard/components/Icon';
 import { showConfirm } from '@prepa-sn/dashboard/helpers/functions.helpers';
@@ -9,8 +8,7 @@ import {
   useFindAllGradesQuery,
 } from '@prepa-sn/dashboard/store/features/grades';
 import {
-  IPaginationLinks,
-  IPaginationMeta,
+
   IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
 import { useEffect, useState } from 'react';
@@ -36,11 +34,7 @@ const Grades = () => {
   });
 
   const {
-    data: grades = {
-      items: [],
-      meta: {} as IPaginationMeta,
-      links: {} as IPaginationLinks,
-    },
+    data: grades,
     isLoading: gradesLoading,
     isFetching,
   } = useFindAllGradesQuery({
@@ -109,7 +103,7 @@ const Grades = () => {
                 data: grade,
                 onCancel: () => console.log('cancel'),
                 onOk: () => deleteGrade(grade.id),
-              } as IConfirmation<Grade>)
+              })
             }
           />
         </Space>
@@ -131,7 +125,7 @@ const Grades = () => {
         }}
         loading={gradesLoading || isFetching}
         columns={columns}
-        dataSource={grades.items.map((grade: Grade) => ({
+        dataSource={grades?.items?.map((grade: Grade) => ({
           ...grade,
           key: grade.id,
         }))}

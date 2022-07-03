@@ -19,9 +19,9 @@ const initialState: UsersInitialState = {
   users: [],
 };
 
-const BASE_PATH = `/users` as const;
-const TAG_TYPE = `Users` as const;
 const NAME = 'users' as const;
+const BASE_PATH = `/${NAME}` as const;
+const TAG_TYPE = `Users` as const;
 
 export const usersApi = createApi({
   reducerPath: `${NAME}Api`,

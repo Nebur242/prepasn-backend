@@ -1,14 +1,11 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Classroom } from '@prepa-sn/shared/interfaces';
 import { Button, Space, Table, Tag } from 'antd';
-import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.interface';
 import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
 import Icon from 'apps/web/dashboard/src/components/Icon';
 import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
 import { useFindAllClassroomsQuery } from 'apps/web/dashboard/src/store/features/classrooms';
 import {
-  IPaginationLinks,
-  IPaginationMeta,
   IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
 import { useState } from 'react';
@@ -34,11 +31,7 @@ const Classrooms = () => {
   });
 
   const {
-    data: classrooms = {
-      items: [],
-      meta: {} as IPaginationMeta,
-      links: {} as IPaginationLinks,
-    },
+    data: classrooms,
     isLoading,
     isFetching,
   } = useFindAllClassroomsQuery({
@@ -93,7 +86,7 @@ const Classrooms = () => {
                 data: classroom,
                 onCancel: () => console.log('cancel'),
                 onOk: () => console.log('ok'),
-              } as IConfirmation<Classroom>)
+              })
             }
           />
         </Space>

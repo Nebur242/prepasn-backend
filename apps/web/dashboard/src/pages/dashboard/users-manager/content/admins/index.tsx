@@ -6,15 +6,12 @@ import {
 import { Role } from '@prepa-sn/shared/enums';
 import { Admin } from '@prepa-sn/shared/interfaces';
 import { Button, message, Space, Table, Tag } from 'antd';
-import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.interface';
 import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
 import Icon from 'apps/web/dashboard/src/components/Icon';
 import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
 
 import dayjs from 'dayjs';
 import {
-  IPaginationLinks,
-  IPaginationMeta,
   IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
 import { useEffect, useState } from 'react';
@@ -29,11 +26,7 @@ const Admins = () => {
   });
 
   const {
-    data: admins = {
-      items: [],
-      meta: {} as IPaginationMeta,
-      links: {} as IPaginationLinks,
-    },
+    data: admins,
     isLoading,
     isFetching,
   } = useFindAllUsersQuery({
@@ -94,7 +87,7 @@ const Admins = () => {
                 data: admin,
                 onCancel: () => console.log('cancel'),
                 onOk: () => deleteAdmin({ uid: admin.uid }),
-              } as IConfirmation<Admin>)
+              })
             }
           />
         </Space>
@@ -124,7 +117,7 @@ const Admins = () => {
         }}
         loading={isLoading || isFetching}
         columns={columns}
-        dataSource={admins?.items.map((admin: Admin) => ({
+        dataSource={admins?.items?.map((admin: Admin) => ({
           ...admin,
           key: admin.id,
         }))}

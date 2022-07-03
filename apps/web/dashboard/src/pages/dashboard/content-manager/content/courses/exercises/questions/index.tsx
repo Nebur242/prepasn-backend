@@ -1,7 +1,6 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Exercise, Question } from '@prepa-sn/shared/interfaces';
 import { Button, Modal, Row, Space, Spin, Table, Tag } from 'antd';
-import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.interface';
 import Icon from 'apps/web/dashboard/src/components/Icon';
 import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
 import {
@@ -10,8 +9,6 @@ import {
 } from 'apps/web/dashboard/src/store/features/questions';
 import dayjs from 'dayjs';
 import {
-  IPaginationLinks,
-  IPaginationMeta,
   IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
 import { FC, useEffect, useState } from 'react';
@@ -44,11 +41,7 @@ const Questions: FC<QuestionsProps> = ({ exercise }) => {
   });
 
   const {
-    data: questions = {
-      items: [],
-      meta: {} as IPaginationMeta,
-      links: {} as IPaginationLinks,
-    },
+    data: questions,
     isLoading: questionsLoading,
   } = useFindAllQuestionsQuery({
     ...pagination,
@@ -104,7 +97,7 @@ const Questions: FC<QuestionsProps> = ({ exercise }) => {
                 data: question,
                 onCancel: () => console.log('cancel'),
                 onOk: () => deleteQuestion(question.id),
-              } as IConfirmation<Question>)
+              })
             }
           />
         </Space>
@@ -141,7 +134,7 @@ const Questions: FC<QuestionsProps> = ({ exercise }) => {
           ...rowSelection,
         }}
         columns={columns}
-        dataSource={questions.items?.map((q: Question) => ({
+        dataSource={questions?.items?.map((q: Question) => ({
           ...q,
           key: q.id,
         }))}

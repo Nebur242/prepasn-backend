@@ -41,11 +41,7 @@ const Exercises = () => {
   const { data, isLoading } = useFindOneChapterQuery(chapterId);
 
   const {
-    data: exercises = {
-      items: [],
-      meta: {} as IPaginationMeta,
-      links: {} as IPaginationLinks,
-    },
+    data: exercises,
     isLoading: exercisesLoading,
     isFetching: exercisesFetching,
   } = useFindAllExercisesQuery({
@@ -111,7 +107,7 @@ const Exercises = () => {
                 data: exercise,
                 onCancel: () => console.log('cancel'),
                 onOk: () => console.log('ok'),
-              } as IConfirmation<Exercise>)
+              })
             }
           />
         </Space>

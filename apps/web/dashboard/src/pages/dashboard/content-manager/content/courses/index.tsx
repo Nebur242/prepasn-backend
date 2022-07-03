@@ -1,6 +1,5 @@
 import { Course } from '@prepa-sn/shared/interfaces';
 import { Button, Space, Table, Tag, message } from 'antd';
-import { IConfirmation } from '@prepa-sn/dashboard/common/interfaces/common.interface';
 import ContentSectionWrapper from '@prepa-sn/dashboard/components/content-section-wrapper';
 import Icon from '@prepa-sn/dashboard/components/Icon';
 import { showConfirm } from '@prepa-sn/dashboard/helpers/functions.helpers';
@@ -9,8 +8,6 @@ import {
   useFindAllCoursesQuery,
 } from '@prepa-sn/dashboard/store/features/courses';
 import {
-  IPaginationLinks,
-  IPaginationMeta,
   IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
 import { useEffect, useState } from 'react';
@@ -35,11 +32,7 @@ const Courses = () => {
   });
 
   const {
-    data: courses = {
-      items: [],
-      meta: {} as IPaginationMeta,
-      links: {} as IPaginationLinks,
-    },
+    data: courses,
     isLoading: coursesLoading,
     isFetching,
   } = useFindAllCoursesQuery({
@@ -105,7 +98,7 @@ const Courses = () => {
                 data: course,
                 onCancel: () => console.log('cancel'),
                 onOk: () => deleteCourse(course.id),
-              } as IConfirmation<Course>)
+              })
             }
           />
         </Space>
@@ -137,7 +130,7 @@ const Courses = () => {
         }}
         loading={coursesLoading || isFetching}
         columns={columns}
-        dataSource={courses.items.map((course: Course) => ({
+        dataSource={courses?.items.map((course: Course) => ({
           ...course,
           key: course.id,
         }))}
