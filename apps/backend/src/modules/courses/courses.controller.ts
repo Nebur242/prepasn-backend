@@ -6,6 +6,7 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { ApiBody, ApiOkResponse } from '@nestjs/swagger';
 import { Admin, Authenticated } from '../auth/roles-auth.guard';
@@ -17,6 +18,8 @@ import { Course } from './entities/course.entity';
 import Controller from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
 import { Claims } from '@prepa-sn/backend/common/decorators/get-user.decorator';
 import { User } from '../users/entities/user.entity';
+import { FilterDto } from './dto/filter.dto';
+import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 
 @Controller('courses')
 export class CoursesController {
@@ -39,8 +42,16 @@ export class CoursesController {
   @Get()
   @Authenticated()
   @ApiOkResponse({ type: CourseDto, isArray: true })
-  findAll(): Promise<Course[]> {
-    return this.coursesService.findAll();
+  findAll(@Query() filterDto: FilterDto & IPaginationOptions) {
+    const { page = 0, limit = 10, ...filter } = filterDto;
+    return this.coursesService.paginate(
+      {
+        page,
+        limit,
+        route: '/courses',
+      },
+      filter
+    );
   }
 
   @Get(':id')

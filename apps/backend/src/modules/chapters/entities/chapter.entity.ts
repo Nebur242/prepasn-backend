@@ -6,7 +6,7 @@ import { Exercise } from '../../exercises/entities/exercise.entity';
 
 @Entity()
 export class Chapter extends BaseContent {
-  @ManyToOne(() => Course, (course) => course.chapters)
+  @ManyToOne(() => Course, (course) => course.chapters, { onDelete: 'CASCADE' })
   course: Course;
 
   @OneToMany(() => Exercise, (exercise) => exercise.chapter)
