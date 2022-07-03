@@ -1,10 +1,9 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
+import { useEffect } from 'react';
 import { Status } from '@prepa-sn/shared/enums';
 import { Form, message } from 'antd';
-import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
-import { useCreateStudentMutation } from 'apps/web/dashboard/src/store/features/students';
-import { useEffect } from 'react';
+import ContentSectionWrapper from '@prepa-sn/dashboard/components/content-section-wrapper';
 import CreateAndUpdate from './create-update';
+import { useCreateStudentMutation } from '@prepa-sn/dashboard/store/features/users';
 
 const CreateStudent = () => {
   const [form] = Form.useForm();

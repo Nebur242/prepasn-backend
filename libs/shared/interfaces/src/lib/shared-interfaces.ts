@@ -3,6 +3,7 @@ import {
   displayType,
   exerciseType,
   level,
+  Role,
   Status,
 } from '@prepa-sn/shared/enums';
 
@@ -30,6 +31,7 @@ export interface User {
   status: Status;
   createdAt?: Date;
   updatedAt?: Date;
+  roles: Role[];
 }
 
 export interface Student extends User {}

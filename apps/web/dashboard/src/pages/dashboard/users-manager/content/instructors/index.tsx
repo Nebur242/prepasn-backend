@@ -1,14 +1,11 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
+import { useDeleteUserMutation, useFindAllUsersQuery } from '@prepa-sn/dashboard/store/features/users';
+import { Role } from '@prepa-sn/shared/enums';
 import { Instructor, Student } from '@prepa-sn/shared/interfaces';
 import { Button, message, Space, Table, Tag } from 'antd';
-import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.interface';
-import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
-import Icon from 'apps/web/dashboard/src/components/Icon';
-import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
-import {
-  useDeleteInstructorMutation,
-  useFindAllInstructorsQuery,
-} from 'apps/web/dashboard/src/store/features/instructors';
+import { IConfirmation } from '@prepa-sn/dashboard/common/interfaces/common.interface';
+import ContentSectionWrapper from '@prepa-sn/dashboard/components/content-section-wrapper';
+import Icon from '@prepa-sn/dashboard/components/Icon';
+import { showConfirm } from '@prepa-sn/dashboard/helpers/functions.helpers';
 import dayjs from 'dayjs';
 import {
   IPaginationLinks,
@@ -34,12 +31,15 @@ const Instructors = () => {
     },
     isLoading,
     isFetching,
-  } = useFindAllInstructorsQuery({
-    ...pagination,
+  } = useFindAllUsersQuery({
+    pagination,
+    filter: {
+      roles: [Role.INSTRUCTOR]
+    }
   });
 
   const [deleteInstructor, { isSuccess: isDeleted, isError: hasError }] =
-    useDeleteInstructorMutation();
+    useDeleteUserMutation();
 
   const columns = [
     {

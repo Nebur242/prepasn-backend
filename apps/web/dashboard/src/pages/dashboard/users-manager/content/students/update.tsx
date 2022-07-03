@@ -1,27 +1,22 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Student } from '@prepa-sn/shared/interfaces';
 import { Form, message, Row, Spin } from 'antd';
-import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
-import {
-  useFindOneStudentQuery,
-  useUpdateStudentMutation,
-} from 'apps/web/dashboard/src/store/features/students';
-// import dayjs from 'dayjs';
 import { useEffect } from 'react';
+import ContentSectionWrapper from '@prepa-sn/dashboard/components/content-section-wrapper';
 import { useParams } from 'react-router-dom';
 import CreateAndUpdate from './create-update';
+import { useFindOneUserQuery, useUpdateUserMutation } from '@prepa-sn/dashboard/store/features/users';
 
 const UpdateStudent = () => {
   const { id } = useParams<{ id: string }>();
   const [form] = Form.useForm();
-  const { data, isLoading } = useFindOneStudentQuery({
+  const { data, isLoading } = useFindOneUserQuery({
     id,
   });
 
   const [
     updateStudent,
     { isLoading: isUpdating, isSuccess: isUpdated, isError: hasError },
-  ] = useUpdateStudentMutation();
+  ] = useUpdateUserMutation();
 
   const onFinish = async () => {
     try {

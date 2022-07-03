@@ -2,26 +2,23 @@
 import { useEffect } from 'react';
 import { Admin } from '@prepa-sn/shared/interfaces';
 import { Form, message, Row, Spin } from 'antd';
-import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
+import ContentSectionWrapper from '@prepa-sn/dashboard/components/content-section-wrapper';
 
 import { useParams } from 'react-router-dom';
 import CreateAndUpdate from './create-update';
-import {
-  useFindOneAdminQuery,
-  useUpdateAdminMutation,
-} from 'apps/web/dashboard/src/store/features/admin';
+import { useFindOneUserQuery, useUpdateUserMutation } from '@prepa-sn/dashboard/store/features/users';
 
 const UpdateAdmin = () => {
   const { id } = useParams<{ id: string }>();
   const [form] = Form.useForm();
-  const { data, isLoading } = useFindOneAdminQuery({
+  const { data, isLoading } = useFindOneUserQuery({
     id,
   });
 
   const [
     updateAdmin,
     { isLoading: isUpdating, isSuccess: isUpdated, isError: hasError },
-  ] = useUpdateAdminMutation();
+  ] = useUpdateUserMutation();
 
   const onFinish = async () => {
     try {

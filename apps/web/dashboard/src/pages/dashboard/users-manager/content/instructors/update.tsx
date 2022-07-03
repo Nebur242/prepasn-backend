@@ -3,24 +3,21 @@ import { useEffect } from 'react';
 import { Instructor } from '@prepa-sn/shared/interfaces';
 import { Form, message, Row, Spin } from 'antd';
 import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
-import {
-  useFindOneInstructorQuery,
-  useUpdateInstructorMutation,
-} from 'apps/web/dashboard/src/store/features/instructors';
 import { useParams } from 'react-router-dom';
 import CreateAndUpdate from './create-update';
+import { useFindOneUserQuery, useUpdateUserMutation } from '@prepa-sn/dashboard/store/features/users';
 
 const UpdateInstructor = () => {
   const { id } = useParams<{ id: string }>();
   const [form] = Form.useForm();
-  const { data, isLoading } = useFindOneInstructorQuery({
+  const { data, isLoading } = useFindOneUserQuery({
     id,
   });
 
   const [
     updateInstructor,
     { isLoading: isUpdating, isSuccess: isUpdated, isError: hasError },
-  ] = useUpdateInstructorMutation();
+  ] = useUpdateUserMutation();
 
   const onFinish = async () => {
     try {

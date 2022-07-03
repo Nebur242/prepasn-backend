@@ -1,14 +1,11 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
+import { useFindAllUsersQuery, useUpdateUserMutation } from '@prepa-sn/dashboard/store/features/users';
+import { Role } from '@prepa-sn/shared/enums';
 import { Student } from '@prepa-sn/shared/interfaces';
 import { Button, message, Space, Table, Tag } from 'antd';
-import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.interface';
-import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
-import Icon from 'apps/web/dashboard/src/components/Icon';
-import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
-import {
-  useDeleteStudentMutation,
-  useFindAllStudentsQuery,
-} from 'apps/web/dashboard/src/store/features/students';
+import { IConfirmation } from '@prepa-sn/dashboard/common/interfaces/common.interface';
+import ContentSectionWrapper from '@prepa-sn/dashboard/components/content-section-wrapper';
+import Icon from '@prepa-sn/dashboard/components/Icon';
+import { showConfirm } from '@prepa-sn/dashboard/helpers/functions.helpers';
 import dayjs from 'dayjs';
 import {
   IPaginationLinks,
@@ -27,19 +24,22 @@ const Students = () => {
   });
 
   const {
-    data: classrooms = {
+    data: students = {
       items: [],
       meta: {} as IPaginationMeta,
       links: {} as IPaginationLinks,
     },
     isLoading,
     isFetching,
-  } = useFindAllStudentsQuery({
-    ...pagination,
+  } = useFindAllUsersQuery({
+    pagination,
+    filter: {
+      roles: [Role.STUDENT]
+    }
   });
 
   const [deleteStudent, { isSuccess: isDeleted, isError: hasError }] =
-    useDeleteStudentMutation();
+    useUpdateUserMutation();
 
   const columns = [
     {
@@ -119,13 +119,13 @@ const Students = () => {
         }}
         loading={isLoading || isFetching}
         columns={columns}
-        dataSource={classrooms?.items.map((student: Student) => ({
+        dataSource={students?.items.map((student: Student) => ({
           ...student,
           key: student.id,
         }))}
         pagination={{
           defaultCurrent: 1,
-          total: classrooms?.meta.total,
+          total: students?.meta.total,
           showSizeChanger: true,
           showQuickJumper: true,
           onChange: (page: number, pageSize: number) => {

@@ -1,10 +1,9 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Status } from '@prepa-sn/shared/enums';
 import { Form, message } from 'antd';
-import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
-import { useCreateAdminMutation } from 'apps/web/dashboard/src/store/features/admin';
+import ContentSectionWrapper from '@prepa-sn/dashboard/components/content-section-wrapper';
 import { useEffect } from 'react';
 import CreateAndUpdate from './create-update';
+import { useCreateAdminMutation } from '@prepa-sn/dashboard/store/features/users';
 
 const CreateAdmin = () => {
   const [form] = Form.useForm();
