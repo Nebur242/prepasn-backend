@@ -16,6 +16,8 @@ import { exercisesApi } from './features/exercises';
 import { questionsApi } from './features/questions';
 import { usersApi } from './features/users';
 
+const isDev = import.meta.env.DEV;
+
 export const store = configureStore({
   reducer: {
     auth,
@@ -35,7 +37,6 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
-      .concat(logger)
       .concat(gradesApi.middleware)
       .concat(documentsApi.middleware)
       .concat(coursesApi.middleware)
@@ -48,8 +49,9 @@ export const store = configureStore({
       .concat(categoriessApi.middleware)
       .concat(exercisesApi.middleware)
       .concat(questionsApi.middleware)
-      .concat(usersApi.middleware),
-  devTools: import.meta.env.DEV,
+      .concat(usersApi.middleware)
+      .concat(isDev ? logger : null),
+  devTools: isDev,
 });
 
 setupListeners(store.dispatch);
