@@ -1,5 +1,5 @@
 import { UserInfo } from 'firebase/auth';
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type User = UserInfo & { roles: string[] };
 
@@ -15,10 +15,10 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUser: (state: UserInitialState, action) => {
-      state.infos = action.payload as User;
+    setUser: (state: UserInitialState, action: PayloadAction<User>) => {
+      state.infos = action.payload;
     },
-    updateUser: (state: UserInitialState, action) => {
+    updateUser: (state: UserInitialState, action: PayloadAction<User>) => {
       state.infos = { ...(state.infos || {}), ...action.payload };
     },
   },
