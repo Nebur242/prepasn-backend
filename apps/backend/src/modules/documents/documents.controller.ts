@@ -11,8 +11,11 @@ import {
 } from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
 import Controller from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
+import { GetClaims } from '@prepa-sn/backend/common/decorators/get-decoded-token';
+import { Claims } from '@prepa-sn/backend/common/decorators/get-user.decorator';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { Authenticated } from '../auth/roles-auth.guard';
+import { User } from '../users/entities/user.entity';
 import { DocumentsService } from './documents.service';
 import { CreateDocumentDto } from './dto/create-document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
@@ -25,23 +28,36 @@ export class DocumentsController {
 
   @Post()
   @ApiOkResponse({ type: CreateDocumentDto, isArray: false })
-  create(@Body() createDocumentDto: CreateDocumentDto): Promise<Document> {
-    return this.documentsService.create(createDocumentDto);
+  @Authenticated()
+  create(
+    @Claims() user: User,
+    @Body() createDocumentDto: CreateDocumentDto
+  ): Promise<Document> {
+    return this.documentsService.create({
+      ...createDocumentDto,
+      createdBy: user,
+    });
   }
 
   @Post('bulk')
   @ApiOkResponse({ type: [CreateDocumentDto], isArray: true })
   bulkCreate(
+    @Claims() user: User,
     @Body() createDocumentDtos: CreateDocumentDto[]
   ): Promise<Document[]> {
-    return this.documentsService.bulkCreate(createDocumentDtos);
+    return this.documentsService.bulkCreate(
+      createDocumentDtos.map((dto) => ({
+        ...dto,
+        createdBy: user,
+      }))
+    );
   }
 
   @Get()
   @ApiOkResponse({ type: CreateDocumentDto, isArray: true })
   findAll(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page,
-    @Query('limit', new DefaultValuePipe(5), ParseIntPipe) limit
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit
   ): Promise<Pagination<Document>> {
     return this.documentsService.paginate({
       page,
@@ -59,10 +75,14 @@ export class DocumentsController {
   @Patch(':id')
   @ApiOkResponse({ type: CreateDocumentDto, isArray: false })
   update(
+    @Claims() user: User,
     @Param('id', ParseIntPipe) id: number,
     @Body() updateDocumentDto: UpdateDocumentDto
   ): Promise<Document> {
-    return this.documentsService.update(id, updateDocumentDto);
+    return this.documentsService.update(id, {
+      ...updateDocumentDto,
+      updatedBy: user,
+    });
   }
 
   @Delete(':id')

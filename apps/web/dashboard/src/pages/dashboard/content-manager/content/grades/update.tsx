@@ -1,12 +1,10 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Grade } from '@prepa-sn/shared/interfaces';
 import { Form, message, Row, Spin } from 'antd';
-import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
+import ContentSectionWrapper from '@prepa-sn/dashboard/components/content-section-wrapper';
 import {
   useFindOneGradeQuery,
   useUpdateGradeMutation,
-} from 'apps/web/dashboard/src/store/features/grades';
+} from '@prepa-sn/dashboard/store/features/grades';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import CreateAndUpdate from './create-update';

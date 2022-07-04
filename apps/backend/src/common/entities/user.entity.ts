@@ -1,3 +1,4 @@
+import { Status } from '@prepa-sn/shared/enums';
 import {
   PrimaryGeneratedColumn,
   Column,
@@ -26,6 +27,13 @@ export abstract class User {
 
   @Column({ unique: true })
   uid: string;
+
+  @Column({
+    type: 'enum',
+    enum: Status,
+    default: Status.PENDING,
+  })
+  status: Status;
 
   @CreateDateColumn()
   createdAt: Date;

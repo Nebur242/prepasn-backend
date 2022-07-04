@@ -3,6 +3,7 @@ import { Course } from '@prepa-sn/shared/interfaces';
 import { axiosBaseQuery } from '../../../config/api.config';
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { createSlice } from '@reduxjs/toolkit';
+import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 
 export interface CoursesInitialState {
   loading: boolean;
@@ -11,34 +12,55 @@ export interface CoursesInitialState {
   courses: Course[];
 }
 
-export const initialState: CoursesInitialState = {
+const initialState: CoursesInitialState = {
   loading: false,
   error: '',
   status: Status.PENDING,
   courses: [],
 };
 
+const NAME = `courses` as const;
+const BASE_PATH = `/${NAME}` as const;
+const TAG_TYPE = `Courses` as const;
+
 export const coursesApi = createApi({
-  reducerPath: 'coursesApi',
+  reducerPath: `${NAME}Api`,
   baseQuery: axiosBaseQuery(),
-  tagTypes: ['Courses'],
+  tagTypes: [TAG_TYPE],
   endpoints: (build) => ({
     findOneCourse: build.query<Course, string>({
       query: (id: string) => ({ url: `/courses/${id}`, method: 'GET' }),
     }),
-    findAllCourses: build.query<Course[], void>({
-      query: () => ({ url: '/courses', method: 'GET' }),
+    findAllCourses: build.query<Pagination<Course>, IPaginationOptions>({
+      query: (
+        pagination: IPaginationOptions = {
+          page: 1,
+          limit: 10,
+        }
+      ) => {
+        const { page, limit } = pagination;
+        const params = new URLSearchParams({
+          page: `${page}`,
+          limit: `${limit}`,
+        }).toString();
+        return {
+          url: `${BASE_PATH}?${params}`,
+          method: 'GET',
+        };
+      },
       providesTags: (result, _error, _arg) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const final: any[] = [
           {
-            type: 'Courses',
+            type: TAG_TYPE,
           },
         ];
         return [
           ...final,
-          ...(result?.map((course) => ({ type: 'Courses', id: course.id })) ||
-            []),
+          ...(result.items?.map((course) => ({
+            type: TAG_TYPE,
+            id: course.id,
+          })) || []),
         ];
       },
     }),
@@ -48,7 +70,7 @@ export const coursesApi = createApi({
         method: 'POST',
         data: course,
       }),
-      invalidatesTags: ['Courses'],
+      invalidatesTags: [TAG_TYPE],
     }),
     updateCourse: build.mutation<Course, Course>({
       query: (course: Course) => ({
@@ -57,7 +79,7 @@ export const coursesApi = createApi({
         data: course,
       }),
       invalidatesTags: (_result, _error, arg) => [
-        { type: 'Courses', id: arg.id },
+        { type: TAG_TYPE, id: arg.id },
       ],
     }),
     deleteCourse: build.mutation<Course, number>({
@@ -65,7 +87,7 @@ export const coursesApi = createApi({
         url: `/courses/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (_result, _error, arg) => [{ type: 'Courses', id: arg }],
+      invalidatesTags: (_result, _error, arg) => [{ type: TAG_TYPE, id: arg }],
     }),
   }),
 });

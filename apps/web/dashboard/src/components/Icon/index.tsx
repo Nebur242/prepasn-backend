@@ -27,10 +27,14 @@ import {
   CloudUploadOutlined,
   TranslationOutlined,
   LogoutOutlined,
+  FolderOpenOutlined,
+  AreaChartOutlined,
   CloseOutlined,
   PlayCircleOutlined,
   PauseCircleOutlined,
   EyeOutlined,
+  InfoCircleOutlined,
+  BellOutlined,
 } from '@ant-design/icons';
 
 export interface IIcons {
@@ -77,6 +81,10 @@ const Icon: FC<IIcons> = ({ type, ...rest }): JSX.Element | null => {
       PlayCircleOutlined: <PlayCircleOutlined {...rest} />,
       PauseCircleOutlined: <PauseCircleOutlined {...rest} />,
       EyeOutlined: <EyeOutlined {...rest} />,
+      FolderOpenOutlined: <FolderOpenOutlined {...rest} />,
+      AreaChartOutlined: <AreaChartOutlined {...rest} />,
+      InfoCircleOutlined: <InfoCircleOutlined {...rest} />,
+      BellOutlined: <BellOutlined {...rest} />,
       default: null,
     }[type]);
 

@@ -20,12 +20,15 @@
   },
   "menu": {
     "home": "Accueil",
+    "stats": "Statistiques",
     "users": "Utilisateurs",
     "roles": "Rôles",
     "permissions": "Permissions",
     "settings": "Paramètres",
     "content-manager": "Content Manager",
     "grades": "Sections",
-    "profile": "profil"
+    "media-library": "Médias",
+    "profile": "profil",
+    "users-manager": "Gestion des utilisateurs"
   }
 }

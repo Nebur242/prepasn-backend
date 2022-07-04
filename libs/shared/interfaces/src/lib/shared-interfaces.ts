@@ -1,4 +1,11 @@
-import { Status } from '@prepa-sn/shared/enums';
+/* eslint-disable @typescript-eslint/no-empty-interface */
+import {
+  displayType,
+  exerciseType,
+  level,
+  Role,
+  Status,
+} from '@prepa-sn/shared/enums';
 
 export interface FirebaseConfig {
   type: string;
@@ -12,6 +19,26 @@ export interface FirebaseConfig {
   authProviderX509CertUrl: string;
   clientC509CertUrl: string;
 }
+
+export interface User {
+  id: number;
+  uid: string;
+  firstName: string;
+  lastName: string;
+  birthDate?: Date;
+  email?: string;
+  phone: string;
+  status: Status;
+  createdAt?: Date;
+  updatedAt?: Date;
+  roles: Role[];
+}
+
+export interface Student extends User {}
+
+export interface Instructor extends User {}
+
+export interface Admin extends User {}
 
 export interface Document {
   id: number;
@@ -48,6 +75,7 @@ export interface Course extends BaseContent {
   grades: Grade[];
   chapters: Chapter[];
   documents: Document[];
+  categories: Category[];
 }
 
 export interface Grade extends BaseContent {
@@ -59,4 +87,23 @@ export interface Grade extends BaseContent {
 export interface Chapter extends BaseContent {
   course: Course;
   documents: Document[];
+  exercises: Exercise[];
 }
+
+export interface Question extends BaseContent {
+  exercise: Exercise;
+}
+
+export interface Exercise extends BaseContent {
+  chapter: Chapter;
+  type: exerciseType;
+  questions: Question[];
+  level: level;
+  display: displayType;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface Classroom extends BaseContent {}
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface Category extends BaseContent {}

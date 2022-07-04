@@ -9,16 +9,12 @@ import {
   Space,
   Spin,
 } from 'antd';
-import {
-  IPaginationLinks,
-  IPaginationMeta,
-  IPaginationOptions,
-} from 'nestjs-typeorm-paginate';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { useState } from 'react';
-import ContentSectionWrapper from '../../../components/content-section-wrapper';
-import AppDocuments from '../../../components/documents';
-import AppUploadDocuments from '../../../components/uploadFiles';
-import { useFindAllDocumentsQuery } from '../../../store/features/documents';
+import ContentSectionWrapper from '@prepa-sn/dashboard/components/content-section-wrapper';
+import AppDocuments from '@prepa-sn/dashboard/components/documents';
+import AppUploadDocuments from '@prepa-sn/dashboard/components/uploadFiles';
+import { useFindAllDocumentsQuery } from '@prepa-sn/dashboard/store/features/documents';
 import { Document } from '@prepa-sn/shared/interfaces';
 
 interface MediaLibraryProps {
@@ -35,23 +31,15 @@ const MediaLibrary = ({
   columns = 6,
 }: MediaLibraryProps) => {
   const [pagination, setPagination] = useState<IPaginationOptions>({
-    page: 1 as number,
-    limit: 10 as number,
+    page: 1,
+    limit: 10,
   });
   const [selected, setSelected] = useState<Document[]>(
     onDocumentsSelect ? selectedDocuments : []
   );
 
-  const {
-    isLoading,
-    isFetching,
-    data = {
-      items: [] as Document[],
-      meta: {} as IPaginationMeta,
-      links: {} as IPaginationLinks,
-    },
-    error,
-  } = useFindAllDocumentsQuery(pagination);
+  const { isLoading, isFetching, data, error } =
+    useFindAllDocumentsQuery(pagination);
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -67,10 +55,7 @@ const MediaLibrary = ({
   return (
     <ContentSectionWrapper
       title="Media Library"
-      description={`${
-        (pagination.page as number) * (pagination.limit as number) -
-        ((pagination.limit as number) - data.items.length)
-      } assets`}
+      description={`${data?.meta.totalItems} assets`}
       createButtonText="Add new assets"
       onCreate={openModal}
       style={{
@@ -82,7 +67,7 @@ const MediaLibrary = ({
         <Button>Filter by</Button>
       </Space>
       <Divider />
-      {selected.length > 0 && (
+      {selected.length > 0 && !onDocumentsSelect && (
         <>
           <Row>
             <Col span={10}>
@@ -118,19 +103,22 @@ const MediaLibrary = ({
           multiple={multiple}
           onDocumentsSelect={onSelected}
           selectedDocuments={onDocumentsSelect ? selectedDocuments : selected}
-          documents={data.items}
+          documents={data?.items || []}
           loading={isLoading}
           error={error}
           columns={columns}
         />
       </Spin>
       <Divider />
-      {data.items.length > 0 && (
+      {data?.items.length > 0 && (
         <Row justify="end">
           <Pagination
-            defaultPageSize={pagination.limit as number}
-            defaultCurrent={data.meta.currentPage}
-            total={data.meta.totalItems}
+            defaultPageSize={+pagination.limit}
+            defaultCurrent={data?.meta.currentPage}
+            total={data?.meta.totalItems}
+            showPrevNextJumpers
+            showSizeChanger
+            showQuickJumper
             onChange={(page, pageSize) => {
               setPagination({
                 ...pagination,

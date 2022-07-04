@@ -1,8 +1,11 @@
 import { UserInfo } from 'firebase/auth';
 import { createSlice } from '@reduxjs/toolkit';
+import { Role } from '@prepa-sn/shared/enums';
+
+export type User = UserInfo & { roles: Role[] };
 
 export interface UserInitialState {
-  infos: UserInfo | null;
+  infos: User | null;
 }
 
 const initialState: UserInitialState = {
@@ -14,10 +17,10 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state: UserInitialState, action) => {
-      state.infos = action.payload as UserInfo;
+      state.infos = action.payload;
     },
     updateUser: (state: UserInitialState, action) => {
-      state.infos = { ...(state.infos || {}), ...action.payload };
+      state.infos = { ...(state.infos || {}), ...(action.payload || {}) };
     },
   },
 });

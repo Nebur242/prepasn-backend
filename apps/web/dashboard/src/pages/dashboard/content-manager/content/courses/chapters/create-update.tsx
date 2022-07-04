@@ -1,4 +1,3 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Chapter, Document } from '@prepa-sn/shared/interfaces';
 import {
   Card,
@@ -11,12 +10,13 @@ import {
   Row,
   Input,
 } from 'antd';
-import ContentWithSider from 'apps/web/dashboard/src/components/content-with-sider';
-import { useFindOneCourseQuery } from 'apps/web/dashboard/src/store/features/courses';
+import ContentWithSider from '@prepa-sn/dashboard/components/content-with-sider';
+import { useFindOneCourseQuery } from '@prepa-sn/dashboard/store/features/courses';
 import { FC } from 'react';
 import { CKEditor } from 'ckeditor4-react';
-import AppUpload from 'apps/web/dashboard/src/components/upload';
+import AppUpload from '@prepa-sn/dashboard/components/upload';
 import { useParams } from 'react-router-dom';
+import dayjs from 'dayjs';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -40,6 +40,8 @@ const CreateUpdate: FC<ICreateAndUpdateProps> = ({
     <ContentWithSider
       form={form}
       onFinish={onFinish}
+      createdAt={dayjs(initialValues?.createdAt).format('DD/MM/YYYY:HH:mm:ss')}
+      updatedAt={dayjs(initialValues?.updatedAt).format('DD/MM/YYYY:HH:mm:ss')}
       initialValues={initialValues}
       sidebarExtra={
         <Card>

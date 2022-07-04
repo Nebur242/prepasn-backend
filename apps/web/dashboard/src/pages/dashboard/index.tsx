@@ -12,16 +12,23 @@ import {
   Space,
   Popover,
   Popconfirm,
+  Badge,
+  Dropdown,
 } from 'antd';
 
-import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
+import {
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+  BellOutlined,
+} from '@ant-design/icons';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Icon from '../../components/Icon';
 import logo from '../../../public/images/logo.png';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../store';
 import { logoutUser } from '../../store/features/auth';
+import { User } from '../../store/features/user';
 
 const { Header, Sider, Content } = Layout;
 
@@ -40,6 +47,7 @@ const Dashboard = () => {
   const { t } = useTranslation();
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
+  const user = useSelector((state: RootState) => state.user);
 
   const toggle = () => setCollapsed((prev) => !prev);
 
@@ -50,6 +58,20 @@ const Dashboard = () => {
         icon: <Icon type={route?.icon} />,
         label: <NavLink to={route.path}>{t(`menu.${route.name}`)}</NavLink>,
       };
+    });
+  };
+
+  const filterRouteAccess = (_routes: Route[], _user: User): Route[] => {
+    return _routes.filter((route: Route) => {
+      return route.access.length < 1
+        ? true
+        : route.access.some((access: string) => _user.roles.includes(access));
+    });
+  };
+
+  const filterUnusedRoutes = (_routes: Route[]): Route[] => {
+    return _routes.filter((route: Route) => {
+      return route.name !== 'unauthorized';
     });
   };
 
@@ -89,6 +111,26 @@ const Dashboard = () => {
     </div>
   );
 
+  const menu = (
+    <Menu
+      items={[
+        {
+          label: <a href="https://www.antgroup.com">1st menu item</a>,
+          key: '0',
+        },
+        {
+          label: <a href="https://www.aliyun.com">2nd menu item</a>,
+          key: '1',
+        },
+
+        {
+          label: '3rd menu item',
+          key: '3',
+        },
+      ]}
+    />
+  );
+
   return (
     <Layout style={{ height: '100vh' }}>
       <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -111,7 +153,9 @@ const Dashboard = () => {
           theme={theme}
           mode="inline"
           defaultSelectedKeys={['0']}
-          items={setNestedMenu(DASHBOARD.routes)}
+          items={setNestedMenu(
+            filterRouteAccess(filterUnusedRoutes(DASHBOARD.routes), user.infos)
+          )}
         />
       </Sider>
       <Layout>
@@ -126,12 +170,35 @@ const Dashboard = () => {
             </Col>
             <Col>
               <Space>
+                <Button type="text">
+                  <div style={{ paddingTop: 20 }}>
+                    <Dropdown
+                      placement="bottom"
+                      overlay={menu}
+                      trigger={['click']}
+                    >
+                      <Badge count={5}>
+                        <BellOutlined style={{ fontSize: 25 }} />
+                      </Badge>
+                    </Dropdown>
+                  </div>
+                </Button>
                 <Popover
                   placement="bottomRight"
                   content={content}
                   title="Paramètre"
                 >
-                  <Avatar icon={<Icon type="UserOutlined" />} />
+                  <Button
+                    type="text"
+                    icon={
+                      <Avatar
+                        style={{ marginRight: 10 }}
+                        src={`http://gravatar.com/avatar/${user?.infos?.uid}?d=identicon`}
+                      />
+                    }
+                  >
+                    {user?.infos?.email}
+                  </Button>
                 </Popover>
                 <Button
                   shape="circle"

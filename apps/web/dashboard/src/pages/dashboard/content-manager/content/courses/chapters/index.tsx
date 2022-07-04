@@ -1,14 +1,17 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Chapter } from '@prepa-sn/shared/interfaces';
 import { Button, Space, Table, Tag, message } from 'antd';
-import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.interface';
-import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
-import Icon from 'apps/web/dashboard/src/components/Icon';
-import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
-import { useDeleteChapterMutation } from 'apps/web/dashboard/src/store/features/chapters';
-import { useFindOneCourseQuery } from 'apps/web/dashboard/src/store/features/courses';
-import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import ContentSectionWrapper from '@prepa-sn/dashboard/components/content-section-wrapper';
+import Icon from '@prepa-sn/dashboard/components/Icon';
+import { showConfirm } from '@prepa-sn/dashboard/helpers/functions.helpers';
+import {
+  useDeleteChapterMutation,
+  useFindAllChaptersQuery,
+} from '@prepa-sn/dashboard/store/features/chapters';
+import { useFindOneCourseQuery } from '@prepa-sn/dashboard/store/features/courses';
+import dayjs from 'dayjs';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 
 const rowSelection = {
   onChange: (selectedRowKeys: React.Key[], selectedRows: Chapter[]) => {
@@ -22,12 +25,25 @@ const rowSelection = {
 };
 
 const Chapters = () => {
+  const [pagination] = useState<IPaginationOptions>({
+    page: 1,
+    limit: 10,
+  });
+
   const { courseId } = useParams<{ courseId: string }>();
   const navigate = useNavigate();
-
-  const { data, isLoading, refetch } = useFindOneCourseQuery(courseId);
-
+  const { data: course, isLoading: courseLoading } =
+    useFindOneCourseQuery(courseId);
   const [deleteChapter, { isSuccess, isError }] = useDeleteChapterMutation();
+
+  const {
+    data: chapters,
+    isLoading,
+    isFetching,
+  } = useFindAllChaptersQuery({
+    ...pagination,
+    course: courseId,
+  });
 
   const columns = [
     {
@@ -48,15 +64,19 @@ const Chapters = () => {
         </Tag>
       ),
     },
-
     {
-      title: 'Course',
-      render: () => <span>{data?.title}</span>,
+      title: 'Exercices',
+      render: (_, chapter: Chapter) => (
+        <Link to={`${chapter.id}/exercises`}>
+          <Button type="link">Exercices</Button>
+        </Link>
+      ),
     },
 
     {
       title: 'Created At',
       dataIndex: 'createdAt',
+      render: (text: string) => <span>{dayjs(text).format('DD/MM/YYYY')}</span>,
     },
     {
       title: 'Action',
@@ -82,7 +102,7 @@ const Chapters = () => {
                 data: chapter,
                 onCancel: () => console.log('cancel'),
                 onOk: () => deleteChapter(chapter.id),
-              } as IConfirmation<Chapter>)
+              })
             }
           />
         </Space>
@@ -100,13 +120,9 @@ const Chapters = () => {
     }
   }, [isError, isSuccess]);
 
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
-
   return (
     <ContentSectionWrapper
-      title={`Chapters : Course ${data?.title ? data.title : ''}`}
+      title={courseLoading ? 'Loading...' : `Chapters : ${course.title}`}
       description="All Chapters"
       createButtonText="Add a new chapter"
       onCreate={() => navigate('create')}
@@ -116,9 +132,9 @@ const Chapters = () => {
           type: 'checkbox',
           ...rowSelection,
         }}
-        loading={isLoading}
+        loading={isLoading || isFetching}
         columns={columns}
-        dataSource={data?.chapters?.map((chapter: Chapter) => ({
+        dataSource={chapters?.items?.map((chapter: Chapter) => ({
           ...chapter,
           key: chapter.id,
         }))}

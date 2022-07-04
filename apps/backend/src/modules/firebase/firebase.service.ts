@@ -34,6 +34,11 @@ export class FirebaseService {
   }
 
   @CatchFirebaseException()
+  getUser(uid: string) {
+    return getAuth().getUser(uid);
+  }
+
+  @CatchFirebaseException()
   setRoles(uid: string, roles: Role[]) {
     return getAuth().setCustomUserClaims(uid, { roles });
   }
@@ -54,5 +59,15 @@ export class FirebaseService {
         )
         .pipe(map((response) => response.data))
     );
+  }
+
+  @CatchFirebaseException()
+  getUsers(maxResults?: number, pageToken?: string) {
+    return getAuth().listUsers(maxResults, pageToken);
+  }
+
+  @CatchFirebaseException()
+  async removeUser(uid: string) {
+    await getAuth().deleteUser(uid);
   }
 }

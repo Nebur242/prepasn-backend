@@ -12,6 +12,7 @@ import {
 } from 'antd';
 import { Store } from 'antd/lib/form/interface';
 import { FC } from 'react';
+import { useSelector } from 'react-redux';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -22,14 +23,23 @@ interface IContentWithSiderProps {
   onFinish?: (values: unknown) => void;
   sidebarExtra?: React.ReactNode;
   initialValues?: Store;
+  createdAt: string;
+  updatedAt: string;
+  hasLanguage?: boolean;
 }
+
 const ContentWithSider: FC<IContentWithSiderProps> = ({
   children,
   onFinish,
   form,
   sidebarExtra,
   initialValues = {},
+  createdAt,
+  updatedAt,
+  hasLanguage = true,
 }) => {
+  const { infos: user } = useSelector((state: RootState) => state.user);
+
   return (
     <Form
       validateTrigger={['onChange']}
@@ -60,38 +70,40 @@ const ContentWithSider: FC<IContentWithSiderProps> = ({
             <Divider />
             <Row justify="space-between">
               <Title level={5}>Created </Title>
-              <Text>Now </Text>
+              <Text>{createdAt}</Text>
             </Row>
 
             <Row justify="space-between">
               <Title level={5}>By </Title>
-              <Text>Now </Text>
+              <Text>{user.email} </Text>
             </Row>
 
             <Row justify="space-between">
               <Title level={5}>Last updated </Title>
-              <Text>Now </Text>
+              <Text>{updatedAt}</Text>
             </Row>
 
             <Row justify="space-between">
               <Title level={5}>By </Title>
-              <Text>Now </Text>
+              <Text>{user.email}</Text>
             </Row>
 
             <Divider />
-            <Form.Item
-              label="Langue"
-              name="language"
-              rules={[{ required: true, message: 'Language is required' }]}
-            >
-              <Select placeholder="Langues">
-                {Object.values(LANGUAGE).map((lang: LANGUAGE) => (
-                  <Option key={lang} value={lang}>
-                    {lang}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
+            {hasLanguage && (
+              <Form.Item
+                label="Langue"
+                name="language"
+                rules={[{ required: true, message: 'Language is required' }]}
+              >
+                <Select placeholder="Langues">
+                  {Object.values(LANGUAGE).map((lang: LANGUAGE) => (
+                    <Option key={lang} value={lang}>
+                      {lang}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            )}
             <Form.Item name="status" label="Status">
               <Select placeholder="Status">
                 <Option value={Status.ACTIVE}>Active</Option>

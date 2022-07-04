@@ -1,15 +1,14 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Grade } from '@prepa-sn/shared/interfaces';
 import { Button, Space, Table, Tag, message } from 'antd';
-import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.interface';
-import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
-import Icon from 'apps/web/dashboard/src/components/Icon';
-import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
+import ContentSectionWrapper from '@prepa-sn/dashboard/components/content-section-wrapper';
+import Icon from '@prepa-sn/dashboard/components/Icon';
+import { showConfirm } from '@prepa-sn/dashboard/helpers/functions.helpers';
 import {
   useDeleteGradeMutation,
   useFindAllGradesQuery,
-} from 'apps/web/dashboard/src/store/features/grades';
-import { useEffect } from 'react';
+} from '@prepa-sn/dashboard/store/features/grades';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const rowSelection = {
@@ -26,8 +25,18 @@ const rowSelection = {
 const Grades = () => {
   const navigate = useNavigate();
 
-  const { data: grades = [], isLoading: gradesLoading } =
-    useFindAllGradesQuery();
+  const [pagination, setPagination] = useState<IPaginationOptions>({
+    page: 1,
+    limit: 10,
+  });
+
+  const {
+    data: grades,
+    isLoading: gradesLoading,
+    isFetching,
+  } = useFindAllGradesQuery({
+    ...pagination,
+  });
 
   const [deleteGrade, { isSuccess, isError }] = useDeleteGradeMutation();
 
@@ -91,7 +100,7 @@ const Grades = () => {
                 data: grade,
                 onCancel: () => console.log('cancel'),
                 onOk: () => deleteGrade(grade.id),
-              } as IConfirmation<Grade>)
+              })
             }
           />
         </Space>
@@ -111,12 +120,21 @@ const Grades = () => {
           type: 'checkbox',
           ...rowSelection,
         }}
-        loading={gradesLoading}
+        loading={gradesLoading || isFetching}
         columns={columns}
-        dataSource={grades.map((grade: Grade) => ({
+        dataSource={grades?.items?.map((grade: Grade) => ({
           ...grade,
           key: grade.id,
         }))}
+        pagination={{
+          defaultCurrent: 1,
+          total: grades?.meta.total,
+          showSizeChanger: true,
+          showQuickJumper: true,
+          onChange: (page: number, pageSize: number) => {
+            setPagination({ ...pagination, page, limit: pageSize });
+          },
+        }}
       />
     </ContentSectionWrapper>
   );

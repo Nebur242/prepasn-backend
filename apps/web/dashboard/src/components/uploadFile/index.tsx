@@ -18,7 +18,7 @@ const AppUploadFile: FC<IUploadFileProps> = ({ file, onDeleteClick }) => {
     const fileReader: FileReader = new FileReader();
     let isCancel = false;
     if (file) {
-      fileReader.readAsDataURL(file.originFileObj as File);
+      fileReader.readAsDataURL(file.originFileObj);
       fileReader.onload = () => {
         if (fileReader.result && !isCancel) {
           setUrl(fileReader.result as string);
@@ -54,8 +54,7 @@ const AppUploadFile: FC<IUploadFileProps> = ({ file, onDeleteClick }) => {
               rows: 1,
             }}
           >
-            {' '}
-            {file.name}{' '}
+            {file.name}
           </Paragraph>
         }
       />

@@ -1,15 +1,14 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { Course } from '@prepa-sn/shared/interfaces';
 import { Button, Space, Table, Tag, message } from 'antd';
-import { IConfirmation } from 'apps/web/dashboard/src/common/interfaces/common.interface';
-import ContentSectionWrapper from 'apps/web/dashboard/src/components/content-section-wrapper';
-import Icon from 'apps/web/dashboard/src/components/Icon';
-import { showConfirm } from 'apps/web/dashboard/src/helpers/functions.helpers';
+import ContentSectionWrapper from '@prepa-sn/dashboard/components/content-section-wrapper';
+import Icon from '@prepa-sn/dashboard/components/Icon';
+import { showConfirm } from '@prepa-sn/dashboard/helpers/functions.helpers';
 import {
   useDeleteCourseMutation,
   useFindAllCoursesQuery,
-} from 'apps/web/dashboard/src/store/features/courses';
-import { useEffect } from 'react';
+} from '@prepa-sn/dashboard/store/features/courses';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const rowSelection = {
@@ -25,9 +24,18 @@ const rowSelection = {
 
 const Courses = () => {
   const navigate = useNavigate();
+  const [pagination, setPagination] = useState<IPaginationOptions>({
+    page: 1,
+    limit: 10,
+  });
 
-  const { data: courses = [], isLoading: coursesLoading } =
-    useFindAllCoursesQuery();
+  const {
+    data: courses,
+    isLoading: coursesLoading,
+    isFetching,
+  } = useFindAllCoursesQuery({
+    ...pagination,
+  });
 
   const [deleteCourse, { isSuccess, isError }] = useDeleteCourseMutation();
 
@@ -88,7 +96,7 @@ const Courses = () => {
                 data: course,
                 onCancel: () => console.log('cancel'),
                 onOk: () => deleteCourse(course.id),
-              } as IConfirmation<Course>)
+              })
             }
           />
         </Space>
@@ -118,12 +126,21 @@ const Courses = () => {
           type: 'checkbox',
           ...rowSelection,
         }}
-        loading={coursesLoading}
+        loading={coursesLoading || isFetching}
         columns={columns}
-        dataSource={courses.map((course: Course) => ({
+        dataSource={courses?.items.map((course: Course) => ({
           ...course,
           key: course.id,
         }))}
+        pagination={{
+          defaultCurrent: 1,
+          total: courses?.meta.total,
+          showSizeChanger: true,
+          showQuickJumper: true,
+          onChange: (page: number, pageSize: number) => {
+            setPagination({ ...pagination, page, limit: pageSize });
+          },
+        }}
       />
     </ContentSectionWrapper>
   );

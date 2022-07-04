@@ -1,4 +1,3 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import {
   Col,
   Form,
@@ -10,12 +9,17 @@ import {
   Select,
   Divider,
 } from 'antd';
-import ContentWithSider from 'apps/web/dashboard/src/components/content-with-sider';
-import AppUpload from 'apps/web/dashboard/src/components/upload';
+
+import { IPaginationOptions } from 'nestjs-typeorm-paginate';
+
+import ContentWithSider from '@prepa-sn/dashboard/components/content-with-sider';
+import AppUpload from '@prepa-sn/dashboard/components/upload';
 import { Course, Document } from '@prepa-sn/shared/interfaces';
 import { CKEditor } from 'ckeditor4-react';
-import { FC } from 'react';
-import { useFindAllGradesQuery } from 'apps/web/dashboard/src/store/features/grades';
+import { FC, useState } from 'react';
+import { useFindAllGradesQuery } from '@prepa-sn/dashboard/store/features/grades';
+import dayjs from 'dayjs';
+import { useFindAllCategoriesQuery } from '@prepa-sn/dashboard/store/features/categories';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -31,13 +35,35 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
   form,
   initialValues,
 }) => {
-  const { data: grades = [], isLoading: gradesloading } =
-    useFindAllGradesQuery();
+  const [pagination] = useState<IPaginationOptions>({
+    page: 1,
+    limit: 10,
+  });
+
+  const [gradePagination] = useState<IPaginationOptions>({
+    page: 1,
+    limit: 10,
+  });
+
+  const {
+    data: grades,
+    isLoading: gradesLoading,
+    isFetching: gradesFetching,
+  } = useFindAllGradesQuery({
+    ...gradePagination,
+  });
+
+  const { data: categories, isLoading: categoriesLoading } =
+    useFindAllCategoriesQuery({
+      ...pagination,
+    });
 
   return (
     <ContentWithSider
       form={form}
       onFinish={onFinish}
+      createdAt={dayjs(initialValues?.createdAt).format('DD/MM/YYYY:HH:mm:ss')}
+      updatedAt={dayjs(initialValues?.updatedAt).format('DD/MM/YYYY:HH:mm:ss')}
       sidebarExtra={
         <Card>
           <Title style={{ margin: 0 }} level={4}>
@@ -53,9 +79,27 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
               mode="multiple"
               allowClear
               placeholder="Grades"
-              loading={gradesloading}
+              loading={gradesLoading || gradesFetching}
             >
-              {grades.map((item) => (
+              {grades?.items?.map((item) => (
+                <Option key={item.id} value={item.id}>
+                  {item.title}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            rules={[{ required: true, message: 'Please select a grade' }]}
+            label="Catgories"
+            name="categories"
+          >
+            <Select
+              mode="multiple"
+              allowClear
+              placeholder="Categories"
+              loading={categoriesLoading}
+            >
+              {categories?.items?.map((item) => (
                 <Option key={item.id} value={item.id}>
                   {item.title}
                 </Option>
