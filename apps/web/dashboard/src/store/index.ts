@@ -41,7 +41,6 @@ export const store = configureStore({
       .concat(documentsApi.middleware)
       .concat(coursesApi.middleware)
       .concat(chaptersApi.middleware)
-      .concat(coursesApi.middleware)
       .concat(classroomsApi.middleware)
       .concat(studentsApi.middleware)
       .concat(instructorsApi.middleware)

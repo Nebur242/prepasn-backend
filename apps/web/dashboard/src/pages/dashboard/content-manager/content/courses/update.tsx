@@ -48,6 +48,7 @@ const UpdateCourse = () => {
       if (data?.id) {
         updateCourse({
           ...values,
+          isFree: !!values.isFree,
           id: data?.id,
         });
       }

@@ -8,6 +8,8 @@ import {
   Typography,
   Select,
   Divider,
+  Checkbox,
+  InputNumber,
 } from 'antd';
 
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
@@ -39,6 +41,9 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
     page: 1,
     limit: 10,
   });
+
+  const isFree = Form.useWatch('isFree', form);
+
 
   const [gradePagination] = useState<IPaginationOptions>({
     page: 1,
@@ -116,6 +121,26 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
       >
         <Input size="middle" />
       </Form.Item>
+
+
+      <Form.Item
+        name="isFree"
+        valuePropName="checked"
+      >
+        <Checkbox defaultChecked={false}>
+          Gratuit
+        </Checkbox>
+      </Form.Item>
+
+
+      {!isFree &&
+        <Form.Item
+          label="Price"
+          name="price"
+        >
+          <InputNumber style={{ width: "100%" }} size="middle" />
+        </Form.Item>
+      }
       <Row gutter={10}>
         <Col span={12}>
           <Form.Item label="Image" name="image">
@@ -163,6 +188,23 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
           }}
         />
       </Form.Item>
+
+      <Form.Item
+        label="Aperçu"
+        name="overview"
+        rules={[{ required: true, message: 'Description is required' }]}
+      >
+        <CKEditor
+          initData={initialValues?.overview}
+          onChange={(evt) => {
+            form.setFieldsValue({
+              overview: evt.editor.getData(),
+            });
+          }}
+        />
+      </Form.Item>
+
+
 
       <Form.Item label="Documents" name="documents">
         <AppUpload

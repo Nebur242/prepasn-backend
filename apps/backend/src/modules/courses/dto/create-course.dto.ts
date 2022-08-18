@@ -28,7 +28,18 @@ export class CreateCourseDto extends CreateBaseContentDto {
     type: [Document],
   })
   @IsOptional()
-  @ArrayNotEmpty()
   @Type(() => Document)
   documents?: Document[];
+
+  @ApiProperty({
+    description: 'The array of grades id',
+  })
+  @IsDefined()
+  isFree: boolean;
+
+  @ApiProperty({
+    description: 'The array of grades id',
+  })
+  @IsOptional()
+  price?: number;
 }

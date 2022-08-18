@@ -53,7 +53,17 @@ export class CoursesService {
     options: IPaginationOptions,
     filter: FilterDto
   ): Promise<Pagination<Course>> {
-    return paginate<Course>(this.coursesRepository, options, filter);
+    return paginate<Course>(this.coursesRepository, options, {
+      ...filter,
+      relations: [
+        'image',
+        'video',
+        'grades',
+        'documents',
+        'categories',
+        'createdBy',
+      ],
+    });
   }
 
   async findOne(id: number): Promise<Course> {
@@ -65,6 +75,7 @@ export class CoursesService {
         'documents',
         'chapters',
         'categories',
+        'createdBy',
       ],
     });
     if (!course) throw new NotFoundException(`Course with id ${id} not found`);

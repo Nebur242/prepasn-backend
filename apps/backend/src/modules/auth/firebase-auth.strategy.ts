@@ -20,6 +20,7 @@ export class FirebaseAuthStrategy extends PassportStrategy(Strategy) {
   async validate(token: string) {
     try {
       const user = await this.firebaseService.verifyToken(token);
+      console.log(user);
       if (!user) throw new UnauthorizedException("User doesn't exist");
       const currentUser = await this.usersService.getOne({
         where: {

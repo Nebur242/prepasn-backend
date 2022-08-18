@@ -66,7 +66,6 @@ export class UsersController {
   }
 
   @Post('/students')
-  @Admin()
   @ApiOkResponse({ type: User })
   async createStudent(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.usersService.create({

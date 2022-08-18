@@ -72,6 +72,9 @@ export interface Chapter extends BaseContent {
 }
 
 export interface Course extends BaseContent {
+  isFree: boolean;
+  price: number;
+  overview: string;
   grades: Grade[];
   chapters: Chapter[];
   documents: Document[];
