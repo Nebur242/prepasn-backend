@@ -34,6 +34,10 @@ const Profile = () => {
       tab: 'Informations',
     },
     {
+      key: 'social',
+      tab: 'Réseaux sociaux',
+    },
+    {
       key: 'notifiations',
       tab: 'Notifiations',
     },
@@ -47,6 +51,7 @@ const Profile = () => {
     informations: <UserInfosForm />,
     settings: <p>settings content</p>,
     notifiations: <p>notifiations content</p>,
+    social: <UserSocialInfosForm />,
   };
 
   if (isLoading) return <p>Loading...</p>;
@@ -79,7 +84,6 @@ const Profile = () => {
             style={{ width: '100%' }}
             tabList={tabListNoTitle}
             activeTabKey={activeTabKey}
-            // tabBarExtraContent={<a href="#">More</a>}
             onTabChange={(key) => {
               setActiveTabKey(key);
             }}
@@ -245,6 +249,127 @@ export const UserInfosForm: FC = () => {
         </Card>
       </Col>
       <Divider />
+    </Row>
+  );
+};
+
+export const UserSocialInfosForm: FC = () => {
+  const user = useSelector((state: RootState) => state.user);
+  const { data } = useFindOneUserQuery({ id: user.infos.uid });
+  const [form] = Form.useForm();
+
+  const [
+    updateAdmin,
+    { isLoading: isUpdating, isSuccess: isUpdated, isError: hasError },
+  ] = useUpdateUserMutation();
+
+  const onFinish = async () => {
+    try {
+      await form.validateFields();
+      const values = form.getFieldsValue();
+      const updatedInstructor: Partial<Admin> = JSON.parse(
+        JSON.stringify({
+          ...values,
+          id: data?.id,
+        })
+      );
+
+      if (data?.uid) {
+        updateAdmin({
+          ...updatedInstructor,
+          uid: data?.uid,
+        });
+      }
+    } catch (error) {
+      message.warning('Merci de vérifier les champs');
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (isUpdated) {
+      message.success('Étudiant a été modifié avec succès');
+    }
+    if (hasError) message.error('Une erreur est survenue');
+  }, [isUpdated, hasError]);
+
+  return (
+    <Row>
+      <Col span={24}>
+        <Card>
+          <Form
+            form={form}
+            layout="vertical"
+            onFinish={onFinish}
+            initialValues={{
+              twitter: data.twitter,
+              facebook: data.facebook,
+              linkedin: data.linkedin,
+            }}
+          >
+            <Row gutter={20}>
+              <Col span={12}>
+                <Form.Item
+                  rules={[
+                    {
+                      type: 'url',
+                      warningOnly: true,
+                      message: "L'url n'est pas valide",
+                    },
+                  ]}
+                  label="Facebook"
+                  name="facebook"
+                >
+                  <Input type="url" size="large" />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  rules={[
+                    {
+                      type: 'url',
+                      warningOnly: true,
+                      message: "L'url n'est pas valide",
+                    },
+                  ]}
+                  label="Linkedin"
+                  name="linkedin"
+                >
+                  <Input type="url" size="large" />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  rules={[
+                    {
+                      type: 'url',
+                      warningOnly: true,
+                      message: "L'url n'est pas valide",
+                    },
+                  ]}
+                  label="Twitter"
+                  name="twitter"
+                >
+                  <Input type="url" size="large" />
+                </Form.Item>
+              </Col>
+
+              <Col span={24}>
+                <Button
+                  icon={<Icon type="EditOutlined" />}
+                  type="primary"
+                  size="large"
+                  htmlType="submit"
+                  block
+                  loading={isUpdating}
+                >
+                  Mettre à jour les informations
+                </Button>
+              </Col>
+            </Row>
+          </Form>
+        </Card>
+      </Col>
     </Row>
   );
 };

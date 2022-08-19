@@ -28,6 +28,9 @@ export interface User {
   birthDate?: Date;
   email?: string;
   phone: string;
+  facebook?: string;
+  linkedin?: string;
+  twitter?: string;
   status: Status;
   createdAt?: Date;
   updatedAt?: Date;
