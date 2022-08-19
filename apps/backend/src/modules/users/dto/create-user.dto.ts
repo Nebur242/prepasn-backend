@@ -34,4 +34,25 @@ export class CreateUserDto {
   @ApiProperty()
   @IsPhoneNumber()
   phone: string;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  description?: string;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  facebook?: string;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  linkedin?: string;
+
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  twitter?: string;
 }
