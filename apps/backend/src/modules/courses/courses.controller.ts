@@ -40,7 +40,7 @@ export class CoursesController {
   }
 
   @Get()
-  @Authenticated()
+  // @Authenticated()
   @ApiOkResponse({ type: CourseDto, isArray: true })
   findAll(@Query() filterDto: FilterDto & IPaginationOptions) {
     const { page = 0, limit = 10, ...filter } = filterDto;
@@ -55,7 +55,7 @@ export class CoursesController {
   }
 
   @Get(':id')
-  @Authenticated()
+  // @Authenticated()
   @ApiOkResponse({ type: CourseDto, isArray: false })
   findOne(@Param('id', ParseIntPipe) id: number): Promise<Course> {
     return this.coursesService.findOne(id);
