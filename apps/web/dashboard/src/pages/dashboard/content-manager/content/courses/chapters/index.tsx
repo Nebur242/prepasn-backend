@@ -65,6 +65,14 @@ const Chapters = () => {
       ),
     },
     {
+      title: 'Sections',
+      render: (_, chapter: Chapter) => (
+        <Link to={`${chapter.id}/sections`}>
+          <Button type="link">Sections</Button>
+        </Link>
+      ),
+    },
+    {
       title: 'Exercices',
       render: (_, chapter: Chapter) => (
         <Link to={`${chapter.id}/exercises`}>

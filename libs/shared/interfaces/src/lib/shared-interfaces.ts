@@ -93,6 +93,10 @@ export interface Chapter extends BaseContent {
   exercises: Exercise[];
 }
 
+export interface Section extends BaseContent {
+  chapter: Chapter;
+}
+
 export interface Question extends BaseContent {
   exercise: Exercise;
 }

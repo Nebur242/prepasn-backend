@@ -136,3 +136,17 @@ export const CreateExercise = lazy(
 export const UpdateExercise = lazy(
   () => import('./dashboard/content-manager/content/courses/exercises/update')
 );
+
+//SECTIONS
+
+export const Sections = lazy(
+  () => import('./dashboard/content-manager/content/courses/chapters/sections')
+);
+
+export const CreateSection = lazy(
+  () => import('./dashboard/content-manager/content/courses/chapters/sections/create')
+);
+
+export const UpdateSection = lazy(
+  () => import('./dashboard/content-manager/content/courses/chapters/sections/update')
+);

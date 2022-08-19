@@ -15,6 +15,7 @@ import { categoriessApi } from './features/categories';
 import { exercisesApi } from './features/exercises';
 import { questionsApi } from './features/questions';
 import { usersApi } from './features/users';
+import { sectionsApi } from './features/sections';
 
 const isDev = import.meta.env.DEV;
 
@@ -32,6 +33,7 @@ export const store = configureStore({
     [adminsApi.reducerPath]: adminsApi.reducer,
     [categoriessApi.reducerPath]: categoriessApi.reducer,
     [exercisesApi.reducerPath]: exercisesApi.reducer,
+    [sectionsApi.reducerPath]: sectionsApi.reducer,
     [questionsApi.reducerPath]: questionsApi.reducer,
     [usersApi.reducerPath]: usersApi.reducer,
   },
@@ -47,6 +49,7 @@ export const store = configureStore({
       .concat(adminsApi.middleware)
       .concat(categoriessApi.middleware)
       .concat(exercisesApi.middleware)
+      .concat(sectionsApi.middleware)
       .concat(questionsApi.middleware)
       .concat(usersApi.middleware)
       .concat(isDev ? logger : null),

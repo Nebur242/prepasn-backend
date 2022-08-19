@@ -16,4 +16,4 @@ import { AuthModule } from '../auth/auth.module';
   providers: [SectionsService],
   exports: [SectionsService],
 })
-export class ExercisesModule {}
+export class SectionsModule {}
