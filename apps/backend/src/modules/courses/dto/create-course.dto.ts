@@ -37,6 +37,9 @@ export class CreateCourseDto extends CreateBaseContentDto {
   @IsDefined()
   isFree: boolean;
 
+  @IsOptional()
+  overview?: string;
+
   @ApiProperty({
     description: 'The array of grades id',
   })

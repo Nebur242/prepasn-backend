@@ -15,6 +15,9 @@ export class Course extends BaseContent {
   @Column({ default: null })
   price: number;
 
+  @Column({ default: null })
+  overview: string;
+
   @ManyToMany(() => Grade, (grade) => grade.courses)
   @JoinTable()
   grades: Grade[];
