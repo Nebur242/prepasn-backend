@@ -4,6 +4,7 @@ import { Chapter } from '@prepa-sn/backend/modules/chapters/entities/chapter.ent
 import { Grade } from '@prepa-sn/backend/modules/grades/entities/grade.entity';
 import { Document } from '../../documents/entities/document.entity';
 import { Category } from '../../categories/entities/category.entity';
+import { level } from '@prepa-sn/shared/enums';
 
 @Entity()
 export class Course extends BaseContent {
@@ -17,6 +18,19 @@ export class Course extends BaseContent {
 
   @Column({ default: null })
   overview: string;
+
+  @Column({ default: 0 })
+  duration: number;
+
+  @Column({ default: '' })
+  durationPeriod: string;
+
+  @Column({
+    type: 'enum',
+    enum: level,
+    default: level.EASY,
+  })
+  level: level;
 
   @ManyToMany(() => Grade, (grade) => grade.courses)
   @JoinTable()

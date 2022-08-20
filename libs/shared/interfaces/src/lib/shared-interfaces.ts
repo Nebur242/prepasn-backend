@@ -78,6 +78,9 @@ export interface Course extends BaseContent {
   isFree: boolean;
   price: number;
   overview: string;
+  duration?: string;
+  durationPeriod?: string;
+  level: level;
   grades: Grade[];
   chapters: Chapter[];
   documents: Document[];

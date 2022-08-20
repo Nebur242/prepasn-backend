@@ -22,6 +22,7 @@ import { FC, useState } from 'react';
 import { useFindAllGradesQuery } from '@prepa-sn/dashboard/store/features/grades';
 import dayjs from 'dayjs';
 import { useFindAllCategoriesQuery } from '@prepa-sn/dashboard/store/features/categories';
+import { level } from '@prepa-sn/shared/enums';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -44,7 +45,6 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
 
   const isFree = Form.useWatch('isFree', form);
 
-
   const [gradePagination] = useState<IPaginationOptions>({
     page: 1,
     limit: 10,
@@ -62,6 +62,22 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
     useFindAllCategoriesQuery({
       ...pagination,
     });
+
+  const selectAfter = (
+    <Select
+      defaultValue={initialValues?.durationPeriod || 'DAYS'}
+      style={{ width: 100 }}
+      onChange={(value) => {
+        form.setFieldsValue({
+          durationPeriod: value,
+        });
+      }}
+    >
+      <Option value="WEEKS">Semaines</Option>
+      <Option value="DAYS">Jours</Option>
+      <Option value="HOURS">Heures</Option>
+    </Select>
+  );
 
   return (
     <ContentWithSider
@@ -122,25 +138,6 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
         <Input size="middle" />
       </Form.Item>
 
-
-      <Form.Item
-        name="isFree"
-        valuePropName="checked"
-      >
-        <Checkbox defaultChecked={false}>
-          Gratuit
-        </Checkbox>
-      </Form.Item>
-
-
-      {!isFree &&
-        <Form.Item
-          label="Price"
-          name="price"
-        >
-          <InputNumber style={{ width: "100%" }} size="middle" />
-        </Form.Item>
-      }
       <Row gutter={10}>
         <Col span={12}>
           <Form.Item label="Image" name="image">
@@ -204,7 +201,54 @@ const CreateAndUpdate: FC<ICreateAndUpdateProps> = ({
         />
       </Form.Item>
 
+      <Form.Item name="isFree" valuePropName="checked">
+        <Checkbox defaultChecked={false}>Gratuit</Checkbox>
+      </Form.Item>
 
+      {!isFree && (
+        <Form.Item
+          rules={[{ required: true, message: 'Price is required' }]}
+          label="Price"
+          name="price"
+        >
+          <InputNumber style={{ width: '100%' }} size="middle" />
+        </Form.Item>
+      )}
+
+      <Form.Item
+        label="Durée de cours estimée"
+        rules={[{ required: true, message: 'Duration is required' }]}
+        name="duration"
+      >
+        <InputNumber
+          style={{ width: '100%' }}
+          addonAfter={selectAfter}
+          defaultValue={100}
+          size="middle"
+        />
+      </Form.Item>
+
+      <Form.Item
+        label="Price"
+        name="durationPeriod"
+        style={{ display: 'none' }}
+      >
+        <Input type="hidden" style={{ width: '100%' }} size="middle" />
+      </Form.Item>
+
+      <Form.Item
+        label="Niveau"
+        rules={[{ required: true, message: 'Level is required' }]}
+        name="level"
+      >
+        <Select size="middle" placeholder="Select a level">
+          {Object.keys(level).map((key) => (
+            <Select.Option key={key} value={level[key]}>
+              {level[key]}
+            </Select.Option>
+          ))}
+        </Select>
+      </Form.Item>
 
       <Form.Item label="Documents" name="documents">
         <AppUpload
