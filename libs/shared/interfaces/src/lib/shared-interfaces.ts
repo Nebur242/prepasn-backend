@@ -25,6 +25,7 @@ export interface User {
   uid: string;
   firstName: string;
   lastName: string;
+  description?: string;
   birthDate?: Date;
   email?: string;
   phone: string;

@@ -150,6 +150,7 @@ export const UserInfosForm: FC = () => {
               firstName: data.firstName,
               lastName: data.lastName,
               phone: data.phone,
+              description: data.description,
             }}
           >
             <Row gutter={20}>
@@ -167,6 +168,12 @@ export const UserInfosForm: FC = () => {
               <Col span={12}>
                 <Form.Item label="Téléphone" name="phone">
                   <Input size="large" />
+                </Form.Item>
+              </Col>
+
+              <Col span={24}>
+                <Form.Item label="Présentation" name="description">
+                  <Input.TextArea rows={5} />
                 </Form.Item>
               </Col>
               {/* <Col span={12}>
