@@ -71,10 +71,10 @@ export const sectionsApi = createApi({
       invalidatesTags: [TAG_TYPE],
     }),
     updateSection: build.mutation<Section, Section>({
-      query: (Categories: Section) => ({
-        url: `${BASE_PATH}/${Categories.id}`,
+      query: (section: Section) => ({
+        url: `${BASE_PATH}/${section.id}`,
         method: 'PATCH',
-        data: Categories,
+        data: section,
       }),
       invalidatesTags: [TAG_TYPE],
     }),
