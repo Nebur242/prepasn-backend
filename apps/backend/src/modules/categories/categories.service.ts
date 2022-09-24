@@ -33,7 +33,9 @@ export class CategoriesService {
   }
 
   paginate(options: IPaginationOptions): Promise<Pagination<Category>> {
-    return paginate<Category>(this.categoriesRepository, options);
+    return paginate<Category>(this.categoriesRepository, options, {
+      relations: ['image', 'video', 'createdBy'],
+    });
   }
 
   async findOne(id: number) {

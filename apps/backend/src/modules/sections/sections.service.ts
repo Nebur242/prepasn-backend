@@ -46,7 +46,10 @@ export class SectionsService {
     options: IPaginationOptions,
     filter: FilterDto
   ): Promise<Pagination<Section>> {
-    return paginate<Section>(this.exercisesRepository, options, filter);
+    return paginate<Section>(this.exercisesRepository, options, {
+      where: filter,
+      relations: ['image', 'video', 'createdBy', 'chapter'],
+    });
   }
 
   async findOne(id: number) {
