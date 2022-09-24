@@ -32,7 +32,7 @@ const Create = () => {
       console.log(values);
       createSection({
         ...values,
-        chapter: Number(chapterId),
+        chapter: parseInt(chapterId),
       });
     } catch (error) {
       message.warning('Merci de vérifier les champs');
