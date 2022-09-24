@@ -37,7 +37,6 @@ export class SectionsController {
   }
 
   @Get()
-  @Authenticated()
   findAll(
     @Query() filterDto: FilterDto & IPaginationOptions
   ): Promise<Pagination<Section>> {
@@ -46,7 +45,7 @@ export class SectionsController {
       {
         page,
         limit,
-        route: '/exercises',
+        route: '/sections',
       },
       filter
     );

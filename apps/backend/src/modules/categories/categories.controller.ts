@@ -31,7 +31,6 @@ export class CategoriesController {
   }
 
   @Get()
-  @Authenticated()
   findAll(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit
