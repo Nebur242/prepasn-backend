@@ -14,10 +14,8 @@ const Update = () => {
   const [form] = Form.useForm();
   const { id } = useParams<{ id: string }>();
   const { data, isLoading } = useFindOneSectionQuery(id);
-  const [
-    updateSection,
-    { isLoading: isUpdating, isSuccess: isSuccess, isError: isError },
-  ] = useUpdateSectionMutation();
+  const [updateSection, { isLoading: isUpdating, isSuccess, isError }] =
+    useUpdateSectionMutation();
 
   const onFinish = async () => {
     try {
