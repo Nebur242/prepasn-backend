@@ -14,6 +14,7 @@ import { ExercisesModule } from '../modules/exercises/exercises.module';
 import { QuestionsModule } from '../modules/questions/questions.module';
 import { UsersModule } from '../modules/users/users.module';
 import { SectionsModule } from '../modules/sections/sections.module';
+import { CartModule } from '../modules/cart/cart.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -39,7 +40,8 @@ import { SectionsModule } from '../modules/sections/sections.module';
     ExercisesModule,
     QuestionsModule,
     UsersModule,
-    SectionsModule
+    SectionsModule,
+    CartModule,
   ],
   controllers: [],
   providers: [],

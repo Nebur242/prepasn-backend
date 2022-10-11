@@ -40,7 +40,7 @@ export class SectionsController {
   findAll(
     @Query() filterDto: FilterDto & IPaginationOptions
   ): Promise<Pagination<Section>> {
-    const { page = 0, limit = 10, ...filter } = filterDto;
+    const { page = 1, limit = 10, ...filter } = filterDto;
     return this.sectionsService.paginate(
       {
         page,

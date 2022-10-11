@@ -9,6 +9,7 @@ import { Section } from '@prepa-sn/backend/modules/sections/entities/section.ent
 
 import { Question } from '@prepa-sn/backend/modules/questions/entities/question.entity';
 import { User } from '@prepa-sn/backend/modules/users/entities/user.entity';
+import { Cart } from '@prepa-sn/backend/modules/cart/entities/cart.entity';
 
 export default {
   type: process.env.DB_TYPE,
@@ -31,5 +32,6 @@ export default {
     Section,
     Question,
     User,
+    Cart,
   ],
 };

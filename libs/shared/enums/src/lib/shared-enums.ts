@@ -29,6 +29,7 @@ export enum Status {
   ERROR = 'error',
   DELETED = 'deleted',
   PUBLISHED = 'published',
+  PAID = 'paid',
 }
 
 export enum LANGUAGE {
