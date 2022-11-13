@@ -21,21 +21,20 @@ export class User {
   @Column()
   lastName: string;
 
-
   @ManyToOne(() => Document)
   @JoinColumn()
   profile?: Document | null;
 
-  @Column({nullable: true, default: null})
+  @Column({ nullable: true, default: null })
   description: string;
 
-  @Column({nullable: true, default: null})
+  @Column({ nullable: true, default: null })
   facebook: string;
 
-  @Column({nullable: true, default: null})
+  @Column({ nullable: true, default: null })
   linkedin: string;
 
-  @Column({nullable: true, default: null})
+  @Column({ nullable: true, default: null })
   twitter: string;
 
   @Column({ nullable: true, default: null })
@@ -44,8 +43,8 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column()
-  phone: string;
+  @Column({ default: null })
+  phone?: string;
 
   @Column({ unique: true })
   uid: string;

@@ -5,5 +5,4 @@ export class CreateSectionDto extends CreateBaseContentDto {
   @IsDefined()
   @IsNumber()
   chapter: Chapter['id'];
-
 }

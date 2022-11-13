@@ -9,7 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiBody, ApiOkResponse } from '@nestjs/swagger';
-import { Admin, Authenticated } from '../auth/roles-auth.guard';
+import { Admin } from '../auth/roles-auth.guard';
 import { CoursesService } from './courses.service';
 import { CourseDto } from './dto/course.dto';
 import { CreateCourseDto } from './dto/create-course.dto';
@@ -19,7 +19,8 @@ import Controller from '@prepa-sn/backend/common/decorators/controller-with-apiT
 import { Claims } from '@prepa-sn/backend/common/decorators/get-user.decorator';
 import { User } from '../users/entities/user.entity';
 import { FilterDto } from './dto/filter.dto';
-import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate';
+import { Subscription } from '../subscriptions/entities/subscription.entity';
 
 @Controller('courses')
 export class CoursesController {
@@ -59,6 +60,14 @@ export class CoursesController {
   @ApiOkResponse({ type: CourseDto, isArray: false })
   findOne(@Param('id', ParseIntPipe) id: number): Promise<Course> {
     return this.coursesService.findOne(id);
+  }
+
+  @Get(':id/subscriptions')
+  @ApiOkResponse({ type: CourseDto, isArray: false })
+  findOneSubscriptions(
+    @Param('id', ParseIntPipe) id: number
+  ): Promise<Subscription[]> {
+    return this.coursesService.findOneSubscriptions(id);
   }
 
   @Patch(':id')

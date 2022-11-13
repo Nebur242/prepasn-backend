@@ -1,4 +1,3 @@
-import { Status } from '@prepa-sn/shared/enums';
 import {
   Column,
   CreateDateColumn,
@@ -10,33 +9,28 @@ import {
 import { Course } from '../../courses/entities/course.entity';
 import { User } from '../../users/entities/user.entity';
 
-export enum CartItemType {
-  COURSE = 'course',
-}
-
 @Entity()
-export class Cart {
+export class Review {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({
-    type: 'enum',
-    enum: CartItemType,
-    nullable: false,
-  })
-  type: CartItemType;
-
-  @ManyToOne(() => Course)
-  item: Course;
+  @Column()
+  title: string;
 
   @Column()
-  quantity: number;
+  description: string;
+
+  @Column({
+    type: Number,
+    default: 1,
+  })
+  stars: number;
 
   @ManyToOne(() => User)
-  createdBy: User;
+  author: User;
 
-  @Column({ type: 'enum', enum: Status, default: Status.PENDING })
-  status: Status;
+  @ManyToOne(() => Course)
+  course: Course;
 
   @CreateDateColumn()
   createdAt: Date;

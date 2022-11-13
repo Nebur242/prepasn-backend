@@ -33,7 +33,8 @@ export class CreateUserDto {
 
   @ApiProperty()
   @IsPhoneNumber()
-  phone: string;
+  @IsOptional()
+  phone?: string;
 
   @ApiProperty()
   @IsOptional()
@@ -49,7 +50,6 @@ export class CreateUserDto {
   @IsOptional()
   @IsString()
   linkedin?: string;
-
 
   @ApiProperty()
   @IsOptional()

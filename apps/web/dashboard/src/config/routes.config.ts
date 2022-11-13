@@ -39,7 +39,6 @@ import {
   Exercises,
   CreateExercise,
   UpdateExercise,
-
   Sections,
   CreateSection,
   UpdateSection,

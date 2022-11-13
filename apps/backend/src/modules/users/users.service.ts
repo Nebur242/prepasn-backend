@@ -46,7 +46,12 @@ export class UsersService {
   }
 
   async findOne(uid: string): Promise<User> {
-    const user: User = await this.usersRepository.findOne({ uid });
+    const user: User = await this.usersRepository.findOne(
+      { uid },
+      {
+        relations: ['profile'],
+      }
+    );
     if (!user) throw new NotFoundException(`Student with uid ${uid} not found`);
     return user;
   }

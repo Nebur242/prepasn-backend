@@ -17,7 +17,7 @@ const CreateCourse = () => {
       const values: Course = form.getFieldsValue();
       creteCourse({
         ...values,
-        isFree: !!values.isFree
+        isFree: !!values.isFree,
       });
     } catch (error) {
       message.warning('Merci de vérifier les champs');

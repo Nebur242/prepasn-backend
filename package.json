@@ -68,6 +68,7 @@
     "reflect-metadata": "^0.1.13",
     "regenerator-runtime": "0.13.7",
     "rxjs": "^7.0.0",
+    "stripe": "^10.14.0",
     "styled-components": "5.3.5",
     "swagger-ui-express": "^4.3.0",
     "typeorm": "0.2",

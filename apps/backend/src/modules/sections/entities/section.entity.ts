@@ -1,4 +1,4 @@
-import {  Entity, ManyToOne } from 'typeorm';
+import { Entity, ManyToOne } from 'typeorm';
 import { BaseContent } from '@prepa-sn/backend/common/entities/base-content.entity';
 import { Chapter } from '../../chapters/entities/chapter.entity';
 

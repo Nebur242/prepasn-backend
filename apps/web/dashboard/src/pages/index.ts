@@ -144,9 +144,15 @@ export const Sections = lazy(
 );
 
 export const CreateSection = lazy(
-  () => import('./dashboard/content-manager/content/courses/chapters/sections/create')
+  () =>
+    import(
+      './dashboard/content-manager/content/courses/chapters/sections/create'
+    )
 );
 
 export const UpdateSection = lazy(
-  () => import('./dashboard/content-manager/content/courses/chapters/sections/update')
+  () =>
+    import(
+      './dashboard/content-manager/content/courses/chapters/sections/update'
+    )
 );
