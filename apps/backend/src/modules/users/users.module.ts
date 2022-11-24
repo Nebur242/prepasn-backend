@@ -4,9 +4,14 @@ import { UsersController } from './users.controller';
 import { FirebaseModule } from '../firebase/firebase.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersRepository } from './repositories/student.repository';
+import { DocumentsModule } from '../documents/documents.module';
 
 @Module({
-  imports: [FirebaseModule, TypeOrmModule.forFeature([UsersRepository])],
+  imports: [
+    FirebaseModule,
+    TypeOrmModule.forFeature([UsersRepository]),
+    DocumentsModule,
+  ],
   controllers: [UsersController],
   providers: [UsersService],
   exports: [UsersService],

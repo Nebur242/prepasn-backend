@@ -6,7 +6,11 @@ import {
 } from '@reduxjs/toolkit/dist/query/react';
 import { axiosBaseQuery } from '../../../config/api.config';
 import { Omit } from '@reduxjs/toolkit/dist/tsHelpers';
-import { removeAsset, uploadAsset } from '@prepa-sn/shared/services';
+import {
+  removeAsset,
+  uploadAsset,
+  uploadAssets,
+} from '@prepa-sn/shared/services';
 import { Document } from '@prepa-sn/shared/interfaces';
 import { Pagination, IPaginationOptions } from 'nestjs-typeorm-paginate';
 
@@ -73,14 +77,7 @@ export const documentsApi = createApi({
     uploads: build.mutation<Document[], File[]>({
       async queryFn(files, _queryApi, _extraOptions, fetchWithBQ) {
         try {
-          const documents = await Promise.all(
-            files.map(async (file: File): Promise<Partial<Document>> => {
-              const uploaded: Partial<Document> = await uploadAsset(file);
-              return {
-                ...uploaded,
-              };
-            })
-          );
+          const documents = await uploadAssets(files);
 
           const result = await fetchWithBQ({
             url: '/documents/bulk',
