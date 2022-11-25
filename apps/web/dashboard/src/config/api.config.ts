@@ -7,7 +7,6 @@ import { environment } from '../environments/environment';
 
 export const API_URL = environment.apiUrl;
 
-//API ROUTES
 export const API_ROUTES = {
   //GRADES
   GRADES: `/grades`,
