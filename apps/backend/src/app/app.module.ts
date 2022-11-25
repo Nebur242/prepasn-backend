@@ -13,6 +13,9 @@ import { CategoriesModule } from '../modules/categories/categories.module';
 import { ExercisesModule } from '../modules/exercises/exercises.module';
 import { QuestionsModule } from '../modules/questions/questions.module';
 import { UsersModule } from '../modules/users/users.module';
+import { SectionsModule } from '../modules/sections/sections.module';
+import { CheckoutModule } from '../modules/checkout/checkout.module';
+import { ReviewsModule } from '../modules/reviews/reviews.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -38,6 +41,9 @@ import { UsersModule } from '../modules/users/users.module';
     ExercisesModule,
     QuestionsModule,
     UsersModule,
+    SectionsModule,
+    CheckoutModule,
+    ReviewsModule,
   ],
   controllers: [],
   providers: [],

@@ -7,6 +7,7 @@ import { GradesModule } from '../grades/grades.module';
 import { DocumentsModule } from '../documents/documents.module';
 import { CategoriesModule } from '../categories/categories.module';
 import { AuthModule } from '../auth/auth.module';
+import { SubscriptionsModule } from '../subscriptions/subscriptions.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { AuthModule } from '../auth/auth.module';
     GradesModule,
     DocumentsModule,
     CategoriesModule,
+    SubscriptionsModule,
   ],
   controllers: [CoursesController],
   providers: [CoursesService],

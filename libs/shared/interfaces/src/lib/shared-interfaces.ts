@@ -25,9 +25,13 @@ export interface User {
   uid: string;
   firstName: string;
   lastName: string;
+  description?: string;
   birthDate?: Date;
   email?: string;
   phone: string;
+  facebook?: string;
+  linkedin?: string;
+  twitter?: string;
   status: Status;
   createdAt?: Date;
   updatedAt?: Date;
@@ -72,6 +76,12 @@ export interface Chapter extends BaseContent {
 }
 
 export interface Course extends BaseContent {
+  isFree: boolean;
+  price: number;
+  overview: string;
+  duration?: string;
+  durationPeriod?: string;
+  level: level;
   grades: Grade[];
   chapters: Chapter[];
   documents: Document[];
@@ -88,6 +98,10 @@ export interface Chapter extends BaseContent {
   course: Course;
   documents: Document[];
   exercises: Exercise[];
+}
+
+export interface Section extends BaseContent {
+  chapter: Chapter;
 }
 
 export interface Question extends BaseContent {

@@ -39,6 +39,9 @@ import {
   Exercises,
   CreateExercise,
   UpdateExercise,
+  Sections,
+  CreateSection,
+  UpdateSection,
 } from '../pages';
 export interface Route {
   path: string;
@@ -234,6 +237,30 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: UpdateExercise,
+          routes: [],
+        },
+        {
+          path: 'courses/:courseId/chapters/:chapterId/sections',
+          name: 'course-chapters',
+          access: ['admin'],
+          isPublic: false,
+          element: Sections,
+          routes: [],
+        },
+        {
+          path: 'courses/:courseId/chapters/:chapterId/sections/create',
+          name: 'course-chapters',
+          access: ['admin'],
+          isPublic: false,
+          element: CreateSection,
+          routes: [],
+        },
+        {
+          path: 'courses/:courseId/chapters/:chapterId/sections/update/:id',
+          name: 'course-chapters',
+          access: ['admin'],
+          isPublic: false,
+          element: UpdateSection,
           routes: [],
         },
         {

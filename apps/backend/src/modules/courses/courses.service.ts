@@ -4,9 +4,11 @@ import {
   paginate,
   Pagination,
 } from 'nestjs-typeorm-paginate';
-import { DeepPartial, FindManyOptions } from 'typeorm';
+import { DeepPartial, FindManyOptions, IsNull, Not } from 'typeorm';
 import { CategoriesService } from '../categories/categories.service';
 import { GradesService } from '../grades/grades.service';
+import { Subscription } from '../subscriptions/entities/subscription.entity';
+import { SubscriptionsService } from '../subscriptions/subscriptions.service';
 import { User } from '../users/entities/user.entity';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { FilterDto } from './dto/filter.dto';
@@ -19,7 +21,8 @@ export class CoursesService {
   constructor(
     private readonly coursesRepository: CoursesRepository,
     private readonly gradesService: GradesService,
-    private readonly categoriesService: CategoriesService
+    private readonly categoriesService: CategoriesService,
+    private readonly subscriptionsService: SubscriptionsService
   ) {}
 
   createEntity(entityLike: DeepPartial<Course>): Course {
@@ -53,7 +56,19 @@ export class CoursesService {
     options: IPaginationOptions,
     filter: FilterDto
   ): Promise<Pagination<Course>> {
-    return paginate<Course>(this.coursesRepository, options, filter);
+    return paginate<Course>(this.coursesRepository, options, {
+      where: {
+        ...filter,
+      },
+      relations: [
+        'image',
+        'video',
+        'grades',
+        'documents',
+        'categories',
+        'createdBy',
+      ],
+    });
   }
 
   async findOne(id: number): Promise<Course> {
@@ -65,10 +80,23 @@ export class CoursesService {
         'documents',
         'chapters',
         'categories',
+        'createdBy',
       ],
     });
     if (!course) throw new NotFoundException(`Course with id ${id} not found`);
     return course;
+  }
+
+  async findOneSubscriptions(id: number): Promise<Subscription[]> {
+    const course = await this.findOne(id);
+    const subscriptions = await this.subscriptionsService.findAll({
+      where: {
+        course,
+        subscriber: Not(IsNull()),
+      },
+      relations: ['course', 'subscriber'],
+    });
+    return subscriptions;
   }
 
   async update(

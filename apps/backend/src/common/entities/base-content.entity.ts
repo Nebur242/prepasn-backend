@@ -24,7 +24,7 @@ export abstract class BaseContent {
   status: Status;
 
   @Column({ type: 'enum', enum: LANGUAGE, default: LANGUAGE.FR })
-  language: LANGUAGE.FR;
+  language: LANGUAGE;
 
   @ManyToOne(() => Document)
   @JoinColumn()

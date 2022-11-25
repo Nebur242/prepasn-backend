@@ -15,7 +15,10 @@ const CreateCourse = () => {
     try {
       await form.validateFields();
       const values: Course = form.getFieldsValue();
-      creteCourse(values);
+      creteCourse({
+        ...values,
+        isFree: !!values.isFree,
+      });
     } catch (error) {
       message.warning('Merci de vérifier les champs');
       console.log(error);

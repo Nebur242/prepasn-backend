@@ -29,16 +29,31 @@ export class CategoriesService {
   }
 
   findAll(filter: FindManyOptions<Category> = {}): Promise<Category[]> {
-    return this.categoriesRepository.find(filter);
+    return this.categoriesRepository.find({
+      ...filter,
+      relations: ['courses'],
+    });
   }
 
   paginate(options: IPaginationOptions): Promise<Pagination<Category>> {
-    return paginate<Category>(this.categoriesRepository, options);
+    return paginate<Category>(this.categoriesRepository, options, {
+      relations: ['image', 'video', 'createdBy'],
+    });
   }
 
   async findOne(id: number) {
     const category = await this.categoriesRepository.findOne(id, {
-      relations: ['image', 'video'],
+      relations: [
+        'image',
+        'video',
+        'courses',
+        'courses.image',
+        'courses.video',
+        'courses.grades',
+        'courses.documents',
+        'courses.categories',
+        'courses.createdBy',
+      ],
     });
     if (!category)
       throw new NotFoundException(`Category with id ${id} not found`);

@@ -5,8 +5,15 @@ import { Course } from '@prepa-sn/backend/modules/courses/entities/course.entity
 import { Document } from '@prepa-sn/backend/modules/documents/entities/document.entity';
 import { Grade } from '@prepa-sn/backend/modules/grades/entities/grade.entity';
 import { Exercise } from '@prepa-sn/backend/modules/exercises/entities/exercise.entity';
+import { Section } from '@prepa-sn/backend/modules/sections/entities/section.entity';
+
 import { Question } from '@prepa-sn/backend/modules/questions/entities/question.entity';
 import { User } from '@prepa-sn/backend/modules/users/entities/user.entity';
+import { Order } from '@prepa-sn/backend/modules/orders/entities/order.entity';
+import { Payment } from '@prepa-sn/backend/modules/payments/entities/payment.entity';
+import { OrderItem } from '@prepa-sn/backend/modules/order-item/entities/order-item.entity';
+import { Subscription } from '@prepa-sn/backend/modules/subscriptions/entities/subscription.entity';
+import { Review } from '@prepa-sn/backend/modules/reviews/entities/review.entity';
 
 export default {
   type: process.env.DB_TYPE,
@@ -26,7 +33,13 @@ export default {
     Classroom,
     Category,
     Exercise,
+    Section,
     Question,
     User,
+    Order,
+    Payment,
+    OrderItem,
+    Subscription,
+    Review,
   ],
 };
