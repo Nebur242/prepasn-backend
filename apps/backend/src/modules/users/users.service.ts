@@ -21,21 +21,15 @@ export class UsersService {
     private readonly documentsService: DocumentsService
   ) {}
 
-  async create(
+  async createUser(
     createUserDto: CreateUserDto & {
       roles: Role[];
     }
   ) {
-    const createdUser = await this.firebaseService.createUser(
-      createUserDto.email,
-      createUserDto.password
-    );
-    await this.firebaseService.setRoles(createdUser.uid, createUserDto.roles);
-
+    await this.firebaseService.setRoles(createUserDto.uid, createUserDto.roles);
     const user = this.usersRepository.create({
       ...createUserDto,
-      uid: createdUser.uid,
-      roles: createUserDto.roles,
+      uid: createUserDto.uid,
     });
     return this.usersRepository.save(user);
   }
@@ -48,12 +42,7 @@ export class UsersService {
   }
 
   async findOne(uid: string): Promise<User> {
-    const user: User = await this.usersRepository.findOne(
-      { uid },
-      {
-        relations: ['profile'],
-      }
-    );
+    const user: User = await this.usersRepository.findOne({ uid });
     if (!user) throw new NotFoundException(`Student with uid ${uid} not found`);
     return user;
   }
