@@ -1,58 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsDateString,
-  IsDefined,
-  IsEmail,
-  IsOptional,
-  IsPhoneNumber,
-  IsString,
-} from 'class-validator';
+import { IsDefined, IsString } from 'class-validator';
 
 export class CreateUserDto {
   @ApiProperty()
   @IsString()
-  firstName: string;
+  firstname: string;
 
   @ApiProperty()
   @IsString()
-  lastName: string;
-
-  @ApiProperty()
-  @IsDateString()
-  @IsOptional()
-  birthDate?: Date;
+  lastname: string;
 
   @ApiProperty()
   @IsDefined()
-  @IsEmail()
-  email: string;
+  uid: string;
 
   @ApiProperty()
   @IsDefined()
-  password: string;
-
-  @ApiProperty()
-  @IsPhoneNumber()
-  @IsOptional()
-  phone?: string;
-
-  @ApiProperty()
-  @IsOptional()
-  @IsString()
-  description?: string;
-
-  @ApiProperty()
-  @IsOptional()
-  @IsString()
-  facebook?: string;
-
-  @ApiProperty()
-  @IsOptional()
-  @IsString()
-  linkedin?: string;
-
-  @ApiProperty()
-  @IsOptional()
-  @IsString()
-  twitter?: string;
+  hasAgreedWithTermsAndConditions: boolean;
 }
