@@ -10,15 +10,14 @@ import {
 } from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
 
-import { Role } from '@prepa-sn/shared/enums';
-import { Admin, Authenticated, Roles } from '../auth/roles-auth.guard';
+import { Admin, Authenticated } from '../auth/roles-auth.guard';
 import ControllerWithApiTags from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { FilterDto } from './dto/filterDto.dto';
+import { FilterCreateUserTypeDto, FilterDto } from './dto/filterDto.dto';
 
 @ControllerWithApiTags('users')
 export class UsersController {
@@ -26,7 +25,7 @@ export class UsersController {
 
   @Get()
   @ApiOkResponse({ type: User, isArray: true })
-  // @Admin()
+  @Admin()
   findAll(
     @Query(new ValidationPipe({ transform: true })) filter: FilterDto
   ): Promise<Pagination<User>> {
@@ -45,32 +44,15 @@ export class UsersController {
     );
   }
 
-  @Post('/admins')
-  // @Admin()
+  @Post('/')
   @ApiOkResponse({ type: User })
-  async create(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return this.usersService.create({
+  async createUser(
+    @Body() createUserDto: CreateUserDto,
+    @Query() filterCreateUserTypeDto: FilterCreateUserTypeDto
+  ): Promise<User> {
+    return this.usersService.createUser({
       ...createUserDto,
-      roles: [Role.ADMIN],
-    });
-  }
-
-  @Post('/instructors')
-  @Admin()
-  @ApiOkResponse({ type: User })
-  async createInstructor(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return this.usersService.create({
-      ...createUserDto,
-      roles: [Role.INSTRUCTOR],
-    });
-  }
-
-  @Post('/students')
-  @ApiOkResponse({ type: User })
-  async createStudent(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return this.usersService.create({
-      ...createUserDto,
-      roles: [Role.STUDENT],
+      roles: [filterCreateUserTypeDto.type],
     });
   }
 
@@ -86,7 +68,7 @@ export class UsersController {
 
   @Get(':uid')
   @ApiOkResponse({ type: User })
-  @Roles(Role.STUDENT, Role.ADMIN)
+  @Authenticated()
   findOne(@Param('uid') uid: string): Promise<User> {
     return this.usersService.findOne(uid);
   }
