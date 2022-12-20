@@ -1,14 +1,11 @@
-import { Role, Status } from '@prepa-sn/shared/enums';
+import { Status } from '@prepa-sn/shared/enums';
 import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
   Entity,
-  ManyToOne,
-  JoinColumn,
 } from 'typeorm';
-import { Document } from '../../documents/entities/document.entity';
 
 @Entity()
 export class User {
@@ -16,35 +13,28 @@ export class User {
   id: number;
 
   @Column()
-  firstName: string;
+  firstname: string;
 
   @Column()
-  lastName: string;
-
-  @ManyToOne(() => Document)
-  @JoinColumn()
-  profile?: Document | null;
+  lastname: string;
 
   @Column({ nullable: true, default: null })
-  description: string;
+  description?: string;
 
   @Column({ nullable: true, default: null })
-  facebook: string;
+  facebook?: string;
 
   @Column({ nullable: true, default: null })
-  linkedin: string;
+  linkedin?: string;
 
   @Column({ nullable: true, default: null })
-  twitter: string;
+  twitter?: string;
 
   @Column({ nullable: true, default: null })
   birthDate?: Date;
 
-  @Column({ unique: true })
-  email: string;
-
-  @Column({ default: null })
-  phone?: string;
+  @Column({ nullable: false, default: true })
+  hasAgreedWithTermsAndConditions: boolean;
 
   @Column({ unique: true })
   uid: string;
@@ -55,9 +45,6 @@ export class User {
     default: Status.PENDING,
   })
   status: Status;
-
-  @Column({ type: 'enum', array: true, enum: Role })
-  roles: Role[];
 
   @CreateDateColumn()
   createdAt: Date;

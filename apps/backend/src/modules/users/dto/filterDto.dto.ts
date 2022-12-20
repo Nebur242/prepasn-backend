@@ -1,6 +1,6 @@
 import { Role } from '@prepa-sn/shared/enums';
 import { Transform } from 'class-transformer';
-import { IsEnum, IsOptional } from 'class-validator';
+import { IsDefined, IsEnum, IsOptional } from 'class-validator';
 import { UpdateUserDto } from './update-user.dto';
 
 export class FilterDto extends UpdateUserDto {
@@ -14,4 +14,10 @@ export class FilterDto extends UpdateUserDto {
 
   @IsOptional()
   limit: number | string;
+}
+
+export class FilterCreateUserTypeDto {
+  @IsDefined()
+  @IsEnum(Role)
+  type: Role;
 }

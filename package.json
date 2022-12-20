@@ -12,7 +12,8 @@
     "lint:check": "nx run-many --target=lint --all --parallel",
     "ts:check": "nx run-many --target=tsCheck --all --parallel",
     "format:check": "nx format:check --libs-and-apps=true",
-    "lint": "yarn lint:check && yarn ts:check && yarn format:check"
+    "lint": "yarn lint:check && yarn ts:check && yarn format:check",
+    "docker" : "docker-compose up -d"
   },
   "engines": {
     "node": "^12.13.0 || ^14.15.0 || >=16.0.0"
