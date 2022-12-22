@@ -27,7 +27,6 @@ export class RolesGuard extends AuthGuard('firebase-jwt') {
       this.reflector.get<Role[]>('roles', context.getClass()) ||
       this.reflector.get<Role[]>('roles', context.getHandler()) ||
       [];
-    if (this.roles.length === 0) return true;
     return super.canActivate(context);
   }
 
@@ -36,6 +35,7 @@ export class RolesGuard extends AuthGuard('firebase-jwt') {
     if (err || !user) {
       throw err || new UnauthorizedException(err || 'Unauthorized');
     }
+    if (this.roles.length === 0) return user;
     const hasRole = this.roles.some((role) => user.roles?.includes(role));
     if (!hasRole) throw new UnauthorizedException("You don't have access");
     return user;
@@ -55,5 +55,5 @@ export function Admin() {
 }
 
 export function Authenticated() {
-  return Roles(...Object.values(Role));
+  return Roles();
 }

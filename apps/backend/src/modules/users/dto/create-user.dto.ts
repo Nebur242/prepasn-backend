@@ -12,9 +12,5 @@ export class CreateUserDto {
 
   @ApiProperty()
   @IsDefined()
-  uid: string;
-
-  @ApiProperty()
-  @IsDefined()
   hasAgreedWithTermsAndConditions: boolean;
 }

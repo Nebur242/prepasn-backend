@@ -6,7 +6,6 @@ import {
   Pagination,
 } from 'nestjs-typeorm-paginate';
 import { FindManyOptions } from 'typeorm';
-import { DocumentsService } from '../documents/documents.service';
 import { FirebaseService } from '../firebase/firebase.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -17,13 +16,13 @@ import { UsersRepository } from './repositories/student.repository';
 export class UsersService {
   constructor(
     private readonly usersRepository: UsersRepository,
-    private readonly firebaseService: FirebaseService,
-    private readonly documentsService: DocumentsService
+    private readonly firebaseService: FirebaseService
   ) {}
 
   async createUser(
     createUserDto: CreateUserDto & {
       roles: Role[];
+      uid: string;
     }
   ) {
     await this.firebaseService.setRoles(createUserDto.uid, createUserDto.roles);
@@ -59,11 +58,6 @@ export class UsersService {
     await this.usersRepository.save({
       ...user,
       ...updateStudentDto,
-      profile: !updateStudentDto.profileId
-        ? null
-        : this.documentsService.createEntity({
-            id: updateStudentDto.profileId,
-          }),
     });
     return this.findOne(uid);
   }

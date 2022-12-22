@@ -8,8 +8,7 @@ import {
   Query,
   ValidationPipe,
 } from '@nestjs/common';
-import { ApiOkResponse } from '@nestjs/swagger';
-
+import { ApiOkResponse, ApiQuery } from '@nestjs/swagger';
 import { Admin, Authenticated } from '../auth/roles-auth.guard';
 import ControllerWithApiTags from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
 import { Pagination } from 'nestjs-typeorm-paginate';
@@ -18,6 +17,9 @@ import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FilterCreateUserTypeDto, FilterDto } from './dto/filterDto.dto';
+import { Role } from '@prepa-sn/shared/enums';
+import { Claims } from '@prepa-sn/backend/common/decorators/get-user.decorator';
+import { DecodedIdToken } from 'firebase-admin/auth';
 
 @ControllerWithApiTags('users')
 export class UsersController {
@@ -45,13 +47,25 @@ export class UsersController {
   }
 
   @Post('/')
-  @ApiOkResponse({ type: User })
+  @ApiOkResponse({
+    type: User,
+    status: 201,
+    description: 'User created successfully',
+  })
+  @Authenticated()
+  @ApiQuery({
+    name: 'type',
+    required: true,
+    enum: [...Object.values(Role)],
+  })
   async createUser(
     @Body() createUserDto: CreateUserDto,
-    @Query() filterCreateUserTypeDto: FilterCreateUserTypeDto
+    @Query() filterCreateUserTypeDto: FilterCreateUserTypeDto,
+    @Claims() user: DecodedIdToken
   ): Promise<User> {
     return this.usersService.createUser({
       ...createUserDto,
+      uid: user.uid,
       roles: [filterCreateUserTypeDto.type],
     });
   }
