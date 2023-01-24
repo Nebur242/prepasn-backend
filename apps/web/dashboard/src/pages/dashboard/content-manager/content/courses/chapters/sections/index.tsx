@@ -68,7 +68,7 @@ const Sections = () => {
 
     {
       title: 'Chapitre',
-      render: () => <span>{data.title}</span>,
+      render: () => <span>{data?.title}</span>,
     },
 
     {
