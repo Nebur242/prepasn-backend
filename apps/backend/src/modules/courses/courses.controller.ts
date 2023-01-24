@@ -9,7 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiBody, ApiOkResponse } from '@nestjs/swagger';
-import { Admin } from '../auth/roles-auth.guard';
+import { Admin, Roles } from '../auth/roles-auth.guard';
 import { CoursesService } from './courses.service';
 import { CourseDto } from './dto/course.dto';
 import { CreateCourseDto } from './dto/create-course.dto';
@@ -21,13 +21,14 @@ import { User } from '../users/entities/user.entity';
 import { FilterDto } from './dto/filter.dto';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { Subscription } from '../subscriptions/entities/subscription.entity';
+import { Role } from '@prepa-sn/shared/enums';
 
 @Controller('courses')
 export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
 
   @Post()
-  @Admin()
+  @Roles(Role.ADMIN, Role.INSTRUCTOR)
   @ApiOkResponse({ type: CourseDto, isArray: false })
   @ApiBody({ type: CreateCourseDto })
   create(
@@ -71,7 +72,7 @@ export class CoursesController {
   }
 
   @Patch(':id')
-  @Admin()
+  @Roles(Role.ADMIN, Role.INSTRUCTOR)
   @ApiOkResponse({ type: CourseDto, isArray: false })
   @ApiBody({ type: CreateCourseDto })
   update(
