@@ -7,7 +7,6 @@ import {
   Delete,
   ParseIntPipe,
   Query,
-  DefaultValuePipe,
 } from '@nestjs/common';
 import { SectionsService } from './sections.service';
 import { CreateSectionDto } from './dto/create-section.dto';

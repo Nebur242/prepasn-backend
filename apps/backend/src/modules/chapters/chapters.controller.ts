@@ -9,7 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
-import { Admin, Authenticated } from '../auth/roles-auth.guard';
+import { Admin, Authenticated, Roles } from '../auth/roles-auth.guard';
 import { ChaptersService } from './chapters.service';
 import { CreateChapterDto } from './dto/create-chapter.dto';
 import { UpdateChapterDto } from './dto/update-chapter.dto';
@@ -19,13 +19,14 @@ import { FilterDto } from './dto/filter.dto';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import ControllerWithApiTags from '@prepa-sn/backend/common/decorators/controller-with-apiTags.decorator';
 import { User } from '../users/entities/user.entity';
+import { Role } from '@prepa-sn/shared/enums';
 
 @ControllerWithApiTags('chapters')
 export class ChaptersController {
   constructor(private readonly chaptersService: ChaptersService) {}
 
   @Post()
-  @Admin()
+  @Roles(Role.ADMIN, Role.INSTRUCTOR)
   @ApiOkResponse({ type: Chapter, isArray: false })
   create(
     @Claims() user: User,
@@ -62,7 +63,7 @@ export class ChaptersController {
   }
 
   @Patch(':id')
-  @Admin()
+  @Roles(Role.ADMIN, Role.INSTRUCTOR)
   @ApiOkResponse({ type: Chapter, isArray: false })
   update(
     @Claims() user: User,
