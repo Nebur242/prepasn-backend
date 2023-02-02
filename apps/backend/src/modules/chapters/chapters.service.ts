@@ -48,6 +48,7 @@ export class ChaptersService {
   ): Promise<Pagination<Chapter>> {
     return paginate<Chapter>(this.chaptersRepository, options, {
       where: filter,
+      relations: ['image', 'video', 'createdBy', 'documents'],
     });
   }
 

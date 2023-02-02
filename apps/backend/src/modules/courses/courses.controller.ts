@@ -31,10 +31,7 @@ export class CoursesController {
   @Roles(Role.ADMIN, Role.INSTRUCTOR)
   @ApiOkResponse({ type: CourseDto, isArray: false })
   @ApiBody({ type: CreateCourseDto })
-  create(
-    @Claims() createdBy: User,
-    @Body() createCourseDto: CreateCourseDto
-  ): Promise<Course> {
+  create(@Claims() createdBy: User, @Body() createCourseDto: CreateCourseDto) {
     return this.coursesService.create({
       ...createCourseDto,
       createdBy,
