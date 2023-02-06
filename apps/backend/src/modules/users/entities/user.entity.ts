@@ -34,6 +34,48 @@ export class User {
     default: null,
   })
   @Column({ nullable: true, default: null })
+  phone?: string;
+
+  @ApiProperty({
+    required: false,
+    default: null,
+  })
+  @Column({ nullable: true, default: null })
+  profile?: string;
+
+  @ApiProperty({
+    required: false,
+    default: null,
+  })
+  @Column({ nullable: true, default: null })
+  address?: string;
+
+  @ApiProperty({
+    required: false,
+    default: null,
+  })
+  @Column({ nullable: true, default: null })
+  city?: string;
+
+  @ApiProperty({
+    required: false,
+    default: null,
+  })
+  @Column({ nullable: true, default: null })
+  zipcode?: string;
+
+  @ApiProperty({
+    required: false,
+    default: null,
+  })
+  @Column({ nullable: true, default: null })
+  country?: string;
+
+  @ApiProperty({
+    required: false,
+    default: null,
+  })
+  @Column({ nullable: true, default: null })
   facebook?: string;
 
   @ApiProperty({
@@ -49,6 +91,20 @@ export class User {
   })
   @Column({ nullable: true, default: null })
   twitter?: string;
+
+  @ApiProperty({
+    required: false,
+    default: null,
+  })
+  @Column({ nullable: true, default: null })
+  instagram?: string;
+
+  @ApiProperty({
+    required: false,
+    default: null,
+  })
+  @Column({ nullable: true, default: null })
+  youtube?: string;
 
   @ApiProperty({
     required: false,
