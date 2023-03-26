@@ -54,7 +54,7 @@ export class CoursesService {
 
   paginate(
     options: IPaginationOptions,
-    filter: FilterDto
+    filter: FilterDto 
   ): Promise<Pagination<Course>> {
     return paginate<Course>(this.coursesRepository, options, {
       where: {
@@ -66,7 +66,7 @@ export class CoursesService {
         'grades',
         'documents',
         'categories',
-        'createdBy',
+        'createdBy'
       ],
     });
   }

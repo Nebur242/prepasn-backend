@@ -41,8 +41,9 @@ export class CoursesController {
   @Get()
   // @Authenticated()
   @ApiOkResponse({ type: CourseDto, isArray: true })
-  findAll(@Query() filterDto: FilterDto & IPaginationOptions) {
+  findAll(@Query() filterDto: FilterDto  & IPaginationOptions) {
     const { page = 0, limit = 10, ...filter } = filterDto;
+    
     return this.coursesService.paginate(
       {
         page,
