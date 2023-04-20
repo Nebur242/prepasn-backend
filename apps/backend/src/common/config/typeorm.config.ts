@@ -14,6 +14,7 @@ import { Payment } from '@prepa-sn/backend/modules/payments/entities/payment.ent
 import { OrderItem } from '@prepa-sn/backend/modules/order-item/entities/order-item.entity';
 import { Subscription } from '@prepa-sn/backend/modules/subscriptions/entities/subscription.entity';
 import { Review } from '@prepa-sn/backend/modules/reviews/entities/review.entity';
+import { CartItem } from '@prepa-sn/backend/modules/cart-item/entities/cart-item.entity';
 
 export default {
   type: process.env.DB_TYPE,
@@ -26,6 +27,7 @@ export default {
   logging: process.env.DB_LOGGING?.toLowerCase() === 'true',
   synchronize: process.env.DB_SYNC?.toLowerCase() === 'true',
   entities: [
+    CartItem,
     Document,
     Grade,
     Course,

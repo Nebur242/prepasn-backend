@@ -16,6 +16,7 @@ import { UsersModule } from '../modules/users/users.module';
 import { SectionsModule } from '../modules/sections/sections.module';
 import { CheckoutModule } from '../modules/checkout/checkout.module';
 import { ReviewsModule } from '../modules/reviews/reviews.module';
+import { CartItemModule } from '../modules/cart-item/cart-item.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -29,8 +30,8 @@ import { ReviewsModule } from '../modules/reviews/reviews.module';
       useFactory: (configService: ConfigService) =>
         configService.get('config.typeorm'),
     }),
-
     AuthModule,
+    CartItemModule,
     TestHelpersModule,
     GradesModule,
     CoursesModule,
