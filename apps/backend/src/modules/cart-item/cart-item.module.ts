@@ -10,9 +10,10 @@ import { CoursesModule } from '../courses/courses.module';
   imports: [
     AuthModule,
     CoursesModule,
-    TypeOrmModule.forFeature([CartItemsRepository]),
+    TypeOrmModule.forFeature([CartItemsRepository])
   ],
   controllers: [CartItemController],
   providers: [CartItemService],
+  exports: [CartItemService]
 })
 export class CartItemModule {}

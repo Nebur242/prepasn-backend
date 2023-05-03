@@ -41,7 +41,7 @@ import {
   UpdateExercise,
   Sections,
   CreateSection,
-  UpdateSection,
+  UpdateSection
 } from '../pages';
 export interface Route {
   path: string;
@@ -60,7 +60,7 @@ export const HOME: Route = {
   icon: 'HomeOutlined',
   access: [],
   element: Home,
-  routes: [],
+  routes: []
 };
 
 export const LOGIN: Route = {
@@ -70,7 +70,7 @@ export const LOGIN: Route = {
   icon: null,
   access: [],
   element: Login,
-  routes: [],
+  routes: []
 };
 
 export const DASHBOARD: Route = {
@@ -88,7 +88,7 @@ export const DASHBOARD: Route = {
       icon: 'HomeOutlined',
       isPublic: false,
       element: Welcome,
-      routes: [],
+      routes: []
     },
     {
       path: 'stats',
@@ -97,7 +97,7 @@ export const DASHBOARD: Route = {
       icon: 'AreaChartOutlined',
       access: [Role.ADMIN],
       element: Stats,
-      routes: [],
+      routes: []
     },
     {
       path: 'content-manager',
@@ -113,7 +113,7 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: ContentManagerHome,
-          routes: [],
+          routes: []
         },
         {
           path: 'grades',
@@ -121,7 +121,7 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: Grades,
-          routes: [],
+          routes: []
         },
         {
           path: 'grades/create',
@@ -130,7 +130,7 @@ export const DASHBOARD: Route = {
           icon: 'DashboardOutlined',
           isPublic: false,
           element: CreateGrade,
-          routes: [],
+          routes: []
         },
         {
           path: 'grades/update/:id',
@@ -139,7 +139,7 @@ export const DASHBOARD: Route = {
           icon: 'DashboardOutlined',
           isPublic: false,
           element: UpdateGrade,
-          routes: [],
+          routes: []
         },
         {
           path: 'courses',
@@ -147,7 +147,7 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: Courses,
-          routes: [],
+          routes: []
         },
         {
           path: 'classrooms',
@@ -155,7 +155,7 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: Classrooms,
-          routes: [],
+          routes: []
         },
         {
           path: 'classrooms/create',
@@ -164,7 +164,7 @@ export const DASHBOARD: Route = {
           icon: 'DashboardOutlined',
           isPublic: false,
           element: CreateClassroom,
-          routes: [],
+          routes: []
         },
         {
           path: 'classrooms/update/:id',
@@ -173,7 +173,7 @@ export const DASHBOARD: Route = {
           icon: 'DashboardOutlined',
           isPublic: false,
           element: UpdateClassroom,
-          routes: [],
+          routes: []
         },
         {
           path: 'courses/create',
@@ -181,7 +181,7 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: CreateCourses,
-          routes: [],
+          routes: []
         },
         {
           path: 'courses/update/:id',
@@ -189,7 +189,7 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: UpdateCourses,
-          routes: [],
+          routes: []
         },
         {
           path: 'courses/:courseId/chapters',
@@ -197,7 +197,7 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: CourseChapters,
-          routes: [],
+          routes: []
         },
         {
           path: 'courses/:courseId/chapters/create',
@@ -205,7 +205,7 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: CreateChapters,
-          routes: [],
+          routes: []
         },
         {
           path: 'courses/:courseId/chapters/update/:id',
@@ -213,7 +213,7 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: UpdateChapters,
-          routes: [],
+          routes: []
         },
         {
           path: 'courses/:courseId/chapters/:chapterId/exercises',
@@ -221,7 +221,7 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: Exercises,
-          routes: [],
+          routes: []
         },
         {
           path: 'courses/:courseId/chapters/:chapterId/exercises/create',
@@ -229,7 +229,7 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: CreateExercise,
-          routes: [],
+          routes: []
         },
         {
           path: 'courses/:courseId/chapters/:chapterId/exercises/update/:id',
@@ -237,7 +237,7 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: UpdateExercise,
-          routes: [],
+          routes: []
         },
         {
           path: 'courses/:courseId/chapters/:chapterId/sections',
@@ -245,7 +245,7 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: Sections,
-          routes: [],
+          routes: []
         },
         {
           path: 'courses/:courseId/chapters/:chapterId/sections/create',
@@ -253,7 +253,7 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: CreateSection,
-          routes: [],
+          routes: []
         },
         {
           path: 'courses/:courseId/chapters/:chapterId/sections/update/:id',
@@ -261,7 +261,7 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: UpdateSection,
-          routes: [],
+          routes: []
         },
         {
           path: 'categories',
@@ -269,7 +269,7 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: Categories,
-          routes: [],
+          routes: []
         },
         {
           path: 'categories/create',
@@ -277,7 +277,7 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: CreateCategory,
-          routes: [],
+          routes: []
         },
         {
           path: 'categories/update/:id',
@@ -285,9 +285,9 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: UpdateCategory,
-          routes: [],
-        },
-      ],
+          routes: []
+        }
+      ]
     },
     {
       path: 'users-manager',
@@ -303,7 +303,7 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: UsersMangagerHome,
-          routes: [],
+          routes: []
         },
         {
           path: 'students',
@@ -311,7 +311,7 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: Students,
-          routes: [],
+          routes: []
         },
         {
           path: 'students/create',
@@ -319,7 +319,7 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: CreateStudent,
-          routes: [],
+          routes: []
         },
         {
           path: 'students/update/:id',
@@ -327,7 +327,7 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: UpdateStudent,
-          routes: [],
+          routes: []
         },
         {
           path: 'instructors',
@@ -335,7 +335,7 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: Instructors,
-          routes: [],
+          routes: []
         },
         {
           path: 'instructors/create',
@@ -343,7 +343,7 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: CreateInstructor,
-          routes: [],
+          routes: []
         },
         {
           path: 'instructors/update/:id',
@@ -351,7 +351,7 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: UpdateInstructor,
-          routes: [],
+          routes: []
         },
         {
           path: 'admins',
@@ -359,7 +359,7 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: Admins,
-          routes: [],
+          routes: []
         },
         {
           path: 'admins/create',
@@ -367,7 +367,7 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: CreateAdmin,
-          routes: [],
+          routes: []
         },
         {
           path: 'admins/update/:id',
@@ -375,9 +375,9 @@ export const DASHBOARD: Route = {
           access: ['admin'],
           isPublic: false,
           element: UpdateAdmin,
-          routes: [],
-        },
-      ],
+          routes: []
+        }
+      ]
     },
     {
       path: 'uploads',
@@ -386,7 +386,7 @@ export const DASHBOARD: Route = {
       icon: 'FolderOpenOutlined',
       isPublic: false,
       element: MediaLibrary,
-      routes: [],
+      routes: []
     },
     {
       path: 'profile',
@@ -395,7 +395,7 @@ export const DASHBOARD: Route = {
       icon: 'UserOutlined',
       isPublic: false,
       element: Profile,
-      routes: [],
+      routes: []
     },
     {
       path: 'unauthorized',
@@ -404,9 +404,9 @@ export const DASHBOARD: Route = {
       icon: 'HomeOutlined',
       access: [],
       element: Unauthorized,
-      routes: [],
-    },
-  ],
+      routes: []
+    }
+  ]
 };
 
 export const NOT_FOUND: Route = {
@@ -416,5 +416,5 @@ export const NOT_FOUND: Route = {
   icon: null,
   access: [],
   element: Dashboard,
-  routes: [],
+  routes: []
 };

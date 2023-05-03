@@ -1,14 +1,5 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { Claims } from '@prepa-sn/backend/common/decorators/get-user.decorator';
-import { Status } from '@prepa-sn/shared/enums';
 import { Authenticated } from '../auth/roles-auth.guard';
 import { User } from '../users/entities/user.entity';
 import { CartItemService } from './cart-item.service';
@@ -20,7 +11,10 @@ export class CartItemController {
 
   @Post()
   @Authenticated()
-  create(@Body() createCartItemDto: CreateCartItemDto , @Claims() createdBy: User) {
+  create(
+    @Body() createCartItemDto: CreateCartItemDto,
+    @Claims() createdBy: User
+  ) {
     return this.cartItemService.create({
       ...createCartItemDto,
       createdBy
@@ -32,8 +26,8 @@ export class CartItemController {
   findAll(@Claims() createdBy: User) {
     return this.cartItemService.findAll({
       where: {
-        createdBy,
-        status: Status.PENDING
+        createdBy
+        // status: Status.PENDING
       }
     });
   }

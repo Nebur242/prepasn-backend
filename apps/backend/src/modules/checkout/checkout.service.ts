@@ -10,9 +10,11 @@ import { SubscriptionsService } from '../subscriptions/subscriptions.service';
 import { OrderStatus } from '../orders/entities/order.entity';
 import { User } from '../users/entities/user.entity';
 import { CoursesService } from '../courses/courses.service';
+import { CartItemService } from '../cart-item/cart-item.service';
+import { Status } from '@prepa-sn/shared/enums';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2022-08-01',
+  apiVersion: '2022-08-01'
 });
 
 @Injectable()
@@ -22,7 +24,8 @@ export class CheckoutService {
     private readonly paymentsService: PaymentsService,
     private readonly ordersService: OrdersService,
     private readonly subscriptionsService: SubscriptionsService,
-    private readonly coursesService: CoursesService
+    private readonly coursesService: CoursesService,
+    private readonly cartItemService: CartItemService
   ) {}
 
   async create(createCheckoutDto: CreateCheckoutDto & { subscriber: User }) {
@@ -37,31 +40,37 @@ export class CheckoutService {
       notes: createCheckoutDto.form.notes,
       items: orderitems.map((item) => item.id),
       status: OrderStatus.IN_PROCESS,
-      orderedBy: createCheckoutDto.subscriber,
+      orderedBy: createCheckoutDto.subscriber
     });
     //create payment
     const payment = await this.paymentsService.create({
       total: createCheckoutDto.total,
       details: '',
       order: order.id,
-      paidBy: createCheckoutDto.subscriber,
+      paidBy: createCheckoutDto.subscriber
     });
     //create subscription
     const subscriptions = await Promise.all(
       createCheckoutDto.items.map((item) =>
         this.subscriptionsService.create({
           course: this.coursesService.createEntity({
-            id: item.course,
+            id: item.course
           }),
-          subscriber: createCheckoutDto.subscriber,
+          subscriber: createCheckoutDto.subscriber
         })
+      )
+    );
+    //update cart status
+    await Promise.all(
+      createCheckoutDto.items.map((item) =>
+        this.cartItemService.updateOneStatus(item.cartItem, Status.PAID)
       )
     );
     return {
       orderitems,
       payment,
       order,
-      subscriptions,
+      subscriptions
     };
   }
 
@@ -86,7 +95,7 @@ export class CheckoutService {
       const { amount, currency } = paymentIntentsDto;
       const paymentIntent = await stripe.paymentIntents.create({
         amount,
-        currency,
+        currency
       });
 
       return paymentIntent;
