@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import {
   IPaginationOptions,
   paginate,
-  Pagination,
+  Pagination
 } from 'nestjs-typeorm-paginate';
 import { DeepPartial, FindManyOptions } from 'typeorm';
 import { CoursesService } from '../courses/courses.service';
@@ -32,8 +32,8 @@ export class ChaptersService {
     const chapter = this.createEntity({
       ...createChapterDto,
       course: this.coursesService.createEntity({
-        id: createChapterDto.course,
-      }),
+        id: createChapterDto.course
+      })
     });
     return this.chaptersRepository.save(chapter);
   }
@@ -48,13 +48,20 @@ export class ChaptersService {
   ): Promise<Pagination<Chapter>> {
     return paginate<Chapter>(this.chaptersRepository, options, {
       where: filter,
-      relations: ['image', 'video', 'createdBy', 'documents'],
+      relations: ['image', 'video', 'createdBy', 'documents']
     });
   }
 
   async findOne(id: number): Promise<Chapter> {
     const found = await this.chaptersRepository.findOne(id, {
-      relations: ['documents', 'image', 'video', 'course', 'exercises'],
+      relations: [
+        'documents',
+        'image',
+        'video',
+        'course',
+        'exercises',
+        'sections'
+      ]
     });
     if (!found) throw new NotFoundException(`Chapter with id ${id} not found`);
     return found;
@@ -69,7 +76,7 @@ export class ChaptersService {
     const chapter: Chapter = await this.findOne(id);
     return this.chaptersRepository.save({
       ...chapter,
-      ...updateChapterDto,
+      ...updateChapterDto
     });
   }
 

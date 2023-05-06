@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import {
   IPaginationOptions,
   paginate,
-  Pagination,
+  Pagination
 } from 'nestjs-typeorm-paginate';
 import { DeepPartial, FindManyOptions, IsNull, Not } from 'typeorm';
 import { CategoriesService } from '../categories/categories.service';
@@ -41,24 +41,24 @@ export class CoursesService {
       }),
       categories: createCourseDto.categories.map((id) => {
         return this.categoriesService.createEntity({ id });
-      }),
+      })
     });
     return this.coursesRepository.save(course);
   }
 
   findAll(filter: FindManyOptions<Course> = {}) {
     return this.coursesRepository.find({
-      ...filter,
+      ...filter
     });
   }
 
   paginate(
     options: IPaginationOptions,
-    filter: FilterDto 
+    filter: FilterDto
   ): Promise<Pagination<Course>> {
     return paginate<Course>(this.coursesRepository, options, {
       where: {
-        ...filter,
+        ...filter
       },
       relations: [
         'image',
@@ -67,7 +67,7 @@ export class CoursesService {
         'documents',
         'categories',
         'createdBy'
-      ],
+      ]
     });
   }
 
@@ -79,9 +79,12 @@ export class CoursesService {
         'grades',
         'documents',
         'chapters',
+        'chapters.sections',
+        'chapters.sections.image',
+        'chapters.sections.video',
         'categories',
-        'createdBy',
-      ],
+        'createdBy'
+      ]
     });
     if (!course) throw new NotFoundException(`Course with id ${id} not found`);
     return course;
@@ -92,9 +95,9 @@ export class CoursesService {
     const subscriptions = await this.subscriptionsService.findAll({
       where: {
         course,
-        subscriber: Not(IsNull()),
+        subscriber: Not(IsNull())
       },
-      relations: ['course', 'subscriber'],
+      relations: ['course', 'subscriber']
     });
     return subscriptions;
   }
@@ -112,17 +115,17 @@ export class CoursesService {
       grades: updateCourseDto?.grades
         ? updateCourseDto?.grades.map((gradeId) =>
             this.gradesService.createEntity({
-              id: gradeId,
+              id: gradeId
             })
           )
         : course.grades,
       categories: updateCourseDto?.categories
         ? updateCourseDto?.categories.map((categoryId) =>
             this.gradesService.createEntity({
-              id: categoryId,
+              id: categoryId
             })
           )
-        : course.categories,
+        : course.categories
     });
   }
 

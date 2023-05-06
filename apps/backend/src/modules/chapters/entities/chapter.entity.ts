@@ -3,6 +3,7 @@ import { Course } from '@prepa-sn/backend/modules/courses/entities/course.entity
 import { BaseContent } from '@prepa-sn/backend/common/entities/base-content.entity';
 import { Document } from '../../documents/entities/document.entity';
 import { Exercise } from '../../exercises/entities/exercise.entity';
+import { Section } from '../../sections/entities/section.entity';
 
 @Entity()
 export class Chapter extends BaseContent {
@@ -15,4 +16,7 @@ export class Chapter extends BaseContent {
   @ManyToMany(() => Document)
   @JoinTable()
   documents: Document[];
+
+  @OneToMany(() => Section, (chapter) => chapter.chapter)
+  sections?: Section[];
 }
